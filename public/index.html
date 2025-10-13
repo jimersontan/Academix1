@@ -1,0 +1,25 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Academix</title>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script src="js/app.js?v=3"></script>
+    <script>
+      if (window.Academix && window.Academix.mountLogin) {
+        window.Academix.mountLogin(document.getElementById('app'), {
+          backgroundUrl: 'https://tse4.mm.bing.net/th/id/OIP.tgQYDIWK0Z67zJ1pohyo4QHaEK?pid=Api&P=0&h=180',
+          logoUrl: 'https://tse3.mm.bing.net/th/id/OIP.kNZRsLF495e1651A1kiMvwHaHa?pid=Api&P=0&h=180',
+          onSuccess: function(){ window.location.href = '/dashboard'; }
+        });
+      } else {
+        document.getElementById('app').innerHTML = '<p>Frontend not built yet. Please compile resources/js/app.js to public/js/app.js.</p>';
+      }
+    </script>
+  </body>
+  </html>
+
+
