@@ -11,6 +11,11 @@ class FacultyProfile extends Model
     protected $fillable = [
         'f_name','m_name','l_name','suffix','date_of_birth','sex','phone_number','email_address','address','position','department_id'
     ];
+    
+    public function department()
+    {
+        return $this->belongsTo(Department::class, 'department_id', 'department_id');
+    }
 }
 
 

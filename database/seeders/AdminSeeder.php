@@ -11,17 +11,21 @@ class AdminSeeder extends Seeder
 {
     public function run(): void
     {
-        $exists = DB::table('admin')->where('username', 'admin')->exists();
-        if ($exists) {
-            return;
+        $existing = DB::table('admin')->where('username', 'admin')->first();
+        if ($existing) {
+            // Ensure known credentials for development: admin / admin123
+            DB::table('admin')->where('admin_id', $existing->admin_id)->update([
+                'email' => 'admin@example.com',
+                'password' => Hash::make('admin123'),
+            ]);
+        } else {
+            DB::table('admin')->insert([
+                'username' => 'admin',
+                'email' => 'admin@example.com',
+                'password' => Hash::make('admin123'),
+                'created_at' => now(),
+            ]);
         }
-
-        DB::table('admin')->insert([
-            'username' => 'admin',
-            'email' => 'admin@example.com',
-            'password' => Hash::make('admin123'),
-            'created_at' => now(),
-        ]);
     }
 }
 

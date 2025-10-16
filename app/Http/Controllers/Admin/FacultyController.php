@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\FacultyProfile;
@@ -22,13 +22,29 @@ class FacultyController extends Controller
                   ->orWhere('email_address','like',"%$q%");
             });
         }
-        return response()->json($query->whereNull('deleted_at')->paginate(20));
+        // Show archived or active based on parameter
+        if ($request->filled('archived') && $request->get('archived') == '1') {
+            $query->whereNotNull('deleted_at');
+        } else {
+            $query->whereNull('deleted_at');
+        }
+        return response()->json($query->with(['department'])->paginate(20));
     }
 
     public function store(Request $request)
     {
         $data = $request->validate([
-            'f_name'=>'required','l_name'=>'required','department_id'=>'required|integer','email_address'=>'nullable|email'
+            'f_name' => 'required|string',
+            'm_name' => 'nullable|string',
+            'l_name' => 'required|string',
+            'suffix' => 'nullable|string',
+            'date_of_birth' => 'nullable|string',
+            'sex' => 'nullable|string',
+            'phone_number' => 'nullable|string',
+            'email_address' => 'nullable|string',
+            'address' => 'nullable|string',
+            'position' => 'nullable|string',
+            'department_id' => 'required|integer'
         ]);
         $faculty = FacultyProfile::create($data);
         return response()->json($faculty, 201);
@@ -37,7 +53,20 @@ class FacultyController extends Controller
     public function update(Request $request, int $id)
     {
         $faculty = FacultyProfile::findOrFail($id);
-        $faculty->update($request->all());
+        $data = $request->validate([
+            'f_name' => 'sometimes|string',
+            'm_name' => 'sometimes|nullable|string',
+            'l_name' => 'sometimes|string',
+            'suffix' => 'sometimes|nullable|string',
+            'date_of_birth' => 'sometimes|nullable|string',
+            'sex' => 'sometimes|nullable|string',
+            'phone_number' => 'sometimes|nullable|string',
+            'email_address' => 'sometimes|nullable|string',
+            'address' => 'sometimes|nullable|string',
+            'position' => 'sometimes|nullable|string',
+            'department_id' => 'sometimes|integer'
+        ]);
+        $faculty->update($data);
         return response()->json($faculty);
     }
 
@@ -45,6 +74,14 @@ class FacultyController extends Controller
     {
         $faculty = FacultyProfile::findOrFail($id);
         $faculty->deleted_at = now();
+        $faculty->save();
+        return response()->json(['ok'=>true]);
+    }
+
+    public function restore(int $id)
+    {
+        $faculty = FacultyProfile::findOrFail($id);
+        $faculty->deleted_at = null;
         $faculty->save();
         return response()->json(['ok'=>true]);
     }

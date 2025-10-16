@@ -15,44 +15,49 @@ use Illuminate\Support\Facades\Route;
 */
 
 // Auth API
-Route::post('/auth/login', [\App\Http\Controllers\Api\AuthController::class, 'login']);
+Route::post('/auth/login', [\App\Http\Controllers\Admin\AuthController::class, 'login']);
 Route::middleware('auth:sanctum')->group(function () {
     // auth
-    Route::get('/auth/me', [\App\Http\Controllers\Api\AuthController::class, 'me']);
-    Route::post('/auth/logout', [\App\Http\Controllers\Api\AuthController::class, 'logout']);
+    Route::get('/auth/me', [\App\Http\Controllers\Admin\AuthController::class, 'me']);
+    Route::post('/auth/logout', [\App\Http\Controllers\Admin\AuthController::class, 'logout']);
 
     // dashboard
-    Route::get('/dashboard/stats', [\App\Http\Controllers\Api\DashboardController::class, 'stats']);
+    Route::get('/dashboard/stats', [\App\Http\Controllers\Admin\DashboardController::class, 'stats']);
 
     // faculty
-    Route::get('/faculty', [\App\Http\Controllers\Api\FacultyController::class, 'index']);
-    Route::post('/faculty', [\App\Http\Controllers\Api\FacultyController::class, 'store']);
-    Route::put('/faculty/{id}', [\App\Http\Controllers\Api\FacultyController::class, 'update']);
-    Route::post('/faculty/{id}/archive', [\App\Http\Controllers\Api\FacultyController::class, 'archive']);
+    Route::get('/faculty', [\App\Http\Controllers\Admin\FacultyController::class, 'index']);
+    Route::post('/faculty', [\App\Http\Controllers\Admin\FacultyController::class, 'store']);
+    Route::put('/faculty/{id}', [\App\Http\Controllers\Admin\FacultyController::class, 'update']);
+    Route::post('/faculty/{id}/archive', [\App\Http\Controllers\Admin\FacultyController::class, 'archive']);
+    Route::post('/faculty/{id}/restore', [\App\Http\Controllers\Admin\FacultyController::class, 'restore']);
 
     // students
-    Route::get('/students', [\App\Http\Controllers\Api\StudentController::class, 'index']);
-    Route::post('/students', [\App\Http\Controllers\Api\StudentController::class, 'store']);
-    Route::put('/students/{id}', [\App\Http\Controllers\Api\StudentController::class, 'update']);
-    Route::post('/students/{id}/archive', [\App\Http\Controllers\Api\StudentController::class, 'archive']);
+    Route::get('/students', [\App\Http\Controllers\Admin\StudentController::class, 'index']);
+    Route::post('/students', [\App\Http\Controllers\Admin\StudentController::class, 'store']);
+    Route::put('/students/{id}', [\App\Http\Controllers\Admin\StudentController::class, 'update']);
+    Route::post('/students/{id}/archive', [\App\Http\Controllers\Admin\StudentController::class, 'archive']);
+    Route::post('/students/{id}/restore', [\App\Http\Controllers\Admin\StudentController::class, 'restore']);
 
     // settings - courses
-    Route::get('/settings/courses', [\App\Http\Controllers\Api\SettingsController::class, 'listCourses']);
-    Route::post('/settings/courses', [\App\Http\Controllers\Api\SettingsController::class, 'createCourse']);
-    Route::put('/settings/courses/{id}', [\App\Http\Controllers\Api\SettingsController::class, 'updateCourse']);
-    Route::post('/settings/courses/{id}/archive', [\App\Http\Controllers\Api\SettingsController::class, 'archiveCourse']);
+    Route::get('/settings/courses', [\App\Http\Controllers\Admin\SettingsController::class, 'listCourses']);
+    Route::post('/settings/courses', [\App\Http\Controllers\Admin\SettingsController::class, 'createCourse']);
+    Route::put('/settings/courses/{id}', [\App\Http\Controllers\Admin\SettingsController::class, 'updateCourse']);
+    Route::post('/settings/courses/{id}/archive', [\App\Http\Controllers\Admin\SettingsController::class, 'archiveCourse']);
+    Route::post('/settings/courses/{id}/restore', [\App\Http\Controllers\Admin\SettingsController::class, 'restoreCourse']);
 
     // settings - departments
-    Route::get('/settings/departments', [\App\Http\Controllers\Api\SettingsController::class, 'listDepartments']);
-    Route::post('/settings/departments', [\App\Http\Controllers\Api\SettingsController::class, 'createDepartment']);
-    Route::put('/settings/departments/{id}', [\App\Http\Controllers\Api\SettingsController::class, 'updateDepartment']);
-    Route::post('/settings/departments/{id}/archive', [\App\Http\Controllers\Api\SettingsController::class, 'archiveDepartment']);
+    Route::get('/settings/departments', [\App\Http\Controllers\Admin\SettingsController::class, 'listDepartments']);
+    Route::post('/settings/departments', [\App\Http\Controllers\Admin\SettingsController::class, 'createDepartment']);
+    Route::put('/settings/departments/{id}', [\App\Http\Controllers\Admin\SettingsController::class, 'updateDepartment']);
+    Route::post('/settings/departments/{id}/archive', [\App\Http\Controllers\Admin\SettingsController::class, 'archiveDepartment']);
+    Route::post('/settings/departments/{id}/restore', [\App\Http\Controllers\Admin\SettingsController::class, 'restoreDepartment']);
 
     // settings - academic years
-    Route::get('/settings/academic-years', [\App\Http\Controllers\Api\SettingsController::class, 'listAcademicYears']);
-    Route::post('/settings/academic-years', [\App\Http\Controllers\Api\SettingsController::class, 'createAcademicYear']);
-    Route::put('/settings/academic-years/{id}', [\App\Http\Controllers\Api\SettingsController::class, 'updateAcademicYear']);
-    Route::post('/settings/academic-years/{id}/archive', [\App\Http\Controllers\Api\SettingsController::class, 'archiveAcademicYear']);
+    Route::get('/settings/academic-years', [\App\Http\Controllers\Admin\SettingsController::class, 'listAcademicYears']);
+    Route::post('/settings/academic-years', [\App\Http\Controllers\Admin\SettingsController::class, 'createAcademicYear']);
+    Route::put('/settings/academic-years/{id}', [\App\Http\Controllers\Admin\SettingsController::class, 'updateAcademicYear']);
+    Route::post('/settings/academic-years/{id}/archive', [\App\Http\Controllers\Admin\SettingsController::class, 'archiveAcademicYear']);
+    Route::post('/settings/academic-years/{id}/restore', [\App\Http\Controllers\Admin\SettingsController::class, 'restoreAcademicYear']);
 
     // reports
     Route::get('/reports/students', [\App\Http\Controllers\Api\ReportController::class, 'studentsByCourse']);

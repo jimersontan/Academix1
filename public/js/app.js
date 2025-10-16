@@ -26967,6 +26967,9 @@ process.umask = function() { return 0; };
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_login__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./components/login */ "./resources/js/components/login.js");
 /* harmony import */ var _components_dashboard__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components/dashboard */ "./resources/js/components/dashboard.js");
+/* harmony import */ var _components_student__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/student */ "./resources/js/components/student.js");
+/* harmony import */ var _components_faculty__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/faculty */ "./resources/js/components/faculty.js");
+/* harmony import */ var _components_settings__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/settings */ "./resources/js/components/settings.js");
 /**
  * First we will load all of this project's JavaScript dependencies which
  * includes React and other helpers. It's a great starting point while
@@ -26978,9 +26981,15 @@ __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 // Expose mount functions for the vanilla JS UI
 
 
+
+
+
 window.Academix = window.Academix || {};
 window.Academix.mountLogin = _components_login__WEBPACK_IMPORTED_MODULE_0__.mountLogin;
 window.Academix.mountDashboard = _components_dashboard__WEBPACK_IMPORTED_MODULE_1__.mountDashboard;
+window.Academix.mountStudents = _components_student__WEBPACK_IMPORTED_MODULE_2__.mountStudents;
+window.Academix.mountFaculty = _components_faculty__WEBPACK_IMPORTED_MODULE_3__.mountFaculty;
+window.Academix.mountSettings = _components_settings__WEBPACK_IMPORTED_MODULE_4__.mountSettings;
 
 /***/ }),
 
@@ -27096,10 +27105,11 @@ function _fetchJson() {
 }
 function mountDashboard(rootEl) {
   if (!rootEl) throw new Error('mountDashboard: root element is required');
-  rootEl.innerHTML = "\n      <style>\n        body{background:#000;color:#fff;font-family:Arial,Helvetica,sans-serif}\n        .shell{min-height:100vh;display:grid;grid-template-columns:240px 1fr}\n        .sidebar{background:#111;padding:14px}\n        .brand{display:flex;align-items:center;gap:10px;margin-bottom:18px}\n        .brand img{width:40px;height:40px}\n        .menu a{display:block;color:#ddd;text-decoration:none;padding:8px 6px;border-radius:4px}\n        .menu a:hover{background:#1f1f1f}\n        .content{padding:18px}\n        .cards{display:grid;grid-template-columns:repeat(3,200px);gap:16px}\n        .card{background:#2b2b2b;border-radius:8px;padding:12px}\n        .card h4{margin:0 0 8px;font-weight:700}\n        .list{margin-top:18px;background:#2b2b2b;border-radius:8px;padding:12px}\n        .topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}\n        .btn{background:#2d6cdf;color:#fff;border:none;padding:8px 12px;border-radius:4px;cursor:pointer}\n      </style>\n      <div class=\"shell\">\n        <aside class=\"sidebar\">\n          <div class=\"brand\">\n            <img src=\"favicon.ico\" alt=\"logo\" />\n            <div>\n              <div style=\"font-weight:700\">Academix</div>\n              <div style=\"font-size:12px;opacity:.8\">Student Management Portal</div>\n            </div>\n          </div>\n          <nav class=\"menu\">\n            <a href=\"dashboard.html\">Dashboard</a>\n            <a href=\"#\" id=\"menu-students\">Students</a>\n            <a href=\"#\" id=\"menu-faculty\">Faculty</a>\n            <a href=\"#\" id=\"menu-report\">Report</a>\n            <a href=\"#\" id=\"menu-settings\">Settings</a>\n            <a href=\"#\" id=\"menu-profile\">My Profile</a>\n            <a href=\"#\" id=\"menu-logout\">Logout</a>\n          </nav>\n        </aside>\n        <main class=\"content\">\n          <div class=\"topbar\">\n            <h2 style=\"margin:0\">Dashboard</h2>\n          </div>\n          <section class=\"cards\">\n            <div class=\"card\">\n              <h4>Total Student</h4>\n              <div id=\"stat-students\">0</div>\n            </div>\n            <div class=\"card\">\n              <h4>Total Faculty</h4>\n              <div id=\"stat-faculty\">0</div>\n            </div>\n            <div class=\"card\">\n              <h4>Course Offered</h4>\n              <div id=\"stat-courses\">0</div>\n            </div>\n          </section>\n          <section class=\"list\">\n            <h4 style=\"margin:0 0 10px\">Departments</h4>\n            <div id=\"departments\">Loading...</div>\n          </section>\n        </main>\n      </div>\n    ";
+  rootEl.innerHTML = "\n      <style>\n        body{background:#000;color:#fff;font-family:Arial,Helvetica,sans-serif}\n        .shell{min-height:100vh;display:grid;grid-template-columns:240px 1fr}\n        .sidebar{background:#111;padding:14px}\n        .brand{display:flex;align-items:center;gap:10px;margin-bottom:18px}\n        .brand img{width:40px;height:40px}\n        .menu a{display:block;color:#ddd;text-decoration:none;padding:8px 6px;border-radius:4px}\n        .menu a:hover{background:#1f1f1f}\n        .content{padding:18px}\n        .cards{display:grid;grid-template-columns:repeat(3,200px);gap:16px}\n        .card{background:#2b2b2b;border-radius:8px;padding:12px}\n        .card h4{margin:0 0 8px;font-weight:700}\n        .list{margin-top:18px;background:#2b2b2b;border-radius:8px;padding:12px}\n        .topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}\n        .btn{background:#2d6cdf;color:#fff;border:none;padding:8px 12px;border-radius:4px;cursor:pointer}\n      </style>\n      <div class=\"shell\">\n        <aside class=\"sidebar\">\n          <div class=\"brand\">\n            <img src=\"https://cdn.vectorstock.com/i/500p/25/20/books-stack-logo-template-vector-27212520.jpg\" alt=\"logo\" />\n            <div>\n              <div style=\"font-weight:700\">Academix</div>\n              <div style=\"font-size:12px;opacity:.8\">Student Management Portal</div>\n            </div>\n          </div>\n          <nav class=\"menu\">\n            <a href=\"dashboard.html\">Dashboard</a>\n            <a href=\"#\" id=\"menu-students\">Students</a>\n            <a href=\"#\" id=\"menu-faculty\">Faculty</a>\n            <a href=\"#\" id=\"menu-report\">Report</a>\n            <a href=\"#\" id=\"menu-settings\">Settings</a>\n            <a href=\"#\" id=\"menu-profile\">My Profile</a>\n            <a href=\"#\" id=\"menu-logout\">Logout</a>\n          </nav>\n        </aside>\n        <main class=\"content\" id=\"main\">\n          <div class=\"topbar\">\n            <h2 style=\"margin:0\">Dashboard</h2>\n          </div>\n          <section class=\"cards\">\n            <div class=\"card\">\n              <h4>Total Student</h4>\n              <div id=\"stat-students\">0</div>\n            </div>\n            <div class=\"card\">\n              <h4>Total Faculty</h4>\n              <div id=\"stat-faculty\">0</div>\n            </div>\n            <div class=\"card\">\n              <h4>Course Offered</h4>\n              <div id=\"stat-courses\">0</div>\n            </div>\n          </section>\n          <section class=\"list\">\n            <h4 style=\"margin:0 0 10px\">Departments</h4>\n            <div id=\"departments\">Loading...</div>\n          </section>\n        </main>\n      </div>\n    ";
+  var main = rootEl.querySelector('#main');
 
-  // Load stats
-  fetchJson('api/dashboard/stats').then(function (data) {
+  // Load stats for dashboard
+  fetchJson('/api/dashboard/stats').then(function (data) {
     var _data$total_students, _data$total_faculty;
     if (!data) return;
     rootEl.querySelector('#stat-students').textContent = (_data$total_students = data.total_students) !== null && _data$total_students !== void 0 ? _data$total_students : 0;
@@ -27123,7 +27133,7 @@ function mountDashboard(rootEl) {
           case 0:
             _context.p = 0;
             _context.n = 1;
-            return fetchJson('api/auth/logout', {
+            return fetchJson('/api/auth/logout', {
               method: 'POST'
             });
           case 1:
@@ -27148,6 +27158,564 @@ function mountDashboard(rootEl) {
     e.preventDefault();
     logout();
   });
+
+  // Navigate to Students inside the same dashboard shell
+  var menuStudents = rootEl.querySelector('#menu-students');
+  if (menuStudents) {
+    menuStudents.addEventListener('click', function (e) {
+      e.preventDefault();
+      if (window.Academix && typeof window.Academix.mountStudents === 'function') {
+        // Replace main content with the students module
+        main.innerHTML = '';
+        window.Academix.mountStudents(main);
+      }
+    });
+  }
+
+  // Navigate to Faculty inside the same dashboard shell
+  var menuFaculty = rootEl.querySelector('#menu-faculty');
+  if (menuFaculty) {
+    menuFaculty.addEventListener('click', function (e) {
+      e.preventDefault();
+      if (window.Academix && typeof window.Academix.mountFaculty === 'function') {
+        // Replace main content with the faculty module
+        main.innerHTML = '';
+        window.Academix.mountFaculty(main);
+      }
+    });
+  }
+
+  // Navigate to Settings inside the same dashboard shell
+  var menuSettings = rootEl.querySelector('#menu-settings');
+  if (menuSettings) {
+    menuSettings.addEventListener('click', function (e) {
+      e.preventDefault();
+      if (window.Academix && typeof window.Academix.mountSettings === 'function') {
+        // Replace main content with the settings module
+        main.innerHTML = '';
+        window.Academix.mountSettings(main);
+      }
+    });
+  }
+}
+
+/***/ }),
+
+/***/ "./resources/js/components/faculty.js":
+/*!********************************************!*\
+  !*** ./resources/js/components/faculty.js ***!
+  \********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   mountFaculty: () => (/* binding */ mountFaculty)
+/* harmony export */ });
+function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
+function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { _defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
+function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : i + ""; }
+function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+function _regenerator() { /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/babel/babel/blob/main/packages/babel-helpers/LICENSE */ var e, t, r = "function" == typeof Symbol ? Symbol : {}, n = r.iterator || "@@iterator", o = r.toStringTag || "@@toStringTag"; function i(r, n, o, i) { var c = n && n.prototype instanceof Generator ? n : Generator, u = Object.create(c.prototype); return _regeneratorDefine2(u, "_invoke", function (r, n, o) { var i, c, u, f = 0, p = o || [], y = !1, G = { p: 0, n: 0, v: e, a: d, f: d.bind(e, 4), d: function d(t, r) { return i = t, c = 0, u = e, G.n = r, a; } }; function d(r, n) { for (c = r, u = n, t = 0; !y && f && !o && t < p.length; t++) { var o, i = p[t], d = G.p, l = i[2]; r > 3 ? (o = l === n) && (u = i[(c = i[4]) ? 5 : (c = 3, 3)], i[4] = i[5] = e) : i[0] <= d && ((o = r < 2 && d < i[1]) ? (c = 0, G.v = n, G.n = i[1]) : d < l && (o = r < 3 || i[0] > n || n > l) && (i[4] = r, i[5] = n, G.n = l, c = 0)); } if (o || r > 1) return a; throw y = !0, n; } return function (o, p, l) { if (f > 1) throw TypeError("Generator is already running"); for (y && 1 === p && d(p, l), c = p, u = l; (t = c < 2 ? e : u) || !y;) { i || (c ? c < 3 ? (c > 1 && (G.n = -1), d(c, u)) : G.n = u : G.v = u); try { if (f = 2, i) { if (c || (o = "next"), t = i[o]) { if (!(t = t.call(i, u))) throw TypeError("iterator result is not an object"); if (!t.done) return t; u = t.value, c < 2 && (c = 0); } else 1 === c && (t = i["return"]) && t.call(i), c < 2 && (u = TypeError("The iterator does not provide a '" + o + "' method"), c = 1); i = e; } else if ((t = (y = G.n < 0) ? u : r.call(n, G)) !== a) break; } catch (t) { i = e, c = 1, u = t; } finally { f = 1; } } return { value: t, done: y }; }; }(r, o, i), !0), u; } var a = {}; function Generator() {} function GeneratorFunction() {} function GeneratorFunctionPrototype() {} t = Object.getPrototypeOf; var c = [][n] ? t(t([][n]())) : (_regeneratorDefine2(t = {}, n, function () { return this; }), t), u = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(c); function f(e) { return Object.setPrototypeOf ? Object.setPrototypeOf(e, GeneratorFunctionPrototype) : (e.__proto__ = GeneratorFunctionPrototype, _regeneratorDefine2(e, o, "GeneratorFunction")), e.prototype = Object.create(u), e; } return GeneratorFunction.prototype = GeneratorFunctionPrototype, _regeneratorDefine2(u, "constructor", GeneratorFunctionPrototype), _regeneratorDefine2(GeneratorFunctionPrototype, "constructor", GeneratorFunction), GeneratorFunction.displayName = "GeneratorFunction", _regeneratorDefine2(GeneratorFunctionPrototype, o, "GeneratorFunction"), _regeneratorDefine2(u), _regeneratorDefine2(u, o, "Generator"), _regeneratorDefine2(u, n, function () { return this; }), _regeneratorDefine2(u, "toString", function () { return "[object Generator]"; }), (_regenerator = function _regenerator() { return { w: i, m: f }; })(); }
+function _regeneratorDefine2(e, r, n, t) { var i = Object.defineProperty; try { i({}, "", {}); } catch (e) { i = 0; } _regeneratorDefine2 = function _regeneratorDefine(e, r, n, t) { function o(r, n) { _regeneratorDefine2(e, r, function (e) { return this._invoke(r, n, e); }); } r ? i ? i(e, r, { value: n, enumerable: !t, configurable: !t, writable: !t }) : e[r] = n : (o("next", 0), o("throw", 1), o("return", 2)); }, _regeneratorDefine2(e, r, n, t); }
+function _slicedToArray(r, e) { return _arrayWithHoles(r) || _iterableToArrayLimit(r, e) || _unsupportedIterableToArray(r, e) || _nonIterableRest(); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _unsupportedIterableToArray(r, a) { if (r) { if ("string" == typeof r) return _arrayLikeToArray(r, a); var t = {}.toString.call(r).slice(8, -1); return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? _arrayLikeToArray(r, a) : void 0; } }
+function _arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length); for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e]; return n; }
+function _iterableToArrayLimit(r, l) { var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (null != t) { var e, n, i, u, a = [], f = !0, o = !1; try { if (i = (t = t.call(r)).next, 0 === l) { if (Object(t) !== t) return; f = !1; } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0); } catch (r) { o = !0, n = r; } finally { try { if (!f && null != t["return"] && (u = t["return"](), Object(u) !== u)) return; } finally { if (o) throw n; } } return a; } }
+function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
+function asyncGeneratorStep(n, t, e, r, o, a, c) { try { var i = n[a](c), u = i.value; } catch (n) { return void e(n); } i.done ? t(u) : Promise.resolve(u).then(r, o); }
+function _asyncToGenerator(n) { return function () { var t = this, e = arguments; return new Promise(function (r, o) { var a = n.apply(t, e); function _next(n) { asyncGeneratorStep(a, r, o, _next, _throw, "next", n); } function _throw(n) { asyncGeneratorStep(a, r, o, _next, _throw, "throw", n); } _next(void 0); }); }; }
+// Faculty management UI (vanilla JS)
+// Requires: token in localStorage key `academix_token`
+
+function getTokenOrRedirect() {
+  var token = window.localStorage.getItem('academix_token');
+  if (!token) {
+    window.location.href = '/';
+    throw new Error('No token');
+  }
+  return token;
+}
+function api(_x) {
+  return _api.apply(this, arguments);
+}
+function _api() {
+  _api = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee7(path) {
+    var options,
+      token,
+      res,
+      data,
+      _args7 = arguments;
+    return _regenerator().w(function (_context7) {
+      while (1) switch (_context7.n) {
+        case 0:
+          options = _args7.length > 1 && _args7[1] !== undefined ? _args7[1] : {};
+          token = getTokenOrRedirect();
+          _context7.n = 1;
+          return fetch(path, _objectSpread({
+            headers: _objectSpread({
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+              'Authorization': "Bearer ".concat(token)
+            }, options.headers || {})
+          }, options));
+        case 1:
+          res = _context7.v;
+          if (!(res.status === 401)) {
+            _context7.n = 2;
+            break;
+          }
+          window.location.href = '/';
+          return _context7.a(2, Promise.reject(new Error('Unauthorized')));
+        case 2:
+          _context7.n = 3;
+          return res.json()["catch"](function () {
+            return {};
+          });
+        case 3:
+          data = _context7.v;
+          if (res.ok) {
+            _context7.n = 4;
+            break;
+          }
+          throw new Error(data.message || 'Request failed');
+        case 4:
+          return _context7.a(2, data);
+      }
+    }, _callee7);
+  }));
+  return _api.apply(this, arguments);
+}
+function h(tag) {
+  var attrs = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+  var children = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [];
+  var el = document.createElement(tag);
+  Object.entries(attrs).forEach(function (_ref) {
+    var _ref2 = _slicedToArray(_ref, 2),
+      k = _ref2[0],
+      v = _ref2[1];
+    if (k === 'class') el.className = v;else if (k === 'text') el.textContent = v;else el.setAttribute(k, v);
+  });
+  (Array.isArray(children) ? children : [children]).forEach(function (c) {
+    if (c == null) return;
+    if (typeof c === 'string') el.appendChild(document.createTextNode(c));else el.appendChild(c);
+  });
+  return el;
+}
+function mountFaculty(rootEl) {
+  if (!rootEl) throw new Error('mountFaculty: root element is required');
+  rootEl.innerHTML = "\n        <style>\n            .f-wrap{padding:18px;color:#fff;font-family:Arial,Helvetica,sans-serif}\n            .f-topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}\n            .f-title{margin:0;font-size:24px;font-weight:700}\n            .f-actions{display:flex;gap:8px;align-items:center}\n            .f-input{padding:8px 12px;border:1px solid #666;border-radius:4px;background:#2b2b2b;color:#fff;font-size:14px}\n            .f-btn{padding:8px 16px;background:#2d6cdf;color:#fff;border:none;border-radius:4px;cursor:pointer;font-size:14px}\n            .f-btn:hover{background:#1e5bb8}\n            .f-btn-outline{background:transparent;border:1px solid #666;color:#ddd}\n            .f-btn-outline:hover{background:#333}\n            .f-table{width:100%;border-collapse:collapse;background:#2b2b2b;border-radius:8px;overflow:hidden}\n            .f-table th{background:#333;padding:12px;text-align:left;font-weight:600;border-bottom:1px solid #444}\n            .f-table td{padding:12px;border-bottom:1px solid #444}\n            .f-table tr:hover{background:#333}\n            .f-pill{padding:4px 8px;border-radius:12px;background:#444;font-size:12px}\n            .f-small{font-size:12px}\n            .f-modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);display:none;align-items:center;justify-content:center;z-index:2000}\n            .f-modal{width:900px;max-width:95vw;background:#e8e8e8;color:#111;border-radius:8px;padding:24px;box-shadow:0 20px 60px rgba(0,0,0,.5)}\n            .f-modal h3{margin:0 0 16px;font-size:20px;font-weight:600}\n            .f-modal-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px 20px;align-items:start}\n            .f-modal-field{margin-bottom:12px}\n            .f-modal-label{display:block;font-size:13px;margin-bottom:4px;font-weight:500}\n            .f-modal-input{width:100%;padding:8px 12px;border:1px solid #ccc;border-radius:4px;background:#fff;color:#111;font-size:14px}\n            .f-modal-buttons{display:flex;gap:12px;justify-content:center;margin-top:20px}\n            .f-modal-btn{padding:10px 20px;border:none;border-radius:4px;cursor:pointer;font-size:14px;font-weight:500}\n            .f-modal-cancel{background:#666;color:#fff}\n            .f-modal-save{background:#2d6cdf;color:#fff}\n        </style>\n        <div class=\"f-wrap\">\n            <div class=\"f-topbar\">\n                <h2 class=\"f-title\">Faculty</h2>\n                <div class=\"f-actions\">\n                    <input id=\"f-q\" class=\"f-input\" placeholder=\"Search name or email\" style=\"width:200px\" />\n                    <button id=\"f-search\" class=\"f-btn\">Search</button>\n                    <button id=\"f-add\" class=\"f-btn\">Add Faculty</button>\n                    <button id=\"f-archived\" class=\"f-btn f-btn-outline\">Archived</button>\n                </div>\n            </div>\n            <div id=\"f-error\" class=\"f-small\" style=\"color:#ffb3b3;min-height:16px;margin-bottom:12px\"></div>\n            <table class=\"f-table\">\n                <thead>\n                    <tr><th>Name</th><th>Department</th><th>Position</th><th>Status</th><th>Action</th></tr>\n                </thead>\n                <tbody id=\"f-body\"><tr><td colspan=\"5\" class=\"f-small\">Loading\u2026</td></tr></tbody>\n            </table>\n            <div id=\"f-modal\" class=\"f-modal-overlay\">\n              <div class=\"f-modal\">\n                <h3 id=\"fm-title\">Add Faculty</h3>\n                <div class=\"f-modal-grid\">\n                  <div class=\"f-modal-field\">\n                    <label class=\"f-modal-label\">Faculty ID</label>\n                    <input id=\"fm-faculty_id\" class=\"f-modal-input\" placeholder=\"optional\" />\n                  </div>\n                  <div class=\"f-modal-field\">\n                    <label class=\"f-modal-label\">Date of Birth</label>\n                    <input id=\"fm-dob\" type=\"date\" class=\"f-modal-input\" />\n                  </div>\n                  <div class=\"f-modal-field\">\n                    <label class=\"f-modal-label\">First Name</label>\n                    <input id=\"fm-f_name\" class=\"f-modal-input\" />\n                  </div>\n                  <div class=\"f-modal-field\">\n                    <label class=\"f-modal-label\">Sex</label>\n                    <select id=\"fm-sex\" class=\"f-modal-input\">\n                      <option value=\"\">Select</option>\n                      <option>Male</option>\n                      <option>Female</option>\n                    </select>\n                  </div>\n                  <div class=\"f-modal-field\">\n                    <label class=\"f-modal-label\">Middle Name</label>\n                    <input id=\"fm-m_name\" class=\"f-modal-input\" />\n                  </div>\n                  <div class=\"f-modal-field\">\n                    <label class=\"f-modal-label\">Phone Number</label>\n                    <input id=\"fm-phone\" class=\"f-modal-input\" />\n                  </div>\n                  <div class=\"f-modal-field\">\n                    <label class=\"f-modal-label\">Last Name</label>\n                    <input id=\"fm-l_name\" class=\"f-modal-input\" />\n                  </div>\n                  <div class=\"f-modal-field\">\n                    <label class=\"f-modal-label\">Email Address</label>\n                    <input id=\"fm-email\" type=\"email\" class=\"f-modal-input\" />\n                  </div>\n                  <div class=\"f-modal-field\">\n                    <label class=\"f-modal-label\">Suffix</label>\n                    <input id=\"fm-suffix\" class=\"f-modal-input\" />\n                  </div>\n                  <div class=\"f-modal-field\">\n                    <label class=\"f-modal-label\">Address</label>\n                    <input id=\"fm-address\" class=\"f-modal-input\" />\n                  </div>\n                  <div class=\"f-modal-field\">\n                    <label class=\"f-modal-label\">Position</label>\n                    <input id=\"fm-position\" class=\"f-modal-input\" placeholder=\"e.g., Professor, Instructor\" />\n                  </div>\n                  <div class=\"f-modal-field\">\n                    <label class=\"f-modal-label\">Department</label>\n                    <select id=\"fm-department\" class=\"f-modal-input\"><option value=\"\">Loading\u2026</option></select>\n                  </div>\n                </div>\n                <div id=\"fm-error\" style=\"color:#b00020;font-size:12px;min-height:16px;margin-top:8px;text-align:center\"></div>\n                <div class=\"f-modal-buttons\">\n                  <button id=\"fm-cancel\" class=\"f-modal-btn f-modal-cancel\">Cancel</button>\n                  <button id=\"fm-save\" class=\"f-modal-btn f-modal-save\">Add</button>\n                </div>\n              </div>\n            </div>\n        </div>\n    ";
+  var errorBox = rootEl.querySelector('#f-error');
+  var qEl = rootEl.querySelector('#f-q');
+  var archivedBtn = rootEl.querySelector('#f-archived');
+  var showingArchived = false;
+  rootEl.querySelector('#f-search').addEventListener('click', function () {
+    return load();
+  });
+  rootEl.querySelector('#f-add').addEventListener('click', function () {
+    return openModal();
+  });
+  archivedBtn.addEventListener('click', function () {
+    showingArchived = !showingArchived;
+    archivedBtn.textContent = showingArchived ? 'Show Active' : 'Show Archived';
+    archivedBtn.style.background = showingArchived ? '#2d6cdf' : '#666';
+    load();
+  });
+
+  // Modal helpers
+  var modal = rootEl.querySelector('#f-modal');
+  var qs = function qs(id) {
+    return modal.querySelector(id);
+  };
+  qs('#fm-cancel').addEventListener('click', function () {
+    return closeModal();
+  });
+  qs('#fm-save').addEventListener('click', saveModal);
+  function openModal() {
+    return _openModal.apply(this, arguments);
+  }
+  function _openModal() {
+    _openModal = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee() {
+      var init,
+        _args = arguments;
+      return _regenerator().w(function (_context) {
+        while (1) switch (_context.n) {
+          case 0:
+            init = _args.length > 0 && _args[0] !== undefined ? _args[0] : null;
+            errorBox.textContent = '';
+            _context.n = 1;
+            return ensureOptions();
+          case 1:
+            modal.style.display = 'flex';
+            qs('#fm-title').textContent = init ? 'Edit Faculty' : 'Add Faculty';
+            qs('#fm-save').textContent = init ? 'Save' : 'Add';
+            // reset
+            ['#fm-faculty_id', '#fm-f_name', '#fm-m_name', '#fm-l_name', '#fm-suffix', '#fm-dob', '#fm-sex', '#fm-phone', '#fm-email', '#fm-address', '#fm-position', '#fm-department'].forEach(function (sel) {
+              var el = qs(sel);
+              if (el.tagName === 'SELECT') {
+                el.value = '';
+              } else {
+                el.value = '';
+              }
+            });
+            if (init) {
+              if (init.faculty_id) qs('#fm-faculty_id').value = init.faculty_id;
+              qs('#fm-f_name').value = init.f_name || '';
+              qs('#fm-m_name').value = init.m_name || '';
+              qs('#fm-l_name').value = init.l_name || '';
+              qs('#fm-suffix').value = init.suffix || '';
+              qs('#fm-dob').value = init.date_of_birth || '';
+              qs('#fm-sex').value = init.sex || '';
+              qs('#fm-phone').value = init.phone_number || '';
+              qs('#fm-email').value = init.email_address || '';
+              qs('#fm-address').value = init.address || '';
+              qs('#fm-position').value = init.position || '';
+              qs('#fm-department').value = init.department_id != null ? String(init.department_id) : '';
+              modal.dataset.editId = init.faculty_id;
+            } else {
+              delete modal.dataset.editId;
+            }
+          case 2:
+            return _context.a(2);
+        }
+      }, _callee);
+    }));
+    return _openModal.apply(this, arguments);
+  }
+  function closeModal() {
+    modal.style.display = 'none';
+  }
+  function saveModal() {
+    return _saveModal.apply(this, arguments);
+  } // Options caches
+  function _saveModal() {
+    _saveModal = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee2() {
+      var err, payload, _t;
+      return _regenerator().w(function (_context2) {
+        while (1) switch (_context2.p = _context2.n) {
+          case 0:
+            err = qs('#fm-error');
+            err.textContent = '';
+            payload = {
+              f_name: qs('#fm-f_name').value.trim(),
+              m_name: qs('#fm-m_name').value.trim() || null,
+              l_name: qs('#fm-l_name').value.trim(),
+              suffix: qs('#fm-suffix').value.trim() || null,
+              date_of_birth: qs('#fm-dob').value || null,
+              sex: qs('#fm-sex').value || null,
+              phone_number: qs('#fm-phone').value || null,
+              email_address: qs('#fm-email').value || null,
+              address: qs('#fm-address').value || null,
+              position: qs('#fm-position').value.trim() || null,
+              department_id: Number(qs('#fm-department').value)
+            };
+            if (!(!payload.f_name || !payload.l_name)) {
+              _context2.n = 1;
+              break;
+            }
+            err.textContent = 'First and Last name are required.';
+            return _context2.a(2);
+          case 1:
+            if (payload.department_id) {
+              _context2.n = 2;
+              break;
+            }
+            err.textContent = 'Please select Department.';
+            return _context2.a(2);
+          case 2:
+            _context2.p = 2;
+            if (!modal.dataset.editId) {
+              _context2.n = 4;
+              break;
+            }
+            _context2.n = 3;
+            return api("/api/faculty/".concat(modal.dataset.editId), {
+              method: 'PUT',
+              body: JSON.stringify(payload)
+            });
+          case 3:
+            _context2.n = 5;
+            break;
+          case 4:
+            _context2.n = 5;
+            return api('/api/faculty', {
+              method: 'POST',
+              body: JSON.stringify(payload)
+            });
+          case 5:
+            closeModal();
+            _context2.n = 6;
+            return load();
+          case 6:
+            _context2.n = 8;
+            break;
+          case 7:
+            _context2.p = 7;
+            _t = _context2.v;
+            errorBox.textContent = _t.message;
+          case 8:
+            return _context2.a(2);
+        }
+      }, _callee2, null, [[2, 7]]);
+    }));
+    return _saveModal.apply(this, arguments);
+  }
+  var optionsLoaded = false;
+  function ensureOptions() {
+    return _ensureOptions.apply(this, arguments);
+  }
+  function _ensureOptions() {
+    _ensureOptions = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee3() {
+      var departments, cs, it, fill, _t2, _t3;
+      return _regenerator().w(function (_context3) {
+        while (1) switch (_context3.p = _context3.n) {
+          case 0:
+            if (!optionsLoaded) {
+              _context3.n = 1;
+              break;
+            }
+            return _context3.a(2);
+          case 1:
+            departments = [];
+            _context3.p = 2;
+            _context3.n = 3;
+            return api('/api/settings/departments');
+          case 3:
+            departments = _context3.v;
+            _context3.n = 5;
+            break;
+          case 4:
+            _context3.p = 4;
+            _t2 = _context3.v;
+          case 5:
+            if (!(!Array.isArray(departments) || departments.length === 0)) {
+              _context3.n = 10;
+              break;
+            }
+            _context3.p = 6;
+            _context3.n = 7;
+            return api('/api/settings/departments', {
+              method: 'POST',
+              body: JSON.stringify({
+                department_name: 'Computer Science'
+              })
+            });
+          case 7:
+            cs = _context3.v;
+            _context3.n = 8;
+            return api('/api/settings/departments', {
+              method: 'POST',
+              body: JSON.stringify({
+                department_name: 'Information Technology'
+              })
+            });
+          case 8:
+            it = _context3.v;
+            departments = [cs, it].filter(Boolean);
+            _context3.n = 10;
+            break;
+          case 9:
+            _context3.p = 9;
+            _t3 = _context3.v;
+            departments = [];
+          case 10:
+            fill = function fill(sel, rows, id, label) {
+              var el = qs(sel);
+              el.innerHTML = '<option value="">Select</option>' + rows.map(function (r) {
+                return "<option value=\"".concat(r[id], "\">").concat(r[label] || r[id], "</option>");
+              }).join('');
+            };
+            fill('#fm-department', departments, departments[0] && ('department_id' in departments[0] ? 'department_id' : 'id') || 'department_id', 'department_name');
+            optionsLoaded = true;
+          case 11:
+            return _context3.a(2);
+        }
+      }, _callee3, null, [[6, 9], [2, 4]]);
+    }));
+    return _ensureOptions.apply(this, arguments);
+  }
+  function load() {
+    return _load.apply(this, arguments);
+  }
+  function _load() {
+    _load = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee4() {
+      var page,
+        params,
+        qVal,
+        data,
+        _args4 = arguments,
+        _t4;
+      return _regenerator().w(function (_context4) {
+        while (1) switch (_context4.p = _context4.n) {
+          case 0:
+            page = _args4.length > 0 && _args4[0] !== undefined ? _args4[0] : 1;
+            errorBox.textContent = '';
+            params = new URLSearchParams();
+            qVal = qEl.value.trim();
+            if (qVal) params.set('q', qVal);
+            params.set('page', String(page));
+            if (showingArchived) params.set('archived', '1');
+            _context4.p = 1;
+            _context4.n = 2;
+            return api("/api/faculty?".concat(params.toString()));
+          case 2:
+            data = _context4.v;
+            renderRows(data.data || []);
+            _context4.n = 4;
+            break;
+          case 3:
+            _context4.p = 3;
+            _t4 = _context4.v;
+            errorBox.textContent = _t4.message;
+          case 4:
+            return _context4.a(2);
+        }
+      }, _callee4, null, [[1, 3]]);
+    }));
+    return _load.apply(this, arguments);
+  }
+  function renderRows(rows) {
+    var tbody = rootEl.querySelector('#f-body');
+    tbody.innerHTML = '';
+    if (!rows.length) {
+      tbody.appendChild(h('tr', {}, [h('td', {
+        colspan: 5,
+        text: 'No faculty found'
+      })]));
+      return;
+    }
+    rows.forEach(function (fac) {
+      var _fac$department;
+      var tr = h('tr', {}, [h('td', {
+        text: "".concat(fac.f_name || '', " ").concat(fac.l_name || '').trim()
+      }), h('td', {
+        text: ((_fac$department = fac.department) === null || _fac$department === void 0 ? void 0 : _fac$department.department_name) || fac.department_name || fac.department_id || ''
+      }), h('td', {
+        text: fac.position || ''
+      }), h('td', {}, [h('span', {
+        "class": 'f-pill f-small',
+        text: fac.deleted_at ? 'Archived' : 'Active'
+      })]), h('td', {}, [h('button', {
+        "class": 'f-btn f-small',
+        'data-action': 'edit',
+        'data-id': fac.faculty_id
+      }, 'Edit'), h('span', {
+        text: ' '
+      }), showingArchived ? h('button', {
+        "class": 'f-btn f-small',
+        style: 'background:#4caf50',
+        'data-action': 'restore',
+        'data-id': fac.faculty_id
+      }, 'Restore') : h('button', {
+        "class": 'f-btn f-small',
+        style: 'background:#d32f2f',
+        'data-action': 'delete',
+        'data-id': fac.faculty_id
+      }, 'Delete')])]);
+      tbody.appendChild(tr);
+    });
+
+    // Add event listeners for Edit/Delete/Restore buttons
+    tbody.addEventListener('click', function (e) {
+      if (e.target.dataset.action === 'edit') {
+        var facultyId = e.target.dataset.id;
+        var faculty = rows.find(function (f) {
+          return f.faculty_id == facultyId;
+        });
+        if (faculty) openModal(faculty);
+      } else if (e.target.dataset.action === 'delete') {
+        var _facultyId = e.target.dataset.id;
+        var _faculty = rows.find(function (f) {
+          return f.faculty_id == _facultyId;
+        });
+        if (_faculty) onArchive(_faculty);
+      } else if (e.target.dataset.action === 'restore') {
+        var _facultyId2 = e.target.dataset.id;
+        var _faculty2 = rows.find(function (f) {
+          return f.faculty_id == _facultyId2;
+        });
+        if (_faculty2) onRestore(_faculty2);
+      }
+    });
+  }
+  function onArchive(_x2) {
+    return _onArchive.apply(this, arguments);
+  }
+  function _onArchive() {
+    _onArchive = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee5(fac) {
+      var _t5;
+      return _regenerator().w(function (_context5) {
+        while (1) switch (_context5.p = _context5.n) {
+          case 0:
+            if (confirm('Archive this faculty member?')) {
+              _context5.n = 1;
+              break;
+            }
+            return _context5.a(2);
+          case 1:
+            _context5.p = 1;
+            _context5.n = 2;
+            return api("/api/faculty/".concat(fac.faculty_id, "/archive"), {
+              method: 'POST'
+            });
+          case 2:
+            _context5.n = 3;
+            return load();
+          case 3:
+            _context5.n = 5;
+            break;
+          case 4:
+            _context5.p = 4;
+            _t5 = _context5.v;
+            errorBox.textContent = _t5.message;
+          case 5:
+            return _context5.a(2);
+        }
+      }, _callee5, null, [[1, 4]]);
+    }));
+    return _onArchive.apply(this, arguments);
+  }
+  function onRestore(_x3) {
+    return _onRestore.apply(this, arguments);
+  }
+  function _onRestore() {
+    _onRestore = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee6(fac) {
+      var _t6;
+      return _regenerator().w(function (_context6) {
+        while (1) switch (_context6.p = _context6.n) {
+          case 0:
+            if (confirm('Restore this faculty member?')) {
+              _context6.n = 1;
+              break;
+            }
+            return _context6.a(2);
+          case 1:
+            _context6.p = 1;
+            _context6.n = 2;
+            return api("/api/faculty/".concat(fac.faculty_id, "/restore"), {
+              method: 'POST'
+            });
+          case 2:
+            _context6.n = 3;
+            return load();
+          case 3:
+            _context6.n = 5;
+            break;
+          case 4:
+            _context6.p = 4;
+            _t6 = _context6.v;
+            errorBox.textContent = _t6.message;
+          case 5:
+            return _context6.a(2);
+        }
+      }, _callee6, null, [[1, 4]]);
+    }));
+    return _onRestore.apply(this, arguments);
+  }
+  load();
 }
 
 /***/ }),
@@ -27208,7 +27776,7 @@ function mountLogin(rootEl) {
           case 1:
             _context.p = 1;
             _context.n = 2;
-            return fetch('api/auth/login', {
+            return fetch('/api/auth/login', {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
@@ -27258,6 +27826,1357 @@ function mountLogin(rootEl) {
       login();
     }
   });
+}
+
+/***/ }),
+
+/***/ "./resources/js/components/settings.js":
+/*!*********************************************!*\
+  !*** ./resources/js/components/settings.js ***!
+  \*********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   mountSettings: () => (/* binding */ mountSettings)
+/* harmony export */ });
+function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
+function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { _defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
+function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : i + ""; }
+function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+function _regenerator() { /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/babel/babel/blob/main/packages/babel-helpers/LICENSE */ var e, t, r = "function" == typeof Symbol ? Symbol : {}, n = r.iterator || "@@iterator", o = r.toStringTag || "@@toStringTag"; function i(r, n, o, i) { var c = n && n.prototype instanceof Generator ? n : Generator, u = Object.create(c.prototype); return _regeneratorDefine2(u, "_invoke", function (r, n, o) { var i, c, u, f = 0, p = o || [], y = !1, G = { p: 0, n: 0, v: e, a: d, f: d.bind(e, 4), d: function d(t, r) { return i = t, c = 0, u = e, G.n = r, a; } }; function d(r, n) { for (c = r, u = n, t = 0; !y && f && !o && t < p.length; t++) { var o, i = p[t], d = G.p, l = i[2]; r > 3 ? (o = l === n) && (u = i[(c = i[4]) ? 5 : (c = 3, 3)], i[4] = i[5] = e) : i[0] <= d && ((o = r < 2 && d < i[1]) ? (c = 0, G.v = n, G.n = i[1]) : d < l && (o = r < 3 || i[0] > n || n > l) && (i[4] = r, i[5] = n, G.n = l, c = 0)); } if (o || r > 1) return a; throw y = !0, n; } return function (o, p, l) { if (f > 1) throw TypeError("Generator is already running"); for (y && 1 === p && d(p, l), c = p, u = l; (t = c < 2 ? e : u) || !y;) { i || (c ? c < 3 ? (c > 1 && (G.n = -1), d(c, u)) : G.n = u : G.v = u); try { if (f = 2, i) { if (c || (o = "next"), t = i[o]) { if (!(t = t.call(i, u))) throw TypeError("iterator result is not an object"); if (!t.done) return t; u = t.value, c < 2 && (c = 0); } else 1 === c && (t = i["return"]) && t.call(i), c < 2 && (u = TypeError("The iterator does not provide a '" + o + "' method"), c = 1); i = e; } else if ((t = (y = G.n < 0) ? u : r.call(n, G)) !== a) break; } catch (t) { i = e, c = 1, u = t; } finally { f = 1; } } return { value: t, done: y }; }; }(r, o, i), !0), u; } var a = {}; function Generator() {} function GeneratorFunction() {} function GeneratorFunctionPrototype() {} t = Object.getPrototypeOf; var c = [][n] ? t(t([][n]())) : (_regeneratorDefine2(t = {}, n, function () { return this; }), t), u = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(c); function f(e) { return Object.setPrototypeOf ? Object.setPrototypeOf(e, GeneratorFunctionPrototype) : (e.__proto__ = GeneratorFunctionPrototype, _regeneratorDefine2(e, o, "GeneratorFunction")), e.prototype = Object.create(u), e; } return GeneratorFunction.prototype = GeneratorFunctionPrototype, _regeneratorDefine2(u, "constructor", GeneratorFunctionPrototype), _regeneratorDefine2(GeneratorFunctionPrototype, "constructor", GeneratorFunction), GeneratorFunction.displayName = "GeneratorFunction", _regeneratorDefine2(GeneratorFunctionPrototype, o, "GeneratorFunction"), _regeneratorDefine2(u), _regeneratorDefine2(u, o, "Generator"), _regeneratorDefine2(u, n, function () { return this; }), _regeneratorDefine2(u, "toString", function () { return "[object Generator]"; }), (_regenerator = function _regenerator() { return { w: i, m: f }; })(); }
+function _regeneratorDefine2(e, r, n, t) { var i = Object.defineProperty; try { i({}, "", {}); } catch (e) { i = 0; } _regeneratorDefine2 = function _regeneratorDefine(e, r, n, t) { function o(r, n) { _regeneratorDefine2(e, r, function (e) { return this._invoke(r, n, e); }); } r ? i ? i(e, r, { value: n, enumerable: !t, configurable: !t, writable: !t }) : e[r] = n : (o("next", 0), o("throw", 1), o("return", 2)); }, _regeneratorDefine2(e, r, n, t); }
+function _slicedToArray(r, e) { return _arrayWithHoles(r) || _iterableToArrayLimit(r, e) || _unsupportedIterableToArray(r, e) || _nonIterableRest(); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _unsupportedIterableToArray(r, a) { if (r) { if ("string" == typeof r) return _arrayLikeToArray(r, a); var t = {}.toString.call(r).slice(8, -1); return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? _arrayLikeToArray(r, a) : void 0; } }
+function _arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length); for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e]; return n; }
+function _iterableToArrayLimit(r, l) { var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (null != t) { var e, n, i, u, a = [], f = !0, o = !1; try { if (i = (t = t.call(r)).next, 0 === l) { if (Object(t) !== t) return; f = !1; } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0); } catch (r) { o = !0, n = r; } finally { try { if (!f && null != t["return"] && (u = t["return"](), Object(u) !== u)) return; } finally { if (o) throw n; } } return a; } }
+function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
+function asyncGeneratorStep(n, t, e, r, o, a, c) { try { var i = n[a](c), u = i.value; } catch (n) { return void e(n); } i.done ? t(u) : Promise.resolve(u).then(r, o); }
+function _asyncToGenerator(n) { return function () { var t = this, e = arguments; return new Promise(function (r, o) { var a = n.apply(t, e); function _next(n) { asyncGeneratorStep(a, r, o, _next, _throw, "next", n); } function _throw(n) { asyncGeneratorStep(a, r, o, _next, _throw, "throw", n); } _next(void 0); }); }; }
+// Settings management UI (vanilla JS) - Admin only
+// Requires: token in localStorage key `academix_token`
+
+function getTokenOrRedirect() {
+  var token = window.localStorage.getItem('academix_token');
+  if (!token) {
+    window.location.href = '/';
+    throw new Error('No token');
+  }
+  return token;
+}
+function api(_x) {
+  return _api.apply(this, arguments);
+}
+function _api() {
+  _api = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee7(path) {
+    var options,
+      token,
+      res,
+      data,
+      _args7 = arguments;
+    return _regenerator().w(function (_context7) {
+      while (1) switch (_context7.n) {
+        case 0:
+          options = _args7.length > 1 && _args7[1] !== undefined ? _args7[1] : {};
+          token = getTokenOrRedirect();
+          _context7.n = 1;
+          return fetch(path, _objectSpread({
+            headers: _objectSpread({
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+              'Authorization': "Bearer ".concat(token)
+            }, options.headers || {})
+          }, options));
+        case 1:
+          res = _context7.v;
+          if (!(res.status === 401)) {
+            _context7.n = 2;
+            break;
+          }
+          window.location.href = '/';
+          return _context7.a(2, Promise.reject(new Error('Unauthorized')));
+        case 2:
+          _context7.n = 3;
+          return res.json()["catch"](function () {
+            return {};
+          });
+        case 3:
+          data = _context7.v;
+          if (res.ok) {
+            _context7.n = 4;
+            break;
+          }
+          throw new Error(data.message || 'Request failed');
+        case 4:
+          return _context7.a(2, data);
+      }
+    }, _callee7);
+  }));
+  return _api.apply(this, arguments);
+}
+function h(tag) {
+  var attrs = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+  var children = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [];
+  var el = document.createElement(tag);
+  Object.entries(attrs).forEach(function (_ref) {
+    var _ref2 = _slicedToArray(_ref, 2),
+      k = _ref2[0],
+      v = _ref2[1];
+    if (k === 'class') el.className = v;else if (k === 'text') el.textContent = v;else el.setAttribute(k, v);
+  });
+  (Array.isArray(children) ? children : [children]).forEach(function (c) {
+    if (c == null) return;
+    if (typeof c === 'string') el.appendChild(document.createTextNode(c));else el.appendChild(c);
+  });
+  return el;
+}
+function mountSettings(rootEl) {
+  if (!rootEl) throw new Error('mountSettings: root element is required');
+  rootEl.innerHTML = "\n        <style>\n            .st-wrap{padding:18px;color:#fff;font-family:Arial,Helvetica,sans-serif}\n            .st-topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}\n            .st-title{margin:0;font-size:24px;font-weight:700}\n            .st-search{display:flex;gap:8px;align-items:center;margin-bottom:16px}\n            .st-input{padding:8px 12px;border:1px solid #666;border-radius:4px;background:#2b2b2b;color:#fff;font-size:14px}\n            .st-tabs{display:flex;gap:4px;margin-bottom:16px}\n            .st-tab{padding:10px 16px;background:#333;color:#ddd;border:none;border-radius:4px 4px 0 0;cursor:pointer;font-size:14px}\n            .st-tab.active{background:#2d6cdf;color:#fff}\n            .st-tab:hover:not(.active){background:#444}\n            .st-content{background:#2b2b2b;border-radius:8px;padding:20px;min-height:400px}\n            .st-actions{display:flex;gap:8px;align-items:center;margin-bottom:16px}\n            .st-btn{padding:8px 16px;background:#2d6cdf;color:#fff;border:none;border-radius:4px;cursor:pointer;font-size:14px}\n            .st-btn:hover{background:#1e5bb8}\n            .st-btn-outline{background:transparent;border:1px solid #666;color:#ddd}\n            .st-btn-outline:hover{background:#333}\n            .st-table{width:100%;border-collapse:collapse;background:#333;border-radius:8px;overflow:hidden}\n            .st-table th{background:#444;padding:12px;text-align:left;font-weight:600;border-bottom:1px solid #555}\n            .st-table td{padding:12px;border-bottom:1px solid #555}\n            .st-table tr:hover{background:#444}\n            .st-pill{padding:4px 8px;border-radius:12px;background:#555;font-size:12px}\n            .st-small{font-size:12px}\n            .st-error{color:#ffb3b3;font-size:12px;min-height:16px;margin-bottom:12px}\n            .st-modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);display:none;align-items:center;justify-content:center;z-index:2000}\n            .st-modal{width:500px;max-width:95vw;background:#e8e8e8;color:#111;border-radius:8px;padding:24px;box-shadow:0 20px 60px rgba(0,0,0,.5)}\n            .st-modal h3{margin:0 0 16px;font-size:20px;font-weight:600}\n            .st-modal-field{margin-bottom:16px}\n            .st-modal-label{display:block;font-size:13px;margin-bottom:4px;font-weight:500}\n            .st-modal-input{width:100%;padding:8px 12px;border:1px solid #ccc;border-radius:4px;background:#fff;color:#111;font-size:14px}\n            .st-modal-buttons{display:flex;gap:12px;justify-content:center;margin-top:20px}\n            .st-modal-btn{padding:10px 20px;border:none;border-radius:4px;cursor:pointer;font-size:14px;font-weight:500}\n            .st-modal-cancel{background:#666;color:#fff}\n            .st-modal-save{background:#2d6cdf;color:#fff}\n        </style>\n        <div class=\"st-wrap\">\n            <div class=\"st-topbar\">\n                <h2 class=\"st-title\">Settings</h2>\n            </div>\n            <div class=\"st-search\">\n                <input id=\"st-search\" class=\"st-input\" placeholder=\"SEARCH\" style=\"width:200px\" />\n            </div>\n            <div class=\"st-tabs\">\n                <button class=\"st-tab active\" data-tab=\"courses\">Course</button>\n                <button class=\"st-tab\" data-tab=\"departments\">Departments</button>\n                <button class=\"st-tab\" data-tab=\"academic-years\">Academic Years</button>\n            </div>\n            <div class=\"st-content\">\n                <div id=\"st-courses\" class=\"st-tab-content\">\n                    <div class=\"st-actions\">\n                        <button id=\"st-add-course\" class=\"st-btn\">Add Course</button>\n                        <button id=\"st-archived-courses\" class=\"st-btn st-btn-outline\">Show Archived</button>\n                    </div>\n                    <div id=\"st-error-courses\" class=\"st-error\"></div>\n                    <table class=\"st-table\">\n                        <thead>\n                            <tr><th>Course Name</th><th>Department</th><th>Status</th><th>Action</th></tr>\n                        </thead>\n                        <tbody id=\"st-body-courses\"><tr><td colspan=\"4\" class=\"st-small\">Loading\u2026</td></tr></tbody>\n                    </table>\n                </div>\n                <div id=\"st-departments\" class=\"st-tab-content\" style=\"display:none\">\n                    <div class=\"st-actions\">\n                        <button id=\"st-add-department\" class=\"st-btn\">Add Department</button>\n                        <button id=\"st-archived-departments\" class=\"st-btn st-btn-outline\">Show Archived</button>\n                    </div>\n                    <div id=\"st-error-departments\" class=\"st-error\"></div>\n                    <table class=\"st-table\">\n                        <thead>\n                            <tr><th>Department Name</th><th>Status</th><th>Action</th></tr>\n                        </thead>\n                        <tbody id=\"st-body-departments\"><tr><td colspan=\"3\" class=\"st-small\">Loading\u2026</td></tr></tbody>\n                    </table>\n                </div>\n                <div id=\"st-academic-years\" class=\"st-tab-content\" style=\"display:none\">\n                    <div class=\"st-actions\">\n                        <button id=\"st-add-academic-year\" class=\"st-btn\">Add Academic Year</button>\n                        <button id=\"st-archived-academic-years\" class=\"st-btn st-btn-outline\">Show Archived</button>\n                    </div>\n                    <div id=\"st-error-academic-years\" class=\"st-error\"></div>\n                    <table class=\"st-table\">\n                        <thead>\n                            <tr><th>School Year</th><th>Status</th><th>Action</th></tr>\n                        </thead>\n                        <tbody id=\"st-body-academic-years\"><tr><td colspan=\"3\" class=\"st-small\">Loading\u2026</td></tr></tbody>\n                    </table>\n                </div>\n            </div>\n            \n            <!-- Course Modal -->\n            <div id=\"st-modal-course\" class=\"st-modal-overlay\">\n                <div class=\"st-modal\">\n                    <h3 id=\"stm-course-title\">Add Course</h3>\n                    <div class=\"st-modal-field\">\n                        <label class=\"st-modal-label\">Course Name</label>\n                        <input id=\"stm-course-name\" class=\"st-modal-input\" />\n                    </div>\n                    <div class=\"st-modal-field\">\n                        <label class=\"st-modal-label\">Department</label>\n                        <select id=\"stm-course-department\" class=\"st-modal-input\"><option value=\"\">Loading\u2026</option></select>\n                    </div>\n                    <div id=\"stm-course-error\" style=\"color:#b00020;font-size:12px;min-height:16px;margin-top:8px;text-align:center\"></div>\n                    <div class=\"st-modal-buttons\">\n                        <button id=\"stm-course-cancel\" class=\"st-modal-btn st-modal-cancel\">Cancel</button>\n                        <button id=\"stm-course-save\" class=\"st-modal-btn st-modal-save\">Add</button>\n                    </div>\n                </div>\n            </div>\n            \n            <!-- Department Modal -->\n            <div id=\"st-modal-department\" class=\"st-modal-overlay\">\n                <div class=\"st-modal\">\n                    <h3 id=\"stm-department-title\">Add Department</h3>\n                    <div class=\"st-modal-field\">\n                        <label class=\"st-modal-label\">Department Name</label>\n                        <input id=\"stm-department-name\" class=\"st-modal-input\" />\n                    </div>\n                    <div id=\"stm-department-error\" style=\"color:#b00020;font-size:12px;min-height:16px;margin-top:8px;text-align:center\"></div>\n                    <div class=\"st-modal-buttons\">\n                        <button id=\"stm-department-cancel\" class=\"st-modal-btn st-modal-cancel\">Cancel</button>\n                        <button id=\"stm-department-save\" class=\"st-modal-btn st-modal-save\">Add</button>\n                    </div>\n                </div>\n            </div>\n            \n            <!-- Academic Year Modal -->\n            <div id=\"st-modal-academic-year\" class=\"st-modal-overlay\">\n                <div class=\"st-modal\">\n                    <h3 id=\"stm-academic-year-title\">Add Academic Year</h3>\n                    <div class=\"st-modal-field\">\n                        <label class=\"st-modal-label\">School Year</label>\n                        <input id=\"stm-academic-year-name\" class=\"st-modal-input\" placeholder=\"e.g., 2025-2026\" />\n                    </div>\n                    <div id=\"stm-academic-year-error\" style=\"color:#b00020;font-size:12px;min-height:16px;margin-top:8px;text-align:center\"></div>\n                    <div class=\"st-modal-buttons\">\n                        <button id=\"stm-academic-year-cancel\" class=\"st-modal-btn st-modal-cancel\">Cancel</button>\n                        <button id=\"stm-academic-year-save\" class=\"st-modal-btn st-modal-save\">Add</button>\n                    </div>\n                </div>\n            </div>\n        </div>\n    ";
+  var currentTab = 'courses';
+  var showingArchived = {
+    courses: false,
+    departments: false,
+    'academic-years': false
+  };
+
+  // Tab switching
+  rootEl.querySelectorAll('.st-tab').forEach(function (tab) {
+    tab.addEventListener('click', function () {
+      var tabName = tab.dataset.tab;
+      switchTab(tabName);
+    });
+  });
+  function switchTab(tabName) {
+    currentTab = tabName;
+    // Update tab buttons
+    rootEl.querySelectorAll('.st-tab').forEach(function (t) {
+      return t.classList.remove('active');
+    });
+    rootEl.querySelector("[data-tab=\"".concat(tabName, "\"]")).classList.add('active');
+    // Update content
+    rootEl.querySelectorAll('.st-tab-content').forEach(function (c) {
+      return c.style.display = 'none';
+    });
+    rootEl.querySelector("#st-".concat(tabName)).style.display = 'block';
+    // Load data for current tab
+    loadCurrentTab();
+  }
+
+  // Event listeners
+  rootEl.querySelector('#st-add-course').addEventListener('click', function () {
+    return openModal('course');
+  });
+  rootEl.querySelector('#st-add-department').addEventListener('click', function () {
+    return openModal('department');
+  });
+  rootEl.querySelector('#st-add-academic-year').addEventListener('click', function () {
+    return openModal('academic-year');
+  });
+  rootEl.querySelector('#st-archived-courses').addEventListener('click', function () {
+    return toggleArchived('courses');
+  });
+  rootEl.querySelector('#st-archived-departments').addEventListener('click', function () {
+    return toggleArchived('departments');
+  });
+  rootEl.querySelector('#st-archived-academic-years').addEventListener('click', function () {
+    return toggleArchived('academic-years');
+  });
+
+  // Modal event listeners
+  setupModal('course');
+  setupModal('department');
+  setupModal('academic-year');
+  function setupModal(type) {
+    var modal = rootEl.querySelector("#st-modal-".concat(type));
+    var cancelBtn = rootEl.querySelector("#stm-".concat(type, "-cancel"));
+    var saveBtn = rootEl.querySelector("#stm-".concat(type, "-save"));
+    cancelBtn.addEventListener('click', function () {
+      return closeModal(type);
+    });
+    saveBtn.addEventListener('click', function () {
+      return saveModal(type);
+    });
+  }
+  function toggleArchived(type) {
+    showingArchived[type] = !showingArchived[type];
+    var btn = rootEl.querySelector("#st-archived-".concat(type));
+    btn.textContent = showingArchived[type] ? 'Show Active' : 'Show Archived';
+    btn.classList.toggle('st-btn-outline', !showingArchived[type]);
+    loadCurrentTab();
+  }
+  function openModal(_x2) {
+    return _openModal.apply(this, arguments);
+  }
+  function _openModal() {
+    _openModal = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee(type) {
+      var init,
+        modal,
+        title,
+        saveBtn,
+        inputs,
+        _args = arguments;
+      return _regenerator().w(function (_context) {
+        while (1) switch (_context.n) {
+          case 0:
+            init = _args.length > 1 && _args[1] !== undefined ? _args[1] : null;
+            modal = rootEl.querySelector("#st-modal-".concat(type));
+            title = rootEl.querySelector("#stm-".concat(type, "-title"));
+            saveBtn = rootEl.querySelector("#stm-".concat(type, "-save"));
+            title.textContent = init ? "Edit ".concat(type.charAt(0).toUpperCase() + type.slice(1)) : "Add ".concat(type.charAt(0).toUpperCase() + type.slice(1));
+            saveBtn.textContent = init ? 'Save' : 'Add';
+
+            // Reset form
+            inputs = modal.querySelectorAll('input, select');
+            inputs.forEach(function (input) {
+              return input.value = '';
+            });
+
+            // Populate if editing
+            if (init) {
+              if (type === 'course') {
+                rootEl.querySelector('#stm-course-name').value = init.course_name || '';
+                rootEl.querySelector('#stm-course-department').value = init.department_id || '';
+              } else if (type === 'department') {
+                rootEl.querySelector('#stm-department-name').value = init.department_name || '';
+              } else if (type === 'academic-year') {
+                rootEl.querySelector('#stm-academic-year-name').value = init.school_year || '';
+              }
+              modal.dataset.editId = init["".concat(type.replace('-', '_'), "_id")] || init.id;
+            } else {
+              delete modal.dataset.editId;
+            }
+
+            // Load departments for course modal
+            if (!(type === 'course')) {
+              _context.n = 1;
+              break;
+            }
+            _context.n = 1;
+            return loadDepartmentsForCourse();
+          case 1:
+            modal.style.display = 'flex';
+          case 2:
+            return _context.a(2);
+        }
+      }, _callee);
+    }));
+    return _openModal.apply(this, arguments);
+  }
+  function closeModal(type) {
+    rootEl.querySelector("#st-modal-".concat(type)).style.display = 'none';
+  }
+  function saveModal(_x3) {
+    return _saveModal.apply(this, arguments);
+  }
+  function _saveModal() {
+    _saveModal = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee2(type) {
+      var modal, errorEl, payload, endpoint, name, deptId, _name, _name2, _t;
+      return _regenerator().w(function (_context2) {
+        while (1) switch (_context2.p = _context2.n) {
+          case 0:
+            modal = rootEl.querySelector("#st-modal-".concat(type));
+            errorEl = rootEl.querySelector("#stm-".concat(type, "-error"));
+            errorEl.textContent = '';
+            payload = {};
+            endpoint = '';
+            if (!(type === 'course')) {
+              _context2.n = 3;
+              break;
+            }
+            name = rootEl.querySelector('#stm-course-name').value.trim();
+            deptId = rootEl.querySelector('#stm-course-department').value;
+            if (name) {
+              _context2.n = 1;
+              break;
+            }
+            errorEl.textContent = 'Course name is required.';
+            return _context2.a(2);
+          case 1:
+            if (deptId) {
+              _context2.n = 2;
+              break;
+            }
+            errorEl.textContent = 'Please select a department.';
+            return _context2.a(2);
+          case 2:
+            payload = {
+              course_name: name,
+              department_id: Number(deptId)
+            };
+            endpoint = '/api/settings/courses';
+            _context2.n = 7;
+            break;
+          case 3:
+            if (!(type === 'department')) {
+              _context2.n = 5;
+              break;
+            }
+            _name = rootEl.querySelector('#stm-department-name').value.trim();
+            if (_name) {
+              _context2.n = 4;
+              break;
+            }
+            errorEl.textContent = 'Department name is required.';
+            return _context2.a(2);
+          case 4:
+            payload = {
+              department_name: _name
+            };
+            endpoint = '/api/settings/departments';
+            _context2.n = 7;
+            break;
+          case 5:
+            if (!(type === 'academic-year')) {
+              _context2.n = 7;
+              break;
+            }
+            _name2 = rootEl.querySelector('#stm-academic-year-name').value.trim();
+            if (_name2) {
+              _context2.n = 6;
+              break;
+            }
+            errorEl.textContent = 'School year is required.';
+            return _context2.a(2);
+          case 6:
+            payload = {
+              school_year: _name2
+            };
+            endpoint = '/api/settings/academic-years';
+          case 7:
+            _context2.p = 7;
+            if (!modal.dataset.editId) {
+              _context2.n = 9;
+              break;
+            }
+            _context2.n = 8;
+            return api("".concat(endpoint, "/").concat(modal.dataset.editId), {
+              method: 'PUT',
+              body: JSON.stringify(payload)
+            });
+          case 8:
+            _context2.n = 10;
+            break;
+          case 9:
+            _context2.n = 10;
+            return api(endpoint, {
+              method: 'POST',
+              body: JSON.stringify(payload)
+            });
+          case 10:
+            closeModal(type);
+            loadCurrentTab();
+            _context2.n = 12;
+            break;
+          case 11:
+            _context2.p = 11;
+            _t = _context2.v;
+            errorEl.textContent = _t.message;
+          case 12:
+            return _context2.a(2);
+        }
+      }, _callee2, null, [[7, 11]]);
+    }));
+    return _saveModal.apply(this, arguments);
+  }
+  function loadDepartmentsForCourse() {
+    return _loadDepartmentsForCourse.apply(this, arguments);
+  }
+  function _loadDepartmentsForCourse() {
+    _loadDepartmentsForCourse = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee3() {
+      var departments, select, _t2;
+      return _regenerator().w(function (_context3) {
+        while (1) switch (_context3.p = _context3.n) {
+          case 0:
+            _context3.p = 0;
+            _context3.n = 1;
+            return api('/api/settings/departments');
+          case 1:
+            departments = _context3.v;
+            select = rootEl.querySelector('#stm-course-department');
+            select.innerHTML = '<option value="">Select Department</option>' + departments.map(function (d) {
+              return "<option value=\"".concat(d.department_id, "\">").concat(d.department_name, "</option>");
+            }).join('');
+            _context3.n = 3;
+            break;
+          case 2:
+            _context3.p = 2;
+            _t2 = _context3.v;
+            console.error('Failed to load departments:', _t2);
+          case 3:
+            return _context3.a(2);
+        }
+      }, _callee3, null, [[0, 2]]);
+    }));
+    return _loadDepartmentsForCourse.apply(this, arguments);
+  }
+  function loadCurrentTab() {
+    return _loadCurrentTab.apply(this, arguments);
+  }
+  function _loadCurrentTab() {
+    _loadCurrentTab = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee4() {
+      var errorEl, params, data, _params, _data, _params2, _data2, _t3;
+      return _regenerator().w(function (_context4) {
+        while (1) switch (_context4.p = _context4.n) {
+          case 0:
+            errorEl = rootEl.querySelector("#st-error-".concat(currentTab));
+            errorEl.textContent = '';
+            _context4.p = 1;
+            if (!(currentTab === 'courses')) {
+              _context4.n = 3;
+              break;
+            }
+            params = new URLSearchParams();
+            if (showingArchived.courses) params.set('archived', '1');
+            _context4.n = 2;
+            return api("/api/settings/courses?".concat(params.toString()));
+          case 2:
+            data = _context4.v;
+            renderCourses(data);
+            _context4.n = 7;
+            break;
+          case 3:
+            if (!(currentTab === 'departments')) {
+              _context4.n = 5;
+              break;
+            }
+            _params = new URLSearchParams();
+            if (showingArchived.departments) _params.set('archived', '1');
+            _context4.n = 4;
+            return api("/api/settings/departments?".concat(_params.toString()));
+          case 4:
+            _data = _context4.v;
+            renderDepartments(_data);
+            _context4.n = 7;
+            break;
+          case 5:
+            if (!(currentTab === 'academic-years')) {
+              _context4.n = 7;
+              break;
+            }
+            _params2 = new URLSearchParams();
+            if (showingArchived['academic-years']) _params2.set('archived', '1');
+            _context4.n = 6;
+            return api("/api/settings/academic-years?".concat(_params2.toString()));
+          case 6:
+            _data2 = _context4.v;
+            renderAcademicYears(_data2);
+          case 7:
+            _context4.n = 9;
+            break;
+          case 8:
+            _context4.p = 8;
+            _t3 = _context4.v;
+            errorEl.textContent = _t3.message;
+          case 9:
+            return _context4.a(2);
+        }
+      }, _callee4, null, [[1, 8]]);
+    }));
+    return _loadCurrentTab.apply(this, arguments);
+  }
+  function renderCourses(courses) {
+    var tbody = rootEl.querySelector('#st-body-courses');
+    tbody.innerHTML = '';
+    if (!courses.length) {
+      tbody.appendChild(h('tr', {}, [h('td', {
+        colspan: 4,
+        text: 'No courses found'
+      })]));
+      return;
+    }
+    courses.forEach(function (course) {
+      var _course$department;
+      var tr = h('tr', {}, [h('td', {
+        text: course.course_name
+      }), h('td', {
+        text: ((_course$department = course.department) === null || _course$department === void 0 ? void 0 : _course$department.department_name) || course.department_name || course.department_id || ''
+      }), h('td', {}, [h('span', {
+        "class": 'st-pill st-small',
+        text: course.archived_at ? 'Archived' : 'Active'
+      })]), h('td', {}, [h('button', {
+        "class": 'st-btn st-small',
+        'data-action': 'edit',
+        'data-id': course.course_id
+      }, 'Edit'), h('span', {
+        text: ' '
+      }), showingArchived.courses ? h('button', {
+        "class": 'st-btn st-small',
+        style: 'background:#4caf50',
+        'data-action': 'restore',
+        'data-id': course.course_id
+      }, 'Restore') : h('button', {
+        "class": 'st-btn st-small',
+        style: 'background:#d32f2f',
+        'data-action': 'archive',
+        'data-id': course.course_id
+      }, 'Archive')])]);
+      tbody.appendChild(tr);
+    });
+    setupTableEvents('courses', courses);
+  }
+  function renderDepartments(departments) {
+    var tbody = rootEl.querySelector('#st-body-departments');
+    tbody.innerHTML = '';
+    if (!departments.length) {
+      tbody.appendChild(h('tr', {}, [h('td', {
+        colspan: 3,
+        text: 'No departments found'
+      })]));
+      return;
+    }
+    departments.forEach(function (dept) {
+      var tr = h('tr', {}, [h('td', {
+        text: dept.department_name
+      }), h('td', {}, [h('span', {
+        "class": 'st-pill st-small',
+        text: dept.deleted_at ? 'Archived' : 'Active'
+      })]), h('td', {}, [h('button', {
+        "class": 'st-btn st-small',
+        'data-action': 'edit',
+        'data-id': dept.department_id
+      }, 'Edit'), h('span', {
+        text: ' '
+      }), showingArchived.departments ? h('button', {
+        "class": 'st-btn st-small',
+        style: 'background:#4caf50',
+        'data-action': 'restore',
+        'data-id': dept.department_id
+      }, 'Restore') : h('button', {
+        "class": 'st-btn st-small',
+        style: 'background:#d32f2f',
+        'data-action': 'archive',
+        'data-id': dept.department_id
+      }, 'Archive')])]);
+      tbody.appendChild(tr);
+    });
+    setupTableEvents('departments', departments);
+  }
+  function renderAcademicYears(years) {
+    var tbody = rootEl.querySelector('#st-body-academic-years');
+    tbody.innerHTML = '';
+    if (!years.length) {
+      tbody.appendChild(h('tr', {}, [h('td', {
+        colspan: 3,
+        text: 'No academic years found'
+      })]));
+      return;
+    }
+    years.forEach(function (year) {
+      var tr = h('tr', {}, [h('td', {
+        text: year.school_year
+      }), h('td', {}, [h('span', {
+        "class": 'st-pill st-small',
+        text: year.archived_at ? 'Archived' : 'Active'
+      })]), h('td', {}, [h('button', {
+        "class": 'st-btn st-small',
+        'data-action': 'edit',
+        'data-id': year.academic_year_id
+      }, 'Edit'), h('span', {
+        text: ' '
+      }), showingArchived['academic-years'] ? h('button', {
+        "class": 'st-btn st-small',
+        style: 'background:#4caf50',
+        'data-action': 'restore',
+        'data-id': year.academic_year_id
+      }, 'Restore') : h('button', {
+        "class": 'st-btn st-small',
+        style: 'background:#d32f2f',
+        'data-action': 'archive',
+        'data-id': year.academic_year_id
+      }, 'Archive')])]);
+      tbody.appendChild(tr);
+    });
+    setupTableEvents('academic-years', years);
+  }
+  function setupTableEvents(type, items) {
+    var tbody = rootEl.querySelector("#st-body-".concat(type));
+    tbody.addEventListener('click', function (e) {
+      if (e.target.dataset.action === 'edit') {
+        var id = e.target.dataset.id;
+        var item = items.find(function (i) {
+          return (i["".concat(type.replace('-', '_'), "_id")] || i.id) == id;
+        });
+        if (item) openModal(type.replace('-', '-'), item);
+      } else if (e.target.dataset.action === 'archive') {
+        var _id = e.target.dataset.id;
+        if (confirm('Archive this item?')) {
+          archiveItem(type, _id);
+        }
+      } else if (e.target.dataset.action === 'restore') {
+        var _id2 = e.target.dataset.id;
+        if (confirm('Restore this item?')) {
+          restoreItem(type, _id2);
+        }
+      }
+    });
+  }
+  function archiveItem(_x4, _x5) {
+    return _archiveItem.apply(this, arguments);
+  }
+  function _archiveItem() {
+    _archiveItem = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee5(type, id) {
+      var _t4;
+      return _regenerator().w(function (_context5) {
+        while (1) switch (_context5.p = _context5.n) {
+          case 0:
+            _context5.p = 0;
+            if (!(type === 'courses')) {
+              _context5.n = 2;
+              break;
+            }
+            _context5.n = 1;
+            return api("/api/settings/courses/".concat(id, "/archive"), {
+              method: 'POST'
+            });
+          case 1:
+            _context5.n = 5;
+            break;
+          case 2:
+            if (!(type === 'departments')) {
+              _context5.n = 4;
+              break;
+            }
+            _context5.n = 3;
+            return api("/api/settings/departments/".concat(id, "/archive"), {
+              method: 'POST'
+            });
+          case 3:
+            _context5.n = 5;
+            break;
+          case 4:
+            if (!(type === 'academic-years')) {
+              _context5.n = 5;
+              break;
+            }
+            _context5.n = 5;
+            return api("/api/settings/academic-years/".concat(id, "/archive"), {
+              method: 'POST'
+            });
+          case 5:
+            loadCurrentTab();
+            _context5.n = 7;
+            break;
+          case 6:
+            _context5.p = 6;
+            _t4 = _context5.v;
+            rootEl.querySelector("#st-error-".concat(type)).textContent = _t4.message;
+          case 7:
+            return _context5.a(2);
+        }
+      }, _callee5, null, [[0, 6]]);
+    }));
+    return _archiveItem.apply(this, arguments);
+  }
+  function restoreItem(_x6, _x7) {
+    return _restoreItem.apply(this, arguments);
+  } // Initial load
+  function _restoreItem() {
+    _restoreItem = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee6(type, id) {
+      var _t5;
+      return _regenerator().w(function (_context6) {
+        while (1) switch (_context6.p = _context6.n) {
+          case 0:
+            _context6.p = 0;
+            if (!(type === 'courses')) {
+              _context6.n = 2;
+              break;
+            }
+            _context6.n = 1;
+            return api("/api/settings/courses/".concat(id, "/restore"), {
+              method: 'POST'
+            });
+          case 1:
+            _context6.n = 5;
+            break;
+          case 2:
+            if (!(type === 'departments')) {
+              _context6.n = 4;
+              break;
+            }
+            _context6.n = 3;
+            return api("/api/settings/departments/".concat(id, "/restore"), {
+              method: 'POST'
+            });
+          case 3:
+            _context6.n = 5;
+            break;
+          case 4:
+            if (!(type === 'academic-years')) {
+              _context6.n = 5;
+              break;
+            }
+            _context6.n = 5;
+            return api("/api/settings/academic-years/".concat(id, "/restore"), {
+              method: 'POST'
+            });
+          case 5:
+            loadCurrentTab();
+            _context6.n = 7;
+            break;
+          case 6:
+            _context6.p = 6;
+            _t5 = _context6.v;
+            rootEl.querySelector("#st-error-".concat(type)).textContent = _t5.message;
+          case 7:
+            return _context6.a(2);
+        }
+      }, _callee6, null, [[0, 6]]);
+    }));
+    return _restoreItem.apply(this, arguments);
+  }
+  loadCurrentTab();
+}
+
+/***/ }),
+
+/***/ "./resources/js/components/student.js":
+/*!********************************************!*\
+  !*** ./resources/js/components/student.js ***!
+  \********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   mountStudents: () => (/* binding */ mountStudents)
+/* harmony export */ });
+function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
+function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { _defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
+function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : i + ""; }
+function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+function _regenerator() { /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/babel/babel/blob/main/packages/babel-helpers/LICENSE */ var e, t, r = "function" == typeof Symbol ? Symbol : {}, n = r.iterator || "@@iterator", o = r.toStringTag || "@@toStringTag"; function i(r, n, o, i) { var c = n && n.prototype instanceof Generator ? n : Generator, u = Object.create(c.prototype); return _regeneratorDefine2(u, "_invoke", function (r, n, o) { var i, c, u, f = 0, p = o || [], y = !1, G = { p: 0, n: 0, v: e, a: d, f: d.bind(e, 4), d: function d(t, r) { return i = t, c = 0, u = e, G.n = r, a; } }; function d(r, n) { for (c = r, u = n, t = 0; !y && f && !o && t < p.length; t++) { var o, i = p[t], d = G.p, l = i[2]; r > 3 ? (o = l === n) && (u = i[(c = i[4]) ? 5 : (c = 3, 3)], i[4] = i[5] = e) : i[0] <= d && ((o = r < 2 && d < i[1]) ? (c = 0, G.v = n, G.n = i[1]) : d < l && (o = r < 3 || i[0] > n || n > l) && (i[4] = r, i[5] = n, G.n = l, c = 0)); } if (o || r > 1) return a; throw y = !0, n; } return function (o, p, l) { if (f > 1) throw TypeError("Generator is already running"); for (y && 1 === p && d(p, l), c = p, u = l; (t = c < 2 ? e : u) || !y;) { i || (c ? c < 3 ? (c > 1 && (G.n = -1), d(c, u)) : G.n = u : G.v = u); try { if (f = 2, i) { if (c || (o = "next"), t = i[o]) { if (!(t = t.call(i, u))) throw TypeError("iterator result is not an object"); if (!t.done) return t; u = t.value, c < 2 && (c = 0); } else 1 === c && (t = i["return"]) && t.call(i), c < 2 && (u = TypeError("The iterator does not provide a '" + o + "' method"), c = 1); i = e; } else if ((t = (y = G.n < 0) ? u : r.call(n, G)) !== a) break; } catch (t) { i = e, c = 1, u = t; } finally { f = 1; } } return { value: t, done: y }; }; }(r, o, i), !0), u; } var a = {}; function Generator() {} function GeneratorFunction() {} function GeneratorFunctionPrototype() {} t = Object.getPrototypeOf; var c = [][n] ? t(t([][n]())) : (_regeneratorDefine2(t = {}, n, function () { return this; }), t), u = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(c); function f(e) { return Object.setPrototypeOf ? Object.setPrototypeOf(e, GeneratorFunctionPrototype) : (e.__proto__ = GeneratorFunctionPrototype, _regeneratorDefine2(e, o, "GeneratorFunction")), e.prototype = Object.create(u), e; } return GeneratorFunction.prototype = GeneratorFunctionPrototype, _regeneratorDefine2(u, "constructor", GeneratorFunctionPrototype), _regeneratorDefine2(GeneratorFunctionPrototype, "constructor", GeneratorFunction), GeneratorFunction.displayName = "GeneratorFunction", _regeneratorDefine2(GeneratorFunctionPrototype, o, "GeneratorFunction"), _regeneratorDefine2(u), _regeneratorDefine2(u, o, "Generator"), _regeneratorDefine2(u, n, function () { return this; }), _regeneratorDefine2(u, "toString", function () { return "[object Generator]"; }), (_regenerator = function _regenerator() { return { w: i, m: f }; })(); }
+function _regeneratorDefine2(e, r, n, t) { var i = Object.defineProperty; try { i({}, "", {}); } catch (e) { i = 0; } _regeneratorDefine2 = function _regeneratorDefine(e, r, n, t) { function o(r, n) { _regeneratorDefine2(e, r, function (e) { return this._invoke(r, n, e); }); } r ? i ? i(e, r, { value: n, enumerable: !t, configurable: !t, writable: !t }) : e[r] = n : (o("next", 0), o("throw", 1), o("return", 2)); }, _regeneratorDefine2(e, r, n, t); }
+function _slicedToArray(r, e) { return _arrayWithHoles(r) || _iterableToArrayLimit(r, e) || _unsupportedIterableToArray(r, e) || _nonIterableRest(); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _unsupportedIterableToArray(r, a) { if (r) { if ("string" == typeof r) return _arrayLikeToArray(r, a); var t = {}.toString.call(r).slice(8, -1); return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? _arrayLikeToArray(r, a) : void 0; } }
+function _arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length); for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e]; return n; }
+function _iterableToArrayLimit(r, l) { var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (null != t) { var e, n, i, u, a = [], f = !0, o = !1; try { if (i = (t = t.call(r)).next, 0 === l) { if (Object(t) !== t) return; f = !1; } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0); } catch (r) { o = !0, n = r; } finally { try { if (!f && null != t["return"] && (u = t["return"](), Object(u) !== u)) return; } finally { if (o) throw n; } } return a; } }
+function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
+function asyncGeneratorStep(n, t, e, r, o, a, c) { try { var i = n[a](c), u = i.value; } catch (n) { return void e(n); } i.done ? t(u) : Promise.resolve(u).then(r, o); }
+function _asyncToGenerator(n) { return function () { var t = this, e = arguments; return new Promise(function (r, o) { var a = n.apply(t, e); function _next(n) { asyncGeneratorStep(a, r, o, _next, _throw, "next", n); } function _throw(n) { asyncGeneratorStep(a, r, o, _next, _throw, "throw", n); } _next(void 0); }); }; }
+// Students management UI (vanilla JS)
+// Requires: token in localStorage key `academix_token`
+
+function getTokenOrRedirect() {
+  var token = window.localStorage.getItem('academix_token');
+  if (!token) {
+    window.location.href = '/';
+    throw new Error('No token');
+  }
+  return token;
+}
+function api(_x) {
+  return _api.apply(this, arguments);
+}
+function _api() {
+  _api = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee8(path) {
+    var options,
+      token,
+      res,
+      data,
+      _args8 = arguments;
+    return _regenerator().w(function (_context8) {
+      while (1) switch (_context8.n) {
+        case 0:
+          options = _args8.length > 1 && _args8[1] !== undefined ? _args8[1] : {};
+          token = getTokenOrRedirect();
+          _context8.n = 1;
+          return fetch(path, _objectSpread({
+            headers: _objectSpread({
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+              'Authorization': "Bearer ".concat(token)
+            }, options.headers || {})
+          }, options));
+        case 1:
+          res = _context8.v;
+          if (!(res.status === 401)) {
+            _context8.n = 2;
+            break;
+          }
+          window.location.href = '/';
+          return _context8.a(2, Promise.reject(new Error('Unauthorized')));
+        case 2:
+          _context8.n = 3;
+          return res.json()["catch"](function () {
+            return {};
+          });
+        case 3:
+          data = _context8.v;
+          if (res.ok) {
+            _context8.n = 4;
+            break;
+          }
+          throw new Error(data.message || 'Request failed');
+        case 4:
+          return _context8.a(2, data);
+      }
+    }, _callee8);
+  }));
+  return _api.apply(this, arguments);
+}
+function h(tag) {
+  var attrs = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+  var children = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [];
+  var el = document.createElement(tag);
+  Object.entries(attrs).forEach(function (_ref) {
+    var _ref2 = _slicedToArray(_ref, 2),
+      k = _ref2[0],
+      v = _ref2[1];
+    if (k === 'class') el.className = v;else if (k === 'text') el.textContent = v;else el.setAttribute(k, v);
+  });
+  (Array.isArray(children) ? children : [children]).forEach(function (c) {
+    if (c == null) return;
+    if (typeof c === 'string') el.appendChild(document.createTextNode(c));else el.appendChild(c);
+  });
+  return el;
+}
+function mountStudents(rootEl) {
+  if (!rootEl) throw new Error('mountStudents: root element is required');
+  rootEl.innerHTML = "\n        <style>\n            .s-wrap{padding:16px;color:#eee}\n            .s-actions{display:flex;gap:8px;align-items:center;margin-bottom:12px}\n            .s-input{padding:6px 8px;border:1px solid #666;border-radius:4px;background:#111;color:#eee}\n            .s-btn{padding:6px 10px;background:#2d6cdf;color:#fff;border:none;border-radius:4px;cursor:pointer}\n            .s-table{width:100%;border-collapse:collapse;background:#222}\n            .s-table th,.s-table td{border:1px solid #444;padding:8px;font-size:14px}\n            .s-pill{padding:2px 6px;border-radius:10px;background:#444}\n            .s-small{font-size:12px}\n        </style>\n        <div class=\"s-wrap\">\n            <div class=\"s-actions\">\n                <input id=\"s-q\" class=\"s-input\" placeholder=\"Search name or email\" />\n                <button id=\"s-search\" class=\"s-btn\">Search</button>\n                <button id=\"s-add\" class=\"s-btn\">Add Student</button>\n                <button id=\"s-archived\" class=\"s-btn\" style=\"background:#666\">Show Archived</button>\n            </div>\n            <div id=\"s-error\" class=\"s-small\" style=\"color:#ffb3b3;min-height:16px\"></div>\n            <table class=\"s-table\">\n                <thead>\n                    <tr><th>Student Name</th><th>Department</th><th>Course</th><th>Year</th><th>Status</th><th>Action</th></tr>\n                </thead>\n                <tbody id=\"s-body\"><tr><td colspan=\"6\" class=\"s-small\">Loading\u2026</td></tr></tbody>\n            </table>\n            <div id=\"s-modal\" style=\"position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;align-items:center;justify-content:center;z-index:2000\">\n              <div style=\"width:920px;max-width:96vw;background:#e8e8e8;color:#111;border-radius:8px;padding:20px;box-shadow:0 20px 60px rgba(0,0,0,.5)\">\n                <h3 id=\"f-title\" style=\"margin:0 0 14px\">Add Student</h3>\n                <div style=\"display:grid;grid-template-columns:1fr 1fr;gap:14px 16px;align-items:center\">\n                  <div>\n                    <label style=\"display:block;font-size:12px;margin-bottom:4px\">Student ID</label>\n                    <input id=\"f-student_id\" class=\"s-input\" style=\"width:100%\" placeholder=\"optional\" />\n                  </div>\n                  <div>\n                    <label style=\"display:block;font-size:12px;margin-bottom:4px\">Date of Birth</label>\n                    <input id=\"f-dob\" type=\"date\" class=\"s-input\" style=\"width:100%\" />\n                  </div>\n                  <div>\n                    <label style=\"display:block;font-size:12px;margin-bottom:4px\">First Name</label>\n                    <input id=\"f-f_name\" class=\"s-input\" style=\"width:100%\" />\n                  </div>\n                  <div>\n                    <label style=\"display:block;font-size:12px;margin-bottom:4px\">Sex</label>\n                    <select id=\"f-sex\" class=\"s-input\" style=\"width:100%\">\n                      <option value=\"\">Select</option>\n                      <option>Male</option>\n                      <option>Female</option>\n                    </select>\n                  </div>\n                  <div>\n                    <label style=\"display:block;font-size:12px;margin-bottom:4px\">Middle Name</label>\n                    <input id=\"f-m_name\" class=\"s-input\" style=\"width:100%\" />\n                  </div>\n                  <div>\n                    <label style=\"display:block;font-size:12px;margin-bottom:4px\">Phone Number</label>\n                    <input id=\"f-phone\" class=\"s-input\" style=\"width:100%\" />\n                  </div>\n                  <div>\n                    <label style=\"display:block;font-size:12px;margin-bottom:4px\">Last Name</label>\n                    <input id=\"f-l_name\" class=\"s-input\" style=\"width:100%\" />\n                  </div>\n                  <div>\n                    <label style=\"display:block;font-size:12px;margin-bottom:4px\">Email Address</label>\n                    <input id=\"f-email\" type=\"email\" class=\"s-input\" style=\"width:100%\" />\n                  </div>\n                  <div>\n                    <label style=\"display:block;font-size:12px;margin-bottom:4px\">Suffix</label>\n                    <input id=\"f-suffix\" class=\"s-input\" style=\"width:100%\" />\n                  </div>\n                  <div>\n                    <label style=\"display:block;font-size:12px;margin-bottom:4px\">Address</label>\n                    <input id=\"f-address\" class=\"s-input\" style=\"width:100%\" />\n                  </div>\n                  <div>\n                    <label style=\"display:block;font-size:12px;margin-bottom:4px\">Department</label>\n                    <select id=\"f-department\" class=\"s-input\" style=\"width:100%\"><option value=\"\">Loading\u2026</option></select>\n                  </div>\n                  <div>\n                    <label style=\"display:block;font-size:12px;margin-bottom:4px\">Status</label>\n                    <select id=\"f-status\" class=\"s-input\" style=\"width:100%\">\n                      <option value=\"active\">Active</option>\n                      <option value=\"inactive\">Inactive</option>\n                    </select>\n                  </div>\n                  <div>\n                    <label style=\"display:block;font-size:12px;margin-bottom:4px\">Course</label>\n                    <select id=\"f-course\" class=\"s-input\" style=\"width:100%\"><option value=\"\">Loading\u2026</option></select>\n                  </div>\n                  <div>\n                    <label style=\"display:block;font-size:12px;margin-bottom:4px\">Academic Year</label>\n                    <select id=\"f-ay\" class=\"s-input\" style=\"width:100%\"><option value=\"\">Loading\u2026</option></select>\n                  </div>\n                  <div>\n                    <label style=\"display:block;font-size:12px;margin-bottom:4px\">Year Level</label>\n                    <input id=\"f-year\" class=\"s-input\" style=\"width:100%\" placeholder=\"e.g., 1st, 2nd, 3rd\" />\n                  </div>\n                </div>\n                <div id=\"f-error\" style=\"color:#b00020;font-size:12px;min-height:16px;margin-top:8px;text-align:center\"></div>\n                <div style=\"display:flex;gap:12px;justify-content:center;margin-top:10px\">\n                  <button id=\"f-cancel\" class=\"s-btn\" style=\"background:#666\">Cancel</button>\n                  <button id=\"f-save\" class=\"s-btn\">Add</button>\n                </div>\n              </div>\n            </div>\n        </div>\n    ";
+  var errorBox = rootEl.querySelector('#s-error');
+  var qEl = rootEl.querySelector('#s-q');
+  var archivedBtn = rootEl.querySelector('#s-archived');
+  var showingArchived = false;
+  rootEl.querySelector('#s-search').addEventListener('click', function () {
+    return load();
+  });
+  rootEl.querySelector('#s-add').addEventListener('click', function () {
+    return openModal();
+  });
+  archivedBtn.addEventListener('click', function () {
+    showingArchived = !showingArchived;
+    archivedBtn.textContent = showingArchived ? 'Show Active' : 'Show Archived';
+    archivedBtn.style.background = showingArchived ? '#2d6cdf' : '#666';
+    load();
+  });
+
+  // Modal helpers
+  var modal = rootEl.querySelector('#s-modal');
+  var qs = function qs(id) {
+    return modal.querySelector(id);
+  };
+  qs('#f-cancel').addEventListener('click', function () {
+    return closeModal();
+  });
+  qs('#f-save').addEventListener('click', saveModal);
+  function openModal() {
+    return _openModal.apply(this, arguments);
+  }
+  function _openModal() {
+    _openModal = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee() {
+      var init,
+        _args = arguments;
+      return _regenerator().w(function (_context) {
+        while (1) switch (_context.n) {
+          case 0:
+            init = _args.length > 0 && _args[0] !== undefined ? _args[0] : null;
+            errorBox.textContent = '';
+            _context.n = 1;
+            return ensureOptions();
+          case 1:
+            modal.style.display = 'flex';
+            qs('#f-title').textContent = init ? 'Edit Student' : 'Add Student';
+            qs('#f-save').textContent = init ? 'Save' : 'Add';
+            // reset
+            ['#f-student_id', '#f-f_name', '#f-m_name', '#f-l_name', '#f-suffix', '#f-dob', '#f-sex', '#f-phone', '#f-email', '#f-address', '#f-department', '#f-status', '#f-course', '#f-ay', '#f-year'].forEach(function (sel) {
+              var el = qs(sel);
+              if (el.tagName === 'SELECT') {
+                el.value = '';
+              } else {
+                el.value = '';
+              }
+            });
+            if (init) {
+              if (init.student_id) qs('#f-student_id').value = init.student_id;
+              qs('#f-f_name').value = init.f_name || '';
+              qs('#f-m_name').value = init.m_name || '';
+              qs('#f-l_name').value = init.l_name || '';
+              qs('#f-suffix').value = init.suffix || '';
+              qs('#f-dob').value = init.date_of_birth || '';
+              qs('#f-sex').value = init.sex || '';
+              qs('#f-phone').value = init.phone_number || '';
+              qs('#f-email').value = init.email_address || '';
+              qs('#f-address').value = init.address || '';
+              qs('#f-department').value = init.department_id != null ? String(init.department_id) : '';
+              qs('#f-status').value = init.status || 'active';
+              qs('#f-course').value = init.course_id != null ? String(init.course_id) : '';
+              qs('#f-ay').value = init.academic_year_id != null ? String(init.academic_year_id) : '';
+              qs('#f-year').value = init.year_level || '';
+              modal.dataset.editId = init.student_id;
+            } else {
+              delete modal.dataset.editId;
+            }
+          case 2:
+            return _context.a(2);
+        }
+      }, _callee);
+    }));
+    return _openModal.apply(this, arguments);
+  }
+  function closeModal() {
+    modal.style.display = 'none';
+  }
+  function saveModal() {
+    return _saveModal.apply(this, arguments);
+  } // Options caches
+  function _saveModal() {
+    _saveModal = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee2() {
+      var err, payload, _t;
+      return _regenerator().w(function (_context2) {
+        while (1) switch (_context2.p = _context2.n) {
+          case 0:
+            err = qs('#f-error');
+            err.textContent = '';
+            payload = {
+              f_name: qs('#f-f_name').value.trim(),
+              m_name: qs('#f-m_name').value.trim() || null,
+              l_name: qs('#f-l_name').value.trim(),
+              suffix: qs('#f-suffix').value.trim() || null,
+              date_of_birth: qs('#f-dob').value || null,
+              sex: qs('#f-sex').value || null,
+              phone_number: qs('#f-phone').value || null,
+              email_address: qs('#f-email').value || null,
+              address: qs('#f-address').value || null,
+              status: qs('#f-status').value || 'active',
+              department_id: Number(qs('#f-department').value),
+              course_id: Number(qs('#f-course').value),
+              academic_year_id: Number(qs('#f-ay').value),
+              year_level: qs('#f-year').value.trim() || '1st'
+            };
+            if (!(!payload.f_name || !payload.l_name)) {
+              _context2.n = 1;
+              break;
+            }
+            err.textContent = 'First and Last name are required.';
+            return _context2.a(2);
+          case 1:
+            if (!(!payload.department_id || !payload.course_id || !payload.academic_year_id)) {
+              _context2.n = 2;
+              break;
+            }
+            err.textContent = 'Please select Department, Course and Academic Year.';
+            return _context2.a(2);
+          case 2:
+            _context2.p = 2;
+            if (!modal.dataset.editId) {
+              _context2.n = 4;
+              break;
+            }
+            _context2.n = 3;
+            return api("/api/students/".concat(modal.dataset.editId), {
+              method: 'PUT',
+              body: JSON.stringify(payload)
+            });
+          case 3:
+            _context2.n = 5;
+            break;
+          case 4:
+            _context2.n = 5;
+            return api('/api/students', {
+              method: 'POST',
+              body: JSON.stringify(payload)
+            });
+          case 5:
+            closeModal();
+            _context2.n = 6;
+            return load();
+          case 6:
+            _context2.n = 8;
+            break;
+          case 7:
+            _context2.p = 7;
+            _t = _context2.v;
+            errorBox.textContent = _t.message;
+          case 8:
+            return _context2.a(2);
+        }
+      }, _callee2, null, [[2, 7]]);
+    }));
+    return _saveModal.apply(this, arguments);
+  }
+  var optionsLoaded = false;
+  function ensureOptions() {
+    return _ensureOptions.apply(this, arguments);
+  }
+  function _ensureOptions() {
+    _ensureOptions = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee3() {
+      var departments, courses, years, cs, it, depId, bscs, bsit, y, fill, _t2, _t3, _t4, _t5, _t6, _t7;
+      return _regenerator().w(function (_context3) {
+        while (1) switch (_context3.p = _context3.n) {
+          case 0:
+            if (!optionsLoaded) {
+              _context3.n = 1;
+              break;
+            }
+            return _context3.a(2);
+          case 1:
+            departments = [], courses = [], years = [];
+            _context3.p = 2;
+            _context3.n = 3;
+            return api('/api/settings/departments');
+          case 3:
+            departments = _context3.v;
+            _context3.n = 5;
+            break;
+          case 4:
+            _context3.p = 4;
+            _t2 = _context3.v;
+          case 5:
+            if (!(!Array.isArray(departments) || departments.length === 0)) {
+              _context3.n = 10;
+              break;
+            }
+            _context3.p = 6;
+            _context3.n = 7;
+            return api('/api/settings/departments', {
+              method: 'POST',
+              body: JSON.stringify({
+                department_name: 'Computer Science'
+              })
+            });
+          case 7:
+            cs = _context3.v;
+            _context3.n = 8;
+            return api('/api/settings/departments', {
+              method: 'POST',
+              body: JSON.stringify({
+                department_name: 'Information Technology'
+              })
+            });
+          case 8:
+            it = _context3.v;
+            departments = [cs, it].filter(Boolean);
+            _context3.n = 10;
+            break;
+          case 9:
+            _context3.p = 9;
+            _t3 = _context3.v;
+            departments = [];
+          case 10:
+            _context3.p = 10;
+            _context3.n = 11;
+            return api('/api/settings/courses');
+          case 11:
+            courses = _context3.v;
+            _context3.n = 13;
+            break;
+          case 12:
+            _context3.p = 12;
+            _t4 = _context3.v;
+          case 13:
+            if (!(!Array.isArray(courses) || courses.length === 0)) {
+              _context3.n = 18;
+              break;
+            }
+            depId = departments[0] && (departments[0].department_id || departments[0].id) || null;
+            if (!depId) {
+              _context3.n = 18;
+              break;
+            }
+            _context3.p = 14;
+            _context3.n = 15;
+            return api('/api/settings/courses', {
+              method: 'POST',
+              body: JSON.stringify({
+                course_name: 'BSCS',
+                department_id: depId
+              })
+            });
+          case 15:
+            bscs = _context3.v;
+            _context3.n = 16;
+            return api('/api/settings/courses', {
+              method: 'POST',
+              body: JSON.stringify({
+                course_name: 'BSIT',
+                department_id: depId
+              })
+            });
+          case 16:
+            bsit = _context3.v;
+            courses = [bscs, bsit].filter(Boolean);
+            _context3.n = 18;
+            break;
+          case 17:
+            _context3.p = 17;
+            _t5 = _context3.v;
+            courses = [];
+          case 18:
+            _context3.p = 18;
+            _context3.n = 19;
+            return api('/api/settings/academic-years');
+          case 19:
+            years = _context3.v;
+            _context3.n = 21;
+            break;
+          case 20:
+            _context3.p = 20;
+            _t6 = _context3.v;
+          case 21:
+            if (!(!Array.isArray(years) || years.length === 0)) {
+              _context3.n = 25;
+              break;
+            }
+            _context3.p = 22;
+            _context3.n = 23;
+            return api('/api/settings/academic-years', {
+              method: 'POST',
+              body: JSON.stringify({
+                school_year: '2025-2026'
+              })
+            });
+          case 23:
+            y = _context3.v;
+            years = [y];
+            _context3.n = 25;
+            break;
+          case 24:
+            _context3.p = 24;
+            _t7 = _context3.v;
+            years = [];
+          case 25:
+            fill = function fill(sel, rows, id, label) {
+              var el = qs(sel);
+              el.innerHTML = '<option value="">Select</option>' + rows.map(function (r) {
+                return "<option value=\"".concat(r[id], "\">").concat(r[label] || r[id], "</option>");
+              }).join('');
+            };
+            fill('#f-department', departments, departments[0] && ('department_id' in departments[0] ? 'department_id' : 'id') || 'department_id', 'department_name');
+            fill('#f-course', courses, courses[0] && ('course_id' in courses[0] ? 'course_id' : 'id') || 'course_id', 'course_name');
+            fill('#f-ay', years, years[0] && ('academic_year_id' in years[0] ? 'academic_year_id' : 'id') || 'academic_year_id', 'school_year');
+            optionsLoaded = true;
+          case 26:
+            return _context3.a(2);
+        }
+      }, _callee3, null, [[22, 24], [18, 20], [14, 17], [10, 12], [6, 9], [2, 4]]);
+    }));
+    return _ensureOptions.apply(this, arguments);
+  }
+  function load() {
+    return _load.apply(this, arguments);
+  }
+  function _load() {
+    _load = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee4() {
+      var page,
+        params,
+        qVal,
+        data,
+        _args4 = arguments,
+        _t8;
+      return _regenerator().w(function (_context4) {
+        while (1) switch (_context4.p = _context4.n) {
+          case 0:
+            page = _args4.length > 0 && _args4[0] !== undefined ? _args4[0] : 1;
+            errorBox.textContent = '';
+            params = new URLSearchParams();
+            qVal = qEl.value.trim();
+            if (qVal) params.set('q', qVal);
+            params.set('page', String(page));
+            if (showingArchived) params.set('archived', '1');
+            _context4.p = 1;
+            _context4.n = 2;
+            return api("/api/students?".concat(params.toString()));
+          case 2:
+            data = _context4.v;
+            renderRows(data.data || []);
+            _context4.n = 4;
+            break;
+          case 3:
+            _context4.p = 3;
+            _t8 = _context4.v;
+            errorBox.textContent = _t8.message;
+          case 4:
+            return _context4.a(2);
+        }
+      }, _callee4, null, [[1, 3]]);
+    }));
+    return _load.apply(this, arguments);
+  }
+  function renderRows(rows) {
+    var tbody = rootEl.querySelector('#s-body');
+    tbody.innerHTML = '';
+    if (!rows.length) {
+      tbody.appendChild(h('tr', {}, [h('td', {
+        colspan: 6,
+        text: 'No students found'
+      })]));
+      return;
+    }
+    rows.forEach(function (stu) {
+      var _stu$department, _stu$course, _stu$academic_year;
+      var tr = h('tr', {}, [h('td', {
+        text: "".concat(stu.f_name || '', " ").concat(stu.l_name || '').trim()
+      }), h('td', {
+        text: ((_stu$department = stu.department) === null || _stu$department === void 0 ? void 0 : _stu$department.department_name) || stu.department_name || stu.department_id || ''
+      }), h('td', {
+        text: ((_stu$course = stu.course) === null || _stu$course === void 0 ? void 0 : _stu$course.course_name) || stu.course_name || stu.course_id || ''
+      }), h('td', {
+        text: ((_stu$academic_year = stu.academic_year) === null || _stu$academic_year === void 0 ? void 0 : _stu$academic_year.school_year) || stu.academic_year || stu.academic_year_id || ''
+      }), h('td', {}, [h('span', {
+        "class": 's-pill s-small',
+        text: stu.archived_at ? 'Archived' : 'Active'
+      })]), h('td', {}, [h('button', {
+        "class": 's-btn s-small',
+        'data-action': 'edit',
+        'data-id': stu.student_id
+      }, 'Edit'), h('span', {
+        text: ' '
+      }), showingArchived ? h('button', {
+        "class": 's-btn s-small',
+        style: 'background:#4caf50',
+        'data-action': 'restore',
+        'data-id': stu.student_id
+      }, 'Restore') : h('button', {
+        "class": 's-btn s-small',
+        style: 'background:#d32f2f',
+        'data-action': 'delete',
+        'data-id': stu.student_id
+      }, 'Delete')])]);
+      tbody.appendChild(tr);
+    });
+
+    // Add event listeners for Edit/Delete/Restore buttons
+    tbody.addEventListener('click', function (e) {
+      if (e.target.dataset.action === 'edit') {
+        var studentId = e.target.dataset.id;
+        var student = rows.find(function (s) {
+          return s.student_id == studentId;
+        });
+        if (student) openModal(student);
+      } else if (e.target.dataset.action === 'delete') {
+        var _studentId = e.target.dataset.id;
+        var _student = rows.find(function (s) {
+          return s.student_id == _studentId;
+        });
+        if (_student) onArchive(_student);
+      } else if (e.target.dataset.action === 'restore') {
+        var _studentId2 = e.target.dataset.id;
+        var _student2 = rows.find(function (s) {
+          return s.student_id == _studentId2;
+        });
+        if (_student2) onRestore(_student2);
+      }
+    });
+  }
+  function promptStudent() {
+    var init = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+    var f = prompt('First name:', init.f_name || '');
+    if (f == null) return null;
+    var l = prompt('Last name:', init.l_name || '');
+    if (l == null) return null;
+    var dept = prompt('Department ID:', init.department_id || '');
+    if (dept == null) return null;
+    var course = prompt('Course ID:', init.course_id || '');
+    if (course == null) return null;
+    var ay = prompt('Academic Year ID:', init.academic_year_id || '');
+    if (ay == null) return null;
+    return {
+      f_name: f.trim(),
+      l_name: l.trim(),
+      department_id: Number(dept),
+      course_id: Number(course),
+      academic_year_id: Number(ay)
+    };
+  }
+  function onEdit(_x2) {
+    return _onEdit.apply(this, arguments);
+  }
+  function _onEdit() {
+    _onEdit = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee5(stu) {
+      return _regenerator().w(function (_context5) {
+        while (1) switch (_context5.n) {
+          case 0:
+            openModal(stu);
+          case 1:
+            return _context5.a(2);
+        }
+      }, _callee5);
+    }));
+    return _onEdit.apply(this, arguments);
+  }
+  function onArchive(_x3) {
+    return _onArchive.apply(this, arguments);
+  }
+  function _onArchive() {
+    _onArchive = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee6(stu) {
+      var _t9;
+      return _regenerator().w(function (_context6) {
+        while (1) switch (_context6.p = _context6.n) {
+          case 0:
+            if (confirm('Archive this student?')) {
+              _context6.n = 1;
+              break;
+            }
+            return _context6.a(2);
+          case 1:
+            _context6.p = 1;
+            _context6.n = 2;
+            return api("/api/students/".concat(stu.student_id, "/archive"), {
+              method: 'POST'
+            });
+          case 2:
+            _context6.n = 3;
+            return load();
+          case 3:
+            _context6.n = 5;
+            break;
+          case 4:
+            _context6.p = 4;
+            _t9 = _context6.v;
+            errorBox.textContent = _t9.message;
+          case 5:
+            return _context6.a(2);
+        }
+      }, _callee6, null, [[1, 4]]);
+    }));
+    return _onArchive.apply(this, arguments);
+  }
+  function onRestore(_x4) {
+    return _onRestore.apply(this, arguments);
+  }
+  function _onRestore() {
+    _onRestore = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee7(stu) {
+      var _t0;
+      return _regenerator().w(function (_context7) {
+        while (1) switch (_context7.p = _context7.n) {
+          case 0:
+            if (confirm('Restore this student?')) {
+              _context7.n = 1;
+              break;
+            }
+            return _context7.a(2);
+          case 1:
+            _context7.p = 1;
+            _context7.n = 2;
+            return api("/api/students/".concat(stu.student_id, "/restore"), {
+              method: 'POST'
+            });
+          case 2:
+            _context7.n = 3;
+            return load();
+          case 3:
+            _context7.n = 5;
+            break;
+          case 4:
+            _context7.p = 4;
+            _t0 = _context7.v;
+            errorBox.textContent = _t0.message;
+          case 5:
+            return _context7.a(2);
+        }
+      }, _callee7, null, [[1, 4]]);
+    }));
+    return _onRestore.apply(this, arguments);
+  }
+  load();
 }
 
 /***/ }),

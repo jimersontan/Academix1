@@ -12,6 +12,21 @@ class StudentProfile extends Model
         'f_name','m_name','l_name','suffix','date_of_birth','sex','phone_number','email_address','address','status',
         'department_id','course_id','academic_year_id','year_level'
     ];
+    
+    public function department()
+    {
+        return $this->belongsTo(Department::class, 'department_id', 'department_id');
+    }
+    
+    public function course()
+    {
+        return $this->belongsTo(Course::class, 'course_id', 'course_id');
+    }
+    
+    public function academicYear()
+    {
+        return $this->belongsTo(AcademicYear::class, 'academic_year_id', 'academic_year_id');
+    }
 }
 
 

@@ -52,7 +52,7 @@ export function mountDashboard(rootEl) {
       <div class="shell">
         <aside class="sidebar">
           <div class="brand">
-            <img src="favicon.ico" alt="logo" />
+            <img src="https://cdn.vectorstock.com/i/500p/25/20/books-stack-logo-template-vector-27212520.jpg" alt="logo" />
             <div>
               <div style="font-weight:700">Academix</div>
               <div style="font-size:12px;opacity:.8">Student Management Portal</div>
@@ -68,7 +68,7 @@ export function mountDashboard(rootEl) {
             <a href="#" id="menu-logout">Logout</a>
           </nav>
         </aside>
-        <main class="content">
+        <main class="content" id="main">
           <div class="topbar">
             <h2 style="margin:0">Dashboard</h2>
           </div>
@@ -94,8 +94,10 @@ export function mountDashboard(rootEl) {
       </div>
     `;
 
-    // Load stats
-    fetchJson('api/dashboard/stats').then((data)=>{
+    const main = rootEl.querySelector('#main');
+
+    // Load stats for dashboard
+    fetchJson('/api/dashboard/stats').then((data)=>{
         if (!data) return;
         rootEl.querySelector('#stat-students').textContent = data.total_students ?? 0;
         rootEl.querySelector('#stat-faculty').textContent = data.total_faculty ?? 0;
@@ -107,11 +109,50 @@ export function mountDashboard(rootEl) {
 
     // Logout
     const logout = async () => {
-        try { await fetchJson('api/auth/logout', { method:'POST' }); } catch(e) {}
+        try { await fetchJson('/api/auth/logout', { method:'POST' }); } catch(e) {}
         window.localStorage.removeItem('academix_token');
         window.location.href = 'index.html';
     };
     rootEl.querySelector('#menu-logout').addEventListener('click', (e)=>{ e.preventDefault(); logout(); });
+
+    // Navigate to Students inside the same dashboard shell
+    const menuStudents = rootEl.querySelector('#menu-students');
+    if (menuStudents) {
+        menuStudents.addEventListener('click', (e)=>{
+            e.preventDefault();
+            if (window.Academix && typeof window.Academix.mountStudents === 'function') {
+                // Replace main content with the students module
+                main.innerHTML = '';
+                window.Academix.mountStudents(main);
+            }
+        });
+    }
+
+    // Navigate to Faculty inside the same dashboard shell
+    const menuFaculty = rootEl.querySelector('#menu-faculty');
+    if (menuFaculty) {
+        menuFaculty.addEventListener('click', (e)=>{
+            e.preventDefault();
+            if (window.Academix && typeof window.Academix.mountFaculty === 'function') {
+                // Replace main content with the faculty module
+                main.innerHTML = '';
+                window.Academix.mountFaculty(main);
+            }
+        });
+    }
+
+    // Navigate to Settings inside the same dashboard shell
+    const menuSettings = rootEl.querySelector('#menu-settings');
+    if (menuSettings) {
+        menuSettings.addEventListener('click', (e)=>{
+            e.preventDefault();
+            if (window.Academix && typeof window.Academix.mountSettings === 'function') {
+                // Replace main content with the settings module
+                main.innerHTML = '';
+                window.Academix.mountSettings(main);
+            }
+        });
+    }
 }
 
 

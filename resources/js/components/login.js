@@ -71,7 +71,7 @@ export function mountLogin(rootEl, options = {}) {
             return;
         }
         try {
-            const res = await fetch('api/auth/login', {
+            const res = await fetch('/api/auth/login', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
                 body: JSON.stringify({ username, password, device_name: 'web' })
