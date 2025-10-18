@@ -11,31 +11,115 @@ export function mountLogin(rootEl, options = {}) {
 
     rootEl.innerHTML = `
         <style>
-            .ax-bg{position:fixed;inset:0;background:url('${bgUrl}') center/cover no-repeat;filter:brightness(.75)}
-            .ax-wrap{position:relative;min-height:100vh;display:flex;align-items:center;justify-content:center}
-            .ax-brand{position:absolute;top:32px;left:32px;color:#fff;display:flex;align-items:center;gap:12px}
-            .ax-brand img{width:64px;height:64px;border-radius:8px}
-            .ax-brand h1{margin:0;font-size:44px;font-weight:700}
-            .ax-brand p{margin:0;opacity:.95}
-            .ax-card{width:360px;background:#333;color:#fff;padding:22px;border-radius:6px;box-shadow:0 12px 28px rgba(0,0,0,.45)}
-            .ax-card h2{margin:0 0 10px;font-size:18px}
-            .ax-field{margin:10px 0}
-            .ax-label{display:block;font-size:13px;color:#ddd;margin-bottom:6px}
-            .ax-input{width:100%;padding:8px 10px;border:1px solid #777;border-radius:3px;background:#eee;color:#222}
-            .ax-actions{margin-top:14px;display:flex;justify-content:flex-end}
-            .ax-btn{background:#2d6cdf;color:#fff;border:none;padding:8px 14px;border-radius:3px;cursor:pointer}
-            .ax-btn:disabled{opacity:.6;cursor:not-allowed}
-            .ax-error{margin-top:10px;color:#ffb3b3;min-height:18px;font-size:13px}
+            * { box-sizing: border-box; }
+            body, html { margin: 0; padding: 0; height: 100%; font-family: Arial, Helvetica, sans-serif; }
+
+            .ax-bg {
+                position: fixed;
+                inset: 0;
+                background: url('${bgUrl}') center/cover no-repeat;
+                filter: brightness(0.6);
+                z-index: -1;
+            }
+            .ax-wrap {
+                min-height: 100vh;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                position: relative;
+            }
+
+            .ax-brand {
+                position: absolute;
+                top: 60px;
+                left: 80px;
+                color: #fff;
+                display: flex;
+                align-items: center;
+                gap: 16px;
+            }
+            .ax-brand img { width: 70px; height: 70px; }
+            .ax-brand h1 { font-size: 48px; margin: 0; font-weight: 700; }
+            .ax-brand p { font-size: 18px; margin: 4px 0 0; opacity: 0.9; }
+
+            .ax-card {
+                background: rgba(0,0,0,0.75);
+                color: #fff;
+                padding: 28px 30px;
+                border-radius: 4px;
+                width: 320px;
+                box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+            }
+            .ax-card h2 {
+                text-align: center;
+                font-size: 20px;
+                font-weight: bold;
+                margin: 0 0 16px;
+                letter-spacing: 1px;
+            }
+
+            .ax-field {
+                margin-bottom: 14px;
+            }
+            .ax-label {
+                display: block;
+                font-size: 14px;
+                margin-bottom: 4px;
+                color: #fff;
+            }
+            .ax-input {
+                width: 100%;
+                padding: 10px;
+                border: none;
+                border-radius: 3px;
+                font-size: 14px;
+                color: #111;
+            }
+            .ax-input:focus {
+                outline: 2px solid #2d6cdf;
+            }
+
+            .ax-actions {
+                text-align: center;
+                margin-top: 18px;
+            }
+            .ax-btn {
+                background: #2d6cdf;
+                color: #fff;
+                border: none;
+                padding: 10px 20px;
+                border-radius: 3px;
+                font-size: 14px;
+                cursor: pointer;
+                transition: background 0.2s;
+            }
+            .ax-btn:hover {
+                background: #1e5bb8;
+            }
+            .ax-btn:disabled {
+                opacity: 0.6;
+                cursor: not-allowed;
+            }
+
+            .ax-error {
+                margin-top: 10px;
+                color: #ffb3b3;
+                text-align: center;
+                font-size: 13px;
+                min-height: 18px;
+            }
         </style>
-        <div class="ax-bg" aria-hidden="true"></div>
+
+        <div class="ax-bg"></div>
         <div class="ax-wrap">
             <div class="ax-brand">
-                <img alt="logo" src="${logoUrl}">
+                <img src="${logoUrl}" alt="logo">
                 <div>
                     <h1>Academix</h1>
                     <p>Student Management Portal</p>
                 </div>
             </div>
+
             <div class="ax-card">
                 <h2>LOGIN</h2>
                 <div class="ax-field">
@@ -47,7 +131,7 @@ export function mountLogin(rootEl, options = {}) {
                     <input type="password" class="ax-input" id="ax-password" autocomplete="current-password" />
                 </div>
                 <div class="ax-actions">
-                    <button id="ax-submit" class="ax-btn">Sign In</button>
+                    <button id="ax-submit" class="ax-btn">Sign in</button>
                 </div>
                 <div id="ax-error" class="ax-error"></div>
             </div>
@@ -78,7 +162,6 @@ export function mountLogin(rootEl, options = {}) {
             });
             const data = await res.json().catch(() => ({ ok:false }));
             if (res.ok && data.token) {
-                // persist token for subsequent API calls
                 window.localStorage.setItem('academix_token', data.token);
                 if (typeof options.onSuccess === 'function') options.onSuccess(data);
             } else {
@@ -94,5 +177,3 @@ export function mountLogin(rootEl, options = {}) {
     submitBtn.addEventListener('click', login);
     passwordEl.addEventListener('keydown', (e)=>{ if(e.key==='Enter'){ login(); } });
 }
-
-

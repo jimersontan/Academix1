@@ -30,10 +30,14 @@ async function api(path, options = {}) {
 function h(tag, attrs = {}, children = []) {
     const el = document.createElement(tag);
     Object.entries(attrs).forEach(([k, v]) => {
-        if (k === 'class') el.className = v; else if (k === 'text') el.textContent = v; else el.setAttribute(k, v);
+        if (k === 'class') el.className = v; 
+        else if (k === 'text') el.textContent = v; 
+        else el.setAttribute(k, v);
     });
     (Array.isArray(children) ? children : [children]).forEach(c => {
-        if (c == null) return; if (typeof c === 'string') el.appendChild(document.createTextNode(c)); else el.appendChild(c);
+        if (c == null) return; 
+        if (typeof c === 'string') el.appendChild(document.createTextNode(c)); 
+        else el.appendChild(c);
     });
     return el;
 }
@@ -43,105 +47,119 @@ export function mountStudents(rootEl) {
 
     rootEl.innerHTML = `
         <style>
-            .s-wrap{padding:16px;color:#eee}
-            .s-actions{display:flex;gap:8px;align-items:center;margin-bottom:12px}
-            .s-input{padding:6px 8px;border:1px solid #666;border-radius:4px;background:#111;color:#eee}
-            .s-btn{padding:6px 10px;background:#2d6cdf;color:#fff;border:none;border-radius:4px;cursor:pointer}
-            .s-table{width:100%;border-collapse:collapse;background:#222}
-            .s-table th,.s-table td{border:1px solid #444;padding:8px;font-size:14px}
-            .s-pill{padding:2px 6px;border-radius:10px;background:#444}
-            .s-small{font-size:12px}
+            .f-wrap{padding:18px;color:#fff;font-family:Arial,Helvetica,sans-serif}
+            .f-topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+            .f-title{margin:0;font-size:24px;font-weight:700}
+            .f-actions{display:flex;gap:8px;align-items:center}
+            .f-input{padding:8px 12px;border:1px solid #666;border-radius:4px;background:#2b2b2b;color:#fff;font-size:14px}
+            .f-btn{padding:8px 16px;background:#2d6cdf;color:#fff;border:none;border-radius:4px;cursor:pointer;font-size:14px}
+            .f-btn:hover{background:#1e5bb8}
+            .f-btn-outline{background:transparent;border:1px solid #666;color:#ddd}
+            .f-btn-outline:hover{background:#333}
+            .f-table{width:100%;border-collapse:collapse;background:#2b2b2b;border-radius:8px;overflow:hidden}
+            .f-table th{background:#333;padding:12px;text-align:left;font-weight:600;border-bottom:1px solid #444}
+            .f-table td{padding:12px;border-bottom:1px solid #444}
+            .f-table tr:hover{background:#333}
+            .f-pill{padding:4px 8px;border-radius:12px;background:#444;font-size:12px}
+            .f-small{font-size:12px}
+            .f-modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);display:none;align-items:center;justify-content:center;z-index:2000}
+            .f-modal{width:900px;max-width:95vw;background:#e8e8e8;color:#111;border-radius:8px;padding:24px;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+            .f-modal h3{margin:0 0 16px;font-size:20px;font-weight:600}
+            .f-modal-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px 20px;align-items:start}
+            .f-modal-field{margin-bottom:12px}
+            .f-modal-label{display:block;font-size:13px;margin-bottom:4px;font-weight:500}
+            .f-modal-input{width:100%;padding:8px 12px;border:1px solid #ccc;border-radius:4px;background:#fff;color:#111;font-size:14px}
+            .f-modal-buttons{display:flex;gap:12px;justify-content:center;margin-top:20px}
+            .f-modal-btn{padding:10px 20px;border:none;border-radius:4px;cursor:pointer;font-size:14px;font-weight:500}
+            .f-modal-cancel{background:#666;color:#fff}
+            .f-modal-save{background:#2d6cdf;color:#fff}
         </style>
-        <div class="s-wrap">
-            <div class="s-actions">
-                <input id="s-q" class="s-input" placeholder="Search name or email" />
-                <button id="s-search" class="s-btn">Search</button>
-                <button id="s-add" class="s-btn">Add Student</button>
-                <button id="s-archived" class="s-btn" style="background:#666">Show Archived</button>
+        <div class="f-wrap">
+            <div class="f-topbar">
+                <h2 class="f-title">Students</h2>
+                <div class="f-actions">
+                    <input id="s-q" class="f-input" placeholder="Search name or email" style="width:200px" />
+                    <button id="s-search" class="f-btn">Search</button>
+                    <button id="s-add" class="f-btn">Add Student</button>
+                    <button id="s-archived" class="f-btn f-btn-outline">Archived</button>
+                </div>
             </div>
-            <div id="s-error" class="s-small" style="color:#ffb3b3;min-height:16px"></div>
-            <table class="s-table">
+            <div id="s-error" class="f-small" style="color:#ffb3b3;min-height:16px;margin-bottom:12px"></div>
+            <table class="f-table">
                 <thead>
-                    <tr><th>Student Name</th><th>Department</th><th>Course</th><th>Year</th><th>Status</th><th>Action</th></tr>
+                    <tr><th>Name</th><th>Department</th><th>Course</th><th>Year</th><th>Status</th><th>Action</th></tr>
                 </thead>
-                <tbody id="s-body"><tr><td colspan="6" class="s-small">Loading…</td></tr></tbody>
+                <tbody id="s-body"><tr><td colspan="6" class="f-small">Loading…</td></tr></tbody>
             </table>
-            <div id="s-modal" style="position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;align-items:center;justify-content:center;z-index:2000">
-              <div style="width:920px;max-width:96vw;background:#e8e8e8;color:#111;border-radius:8px;padding:20px;box-shadow:0 20px 60px rgba(0,0,0,.5)">
-                <h3 id="f-title" style="margin:0 0 14px">Add Student</h3>
-                <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px 16px;align-items:center">
-                  <div>
-                    <label style="display:block;font-size:12px;margin-bottom:4px">Student ID</label>
-                    <input id="f-student_id" class="s-input" style="width:100%" placeholder="optional" />
+            <div id="s-modal" class="f-modal-overlay">
+              <div class="f-modal">
+                <h3 id="sm-title">Add Student</h3>
+                <div class="f-modal-grid">
+                  <div class="f-modal-field">
+                    <label class="f-modal-label">Student ID</label>
+                    <input id="sm-student_id" class="f-modal-input" placeholder="optional" />
                   </div>
-                  <div>
-                    <label style="display:block;font-size:12px;margin-bottom:4px">Date of Birth</label>
-                    <input id="f-dob" type="date" class="s-input" style="width:100%" />
+                  <div class="f-modal-field">
+                    <label class="f-modal-label">Date of Birth</label>
+                    <input id="sm-dob" type="date" class="f-modal-input" />
                   </div>
-                  <div>
-                    <label style="display:block;font-size:12px;margin-bottom:4px">First Name</label>
-                    <input id="f-f_name" class="s-input" style="width:100%" />
+                  <div class="f-modal-field">
+                    <label class="f-modal-label">First Name</label>
+                    <input id="sm-f_name" class="f-modal-input" />
                   </div>
-                  <div>
-                    <label style="display:block;font-size:12px;margin-bottom:4px">Sex</label>
-                    <select id="f-sex" class="s-input" style="width:100%">
+                  <div class="f-modal-field">
+                    <label class="f-modal-label">Sex</label>
+                    <select id="sm-sex" class="f-modal-input">
                       <option value="">Select</option>
                       <option>Male</option>
                       <option>Female</option>
                     </select>
                   </div>
-                  <div>
-                    <label style="display:block;font-size:12px;margin-bottom:4px">Middle Name</label>
-                    <input id="f-m_name" class="s-input" style="width:100%" />
+                  <div class="f-modal-field">
+                    <label class="f-modal-label">Middle Name</label>
+                    <input id="sm-m_name" class="f-modal-input" />
                   </div>
-                  <div>
-                    <label style="display:block;font-size:12px;margin-bottom:4px">Phone Number</label>
-                    <input id="f-phone" class="s-input" style="width:100%" />
+                  <div class="f-modal-field">
+                    <label class="f-modal-label">Phone Number</label>
+                    <input id="sm-phone" class="f-modal-input" />
                   </div>
-                  <div>
-                    <label style="display:block;font-size:12px;margin-bottom:4px">Last Name</label>
-                    <input id="f-l_name" class="s-input" style="width:100%" />
+                  <div class="f-modal-field">
+                    <label class="f-modal-label">Last Name</label>
+                    <input id="sm-l_name" class="f-modal-input" />
                   </div>
-                  <div>
-                    <label style="display:block;font-size:12px;margin-bottom:4px">Email Address</label>
-                    <input id="f-email" type="email" class="s-input" style="width:100%" />
+                  <div class="f-modal-field">
+                    <label class="f-modal-label">Email Address</label>
+                    <input id="sm-email" type="email" class="f-modal-input" />
                   </div>
-                  <div>
-                    <label style="display:block;font-size:12px;margin-bottom:4px">Suffix</label>
-                    <input id="f-suffix" class="s-input" style="width:100%" />
+                  <div class="f-modal-field">
+                    <label class="f-modal-label">Suffix</label>
+                    <input id="sm-suffix" class="f-modal-input" />
                   </div>
-                  <div>
-                    <label style="display:block;font-size:12px;margin-bottom:4px">Address</label>
-                    <input id="f-address" class="s-input" style="width:100%" />
+                  <div class="f-modal-field">
+                    <label class="f-modal-label">Address</label>
+                    <input id="sm-address" class="f-modal-input" />
                   </div>
-                  <div>
-                    <label style="display:block;font-size:12px;margin-bottom:4px">Department</label>
-                    <select id="f-department" class="s-input" style="width:100%"><option value="">Loading…</option></select>
+                  <div class="f-modal-field">
+                    <label class="f-modal-label">Department</label>
+                    <select id="sm-department" class="f-modal-input"><option value="">Loading…</option></select>
                   </div>
-                  <div>
-                    <label style="display:block;font-size:12px;margin-bottom:4px">Status</label>
-                    <select id="f-status" class="s-input" style="width:100%">
-                      <option value="active">Active</option>
-                      <option value="inactive">Inactive</option>
-                    </select>
+                  <div class="f-modal-field">
+                    <label class="f-modal-label">Course</label>
+                    <select id="sm-course" class="f-modal-input"><option value="">Loading…</option></select>
                   </div>
-                  <div>
-                    <label style="display:block;font-size:12px;margin-bottom:4px">Course</label>
-                    <select id="f-course" class="s-input" style="width:100%"><option value="">Loading…</option></select>
+                  <div class="f-modal-field">
+                    <label class="f-modal-label">Academic Year</label>
+                    <select id="sm-ay" class="f-modal-input"><option value="">Loading…</option></select>
                   </div>
-                  <div>
-                    <label style="display:block;font-size:12px;margin-bottom:4px">Academic Year</label>
-                    <select id="f-ay" class="s-input" style="width:100%"><option value="">Loading…</option></select>
-                  </div>
-                  <div>
-                    <label style="display:block;font-size:12px;margin-bottom:4px">Year Level</label>
-                    <input id="f-year" class="s-input" style="width:100%" placeholder="e.g., 1st, 2nd, 3rd" />
+                  <div class="f-modal-field">
+                    <label class="f-modal-label">Year Level</label>
+                    <input id="sm-year" class="f-modal-input" placeholder="e.g., 1st, 2nd, 3rd" />
                   </div>
                 </div>
-                <div id="f-error" style="color:#b00020;font-size:12px;min-height:16px;margin-top:8px;text-align:center"></div>
-                <div style="display:flex;gap:12px;justify-content:center;margin-top:10px">
-                  <button id="f-cancel" class="s-btn" style="background:#666">Cancel</button>
-                  <button id="f-save" class="s-btn">Add</button>
+                <div id="sm-error" style="color:#b00020;font-size:12px;min-height:16px;margin-top:8px;text-align:center"></div>
+                <div class="f-modal-buttons">
+                  <button id="sm-cancel" class="f-modal-btn f-modal-cancel">Cancel</button>
+                  <button id="sm-save" class="f-modal-btn f-modal-save">Add</button>
                 </div>
               </div>
             </div>
@@ -152,7 +170,7 @@ export function mountStudents(rootEl) {
     const qEl = rootEl.querySelector('#s-q');
     const archivedBtn = rootEl.querySelector('#s-archived');
     let showingArchived = false;
-    
+
     rootEl.querySelector('#s-search').addEventListener('click', () => load());
     rootEl.querySelector('#s-add').addEventListener('click', () => openModal());
     archivedBtn.addEventListener('click', () => {
@@ -165,34 +183,32 @@ export function mountStudents(rootEl) {
     // Modal helpers
     const modal = rootEl.querySelector('#s-modal');
     const qs = (id) => modal.querySelector(id);
-    qs('#f-cancel').addEventListener('click', ()=> closeModal());
-    qs('#f-save').addEventListener('click', saveModal);
+    qs('#sm-cancel').addEventListener('click', ()=> closeModal());
+    qs('#sm-save').addEventListener('click', saveModal);
 
     async function openModal(init = null) {
         errorBox.textContent = '';
         await ensureOptions();
         modal.style.display = 'flex';
-        qs('#f-title').textContent = init ? 'Edit Student' : 'Add Student';
-        qs('#f-save').textContent = init ? 'Save' : 'Add';
-        // reset
-        ['#f-student_id','#f-f_name','#f-m_name','#f-l_name','#f-suffix','#f-dob','#f-sex','#f-phone','#f-email','#f-address','#f-department','#f-status','#f-course','#f-ay','#f-year']
+        qs('#sm-title').textContent = init ? 'Edit Student' : 'Add Student';
+        qs('#sm-save').textContent = init ? 'Save' : 'Add';
+        ['#sm-student_id','#sm-f_name','#sm-m_name','#sm-l_name','#sm-suffix','#sm-dob','#sm-sex','#sm-phone','#sm-email','#sm-address','#sm-department','#sm-course','#sm-ay','#sm-year']
           .forEach(sel=>{ const el=qs(sel); if(el.tagName==='SELECT'){ el.value=''; } else { el.value=''; }});
         if (init) {
-            if (init.student_id) qs('#f-student_id').value = init.student_id;
-            qs('#f-f_name').value = init.f_name || '';
-            qs('#f-m_name').value = init.m_name || '';
-            qs('#f-l_name').value = init.l_name || '';
-            qs('#f-suffix').value = init.suffix || '';
-            qs('#f-dob').value = init.date_of_birth || '';
-            qs('#f-sex').value = init.sex || '';
-            qs('#f-phone').value = init.phone_number || '';
-            qs('#f-email').value = init.email_address || '';
-            qs('#f-address').value = init.address || '';
-            qs('#f-department').value = (init.department_id != null ? String(init.department_id) : '');
-            qs('#f-status').value = init.status || 'active';
-            qs('#f-course').value = (init.course_id != null ? String(init.course_id) : '');
-            qs('#f-ay').value = (init.academic_year_id != null ? String(init.academic_year_id) : '');
-            qs('#f-year').value = init.year_level || '';
+            if (init.student_id) qs('#sm-student_id').value = init.student_id;
+            qs('#sm-f_name').value = init.f_name || '';
+            qs('#sm_m_name').value = init.m_name || '';
+            qs('#sm-l_name').value = init.l_name || '';
+            qs('#sm-suffix').value = init.suffix || '';
+            qs('#sm-dob').value = init.date_of_birth || '';
+            qs('#sm-sex').value = init.sex || '';
+            qs('#sm-phone').value = init.phone_number || '';
+            qs('#sm-email').value = init.email_address || '';
+            qs('#sm-address').value = init.address || '';
+            qs('#sm-department').value = init.department_id || '';
+            qs('#sm-course').value = init.course_id || '';
+            qs('#sm-ay').value = init.academic_year_id || '';
+            qs('#sm-year').value = init.year_level || '';
             modal.dataset.editId = init.student_id;
         } else {
             delete modal.dataset.editId;
@@ -202,25 +218,24 @@ export function mountStudents(rootEl) {
     function closeModal(){ modal.style.display = 'none'; }
 
     async function saveModal(){
-        const err = qs('#f-error'); err.textContent = '';
+        const err = qs('#sm-error'); err.textContent = '';
         const payload = {
-            f_name: qs('#f-f_name').value.trim(),
-            m_name: qs('#f-m_name').value.trim() || null,
-            l_name: qs('#f-l_name').value.trim(),
-            suffix: qs('#f-suffix').value.trim() || null,
-            date_of_birth: qs('#f-dob').value || null,
-            sex: qs('#f-sex').value || null,
-            phone_number: qs('#f-phone').value || null,
-            email_address: qs('#f-email').value || null,
-            address: qs('#f-address').value || null,
-            status: qs('#f-status').value || 'active',
-            department_id: Number(qs('#f-department').value),
-            course_id: Number(qs('#f-course').value),
-            academic_year_id: Number(qs('#f-ay').value),
-            year_level: (qs('#f-year').value.trim() || '1st')
+            f_name: qs('#sm-f_name').value.trim(),
+            m_name: qs('#sm-m_name').value.trim() || null,
+            l_name: qs('#sm-l_name').value.trim(),
+            suffix: qs('#sm-suffix').value.trim() || null,
+            date_of_birth: qs('#sm-dob').value || null,
+            sex: qs('#sm-sex').value || null,
+            phone_number: qs('#sm-phone').value || null,
+            email_address: qs('#sm-email').value || null,
+            address: qs('#sm-address').value || null,
+            department_id: Number(qs('#sm-department').value),
+            course_id: Number(qs('#sm-course').value),
+            academic_year_id: Number(qs('#sm-ay').value),
+            year_level: qs('#sm-year').value.trim() || '1st'
         };
         if (!payload.f_name || !payload.l_name) { err.textContent = 'First and Last name are required.'; return; }
-        if (!payload.department_id || !payload.course_id || !payload.academic_year_id) { err.textContent = 'Please select Department, Course and Academic Year.'; return; }
+        if (!payload.department_id || !payload.course_id || !payload.academic_year_id) { err.textContent = 'Please select Department, Course, and Academic Year.'; return; }
         try {
             if (modal.dataset.editId) {
                 await api(`/api/students/${modal.dataset.editId}`, { method:'PUT', body: JSON.stringify(payload) });
@@ -232,13 +247,12 @@ export function mountStudents(rootEl) {
         } catch(e){ errorBox.textContent = e.message; }
     }
 
-    // Options caches
+    // Option cache
     let optionsLoaded = false;
     async function ensureOptions(){
         if (optionsLoaded) return;
         let departments = [], courses = [], years = [];
         try { departments = await api('/api/settings/departments'); } catch(_) {}
-        // Seed defaults in DB if empty so foreign keys are valid
         if (!Array.isArray(departments) || departments.length === 0) {
             try {
                 const cs = await api('/api/settings/departments', { method:'POST', body: JSON.stringify({ department_name:'Computer Science' }) });
@@ -248,30 +262,14 @@ export function mountStudents(rootEl) {
         }
 
         try { courses = await api('/api/settings/courses'); } catch(_) {}
-        if (!Array.isArray(courses) || courses.length === 0) {
-            const depId = (departments[0] && (departments[0].department_id || departments[0].id)) || null;
-            if (depId) {
-                try {
-                    const bscs = await api('/api/settings/courses', { method:'POST', body: JSON.stringify({ course_name:'BSCS', department_id: depId }) });
-                    const bsit = await api('/api/settings/courses', { method:'POST', body: JSON.stringify({ course_name:'BSIT', department_id: depId }) });
-                    courses = [bscs, bsit].filter(Boolean);
-                } catch(_) { courses = []; }
-            }
-        }
-
         try { years = await api('/api/settings/academic-years'); } catch(_) {}
-        if (!Array.isArray(years) || years.length === 0) {
-            try {
-                const y = await api('/api/settings/academic-years', { method:'POST', body: JSON.stringify({ school_year:'2025-2026' }) });
-                years = [y];
-            } catch(_) { years = []; }
-        }
+
         const fill = (sel, rows, id, label) => {
-            const el = qs(sel); el.innerHTML = '<option value="">Select</option>' + rows.map(r=>`<option value="${r[id]}">${r[label] || r[id]}</option>`).join('');
+            const el = qs(sel); el.innerHTML = '<option value="">Select</option>' + rows.map(r=>`<option value="${r[id]}">${r[label]}</option>`).join('');
         };
-        fill('#f-department', departments, (departments[0] && ('department_id' in departments[0] ? 'department_id' : 'id')) || 'department_id', 'department_name');
-        fill('#f-course', courses, (courses[0] && ('course_id' in courses[0] ? 'course_id' : 'id')) || 'course_id', 'course_name');
-        fill('#f-ay', years, (years[0] && ('academic_year_id' in years[0] ? 'academic_year_id' : 'id')) || 'academic_year_id', 'school_year');
+        if (departments.length) fill('#sm-department', departments, 'department_id', 'department_name');
+        if (courses.length) fill('#sm-course', courses, 'course_id', 'course_name');
+        if (years.length) fill('#sm-ay', years, 'academic_year_id', 'school_year');
         optionsLoaded = true;
     }
 
@@ -294,22 +292,21 @@ export function mountStudents(rootEl) {
         rows.forEach(stu => {
             const tr = h('tr',{},[
                 h('td',{text:`${stu.f_name || ''} ${stu.l_name || ''}`.trim()}),
-                h('td',{text: stu.department?.department_name || stu.department_name || stu.department_id || ''}),
-                h('td',{text: stu.course?.course_name || stu.course_name || stu.course_id || ''}),
-                h('td',{text: stu.academic_year?.school_year || stu.academic_year || stu.academic_year_id || ''}),
-                h('td',{},[h('span',{class:'s-pill s-small',text: stu.archived_at ? 'Archived' : 'Active'})]),
+                h('td',{text: stu.department?.department_name || stu.department_name || ''}),
+                h('td',{text: stu.course?.course_name || stu.course_name || ''}),
+                h('td',{text: stu.academic_year?.school_year || ''}),
+                h('td',{},[h('span',{class:'f-pill f-small',text: stu.archived_at ? 'Archived' : 'Active'})]),
                 h('td',{},[
-                    h('button',{class:'s-btn s-small','data-action':'edit','data-id':stu.student_id},'Edit'),
-                    h('span',{text:' ' }),
+                    h('button',{class:'f-btn f-small','data-action':'edit','data-id':stu.student_id},'Edit'),
+                    h('span',{text:' '}),
                     showingArchived 
-                        ? h('button',{class:'s-btn s-small',style:'background:#4caf50','data-action':'restore','data-id':stu.student_id},'Restore')
-                        : h('button',{class:'s-btn s-small',style:'background:#d32f2f','data-action':'delete','data-id':stu.student_id},'Delete')
+                        ? h('button',{class:'f-btn f-small',style:'background:#4caf50','data-action':'restore','data-id':stu.student_id},'Restore')
+                        : h('button',{class:'f-btn f-small',style:'background:#d32f2f','data-action':'delete','data-id':stu.student_id},'Delete')
                 ])
             ]);
             tbody.appendChild(tr);
         });
-        
-        // Add event listeners for Edit/Delete/Restore buttons
+
         tbody.addEventListener('click', (e) => {
             if (e.target.dataset.action === 'edit') {
                 const studentId = e.target.dataset.id;
@@ -327,30 +324,17 @@ export function mountStudents(rootEl) {
         });
     }
 
-    function promptStudent(init = {}) {
-        const f = prompt('First name:', init.f_name || ''); if (f == null) return null;
-        const l = prompt('Last name:', init.l_name || ''); if (l == null) return null;
-        const dept = prompt('Department ID:', init.department_id || ''); if (dept == null) return null;
-        const course = prompt('Course ID:', init.course_id || ''); if (course == null) return null;
-        const ay = prompt('Academic Year ID:', init.academic_year_id || ''); if (ay == null) return null;
-        return { f_name: f.trim(), l_name: l.trim(), department_id: Number(dept), course_id: Number(course), academic_year_id: Number(ay) };
-    }
-
-    async function onEdit(stu) { openModal(stu); }
-
-    async function onArchive(stu) {
+    async function onArchive(student) {
         if (!confirm('Archive this student?')) return;
-        try { await api(`/api/students/${stu.student_id}/archive`, { method:'POST' }); await load(); }
-        catch(e){ errorBox.textContent = e.message; }
+        try { await api(`/api/students/${student.student_id}/archive`, { method: 'POST' }); await load(); }
+        catch (e) { errorBox.textContent = e.message; }
     }
 
-    async function onRestore(stu) {
-        if (!confirm('Restore this student?')) return;
-        try { await api(`/api/students/${stu.student_id}/restore`, { method:'POST' }); await load(); }
-        catch(e){ errorBox.textContent = e.message; }
+    async function onRestore(student) {
+        if (!confirm('Restore this archived student?')) return;
+        try { await api(`/api/students/${student.student_id}/restore`, { method: 'POST' }); await load(); }
+        catch (e) { errorBox.textContent = e.message; }
     }
 
     load();
 }
-
-

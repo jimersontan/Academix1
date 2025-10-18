@@ -27745,7 +27745,7 @@ function mountLogin(rootEl) {
   if (!rootEl) throw new Error('mountLogin: root element is required');
   var bgUrl = options.backgroundUrl || 'https://tse4.mm.bing.net/th/id/OIP.tgQYDIWK0Z67zJ1pohyo4QHaEK?pid=Api&P=0&h=180';
   var logoUrl = options.logoUrl || 'https://tse3.mm.bing.net/th/id/OIP.kNZRsLF495e1651A1kiMvwHaHa?pid=Api&P=0&h=180';
-  rootEl.innerHTML = "\n        <style>\n            .ax-bg{position:fixed;inset:0;background:url('".concat(bgUrl, "') center/cover no-repeat;filter:brightness(.75)}\n            .ax-wrap{position:relative;min-height:100vh;display:flex;align-items:center;justify-content:center}\n            .ax-brand{position:absolute;top:32px;left:32px;color:#fff;display:flex;align-items:center;gap:12px}\n            .ax-brand img{width:64px;height:64px;border-radius:8px}\n            .ax-brand h1{margin:0;font-size:44px;font-weight:700}\n            .ax-brand p{margin:0;opacity:.95}\n            .ax-card{width:360px;background:#333;color:#fff;padding:22px;border-radius:6px;box-shadow:0 12px 28px rgba(0,0,0,.45)}\n            .ax-card h2{margin:0 0 10px;font-size:18px}\n            .ax-field{margin:10px 0}\n            .ax-label{display:block;font-size:13px;color:#ddd;margin-bottom:6px}\n            .ax-input{width:100%;padding:8px 10px;border:1px solid #777;border-radius:3px;background:#eee;color:#222}\n            .ax-actions{margin-top:14px;display:flex;justify-content:flex-end}\n            .ax-btn{background:#2d6cdf;color:#fff;border:none;padding:8px 14px;border-radius:3px;cursor:pointer}\n            .ax-btn:disabled{opacity:.6;cursor:not-allowed}\n            .ax-error{margin-top:10px;color:#ffb3b3;min-height:18px;font-size:13px}\n        </style>\n        <div class=\"ax-bg\" aria-hidden=\"true\"></div>\n        <div class=\"ax-wrap\">\n            <div class=\"ax-brand\">\n                <img alt=\"logo\" src=\"").concat(logoUrl, "\">\n                <div>\n                    <h1>Academix</h1>\n                    <p>Student Management Portal</p>\n                </div>\n            </div>\n            <div class=\"ax-card\">\n                <h2>LOGIN</h2>\n                <div class=\"ax-field\">\n                    <label class=\"ax-label\" for=\"ax-username\">UserName</label>\n                    <input class=\"ax-input\" id=\"ax-username\" autocomplete=\"username\" />\n                </div>\n                <div class=\"ax-field\">\n                    <label class=\"ax-label\" for=\"ax-password\">Password</label>\n                    <input type=\"password\" class=\"ax-input\" id=\"ax-password\" autocomplete=\"current-password\" />\n                </div>\n                <div class=\"ax-actions\">\n                    <button id=\"ax-submit\" class=\"ax-btn\">Sign In</button>\n                </div>\n                <div id=\"ax-error\" class=\"ax-error\"></div>\n            </div>\n        </div>\n    ");
+  rootEl.innerHTML = "\n        <style>\n            * { box-sizing: border-box; }\n            body, html { margin: 0; padding: 0; height: 100%; font-family: Arial, Helvetica, sans-serif; }\n\n            .ax-bg {\n                position: fixed;\n                inset: 0;\n                background: url('".concat(bgUrl, "') center/cover no-repeat;\n                filter: brightness(0.6);\n                z-index: -1;\n            }\n            .ax-wrap {\n                min-height: 100vh;\n                display: flex;\n                align-items: center;\n                justify-content: center;\n                position: relative;\n            }\n\n            .ax-brand {\n                position: absolute;\n                top: 60px;\n                left: 80px;\n                color: #fff;\n                display: flex;\n                align-items: center;\n                gap: 16px;\n            }\n            .ax-brand img { width: 70px; height: 70px; }\n            .ax-brand h1 { font-size: 48px; margin: 0; font-weight: 700; }\n            .ax-brand p { font-size: 18px; margin: 4px 0 0; opacity: 0.9; }\n\n            .ax-card {\n                background: rgba(0,0,0,0.75);\n                color: #fff;\n                padding: 28px 30px;\n                border-radius: 4px;\n                width: 320px;\n                box-shadow: 0 10px 30px rgba(0,0,0,0.6);\n            }\n            .ax-card h2 {\n                text-align: center;\n                font-size: 20px;\n                font-weight: bold;\n                margin: 0 0 16px;\n                letter-spacing: 1px;\n            }\n\n            .ax-field {\n                margin-bottom: 14px;\n            }\n            .ax-label {\n                display: block;\n                font-size: 14px;\n                margin-bottom: 4px;\n                color: #fff;\n            }\n            .ax-input {\n                width: 100%;\n                padding: 10px;\n                border: none;\n                border-radius: 3px;\n                font-size: 14px;\n                color: #111;\n            }\n            .ax-input:focus {\n                outline: 2px solid #2d6cdf;\n            }\n\n            .ax-actions {\n                text-align: center;\n                margin-top: 18px;\n            }\n            .ax-btn {\n                background: #2d6cdf;\n                color: #fff;\n                border: none;\n                padding: 10px 20px;\n                border-radius: 3px;\n                font-size: 14px;\n                cursor: pointer;\n                transition: background 0.2s;\n            }\n            .ax-btn:hover {\n                background: #1e5bb8;\n            }\n            .ax-btn:disabled {\n                opacity: 0.6;\n                cursor: not-allowed;\n            }\n\n            .ax-error {\n                margin-top: 10px;\n                color: #ffb3b3;\n                text-align: center;\n                font-size: 13px;\n                min-height: 18px;\n            }\n        </style>\n\n        <div class=\"ax-bg\"></div>\n        <div class=\"ax-wrap\">\n            <div class=\"ax-brand\">\n                <img src=\"").concat(logoUrl, "\" alt=\"logo\">\n                <div>\n                    <h1>Academix</h1>\n                    <p>Student Management Portal</p>\n                </div>\n            </div>\n\n            <div class=\"ax-card\">\n                <h2>LOGIN</h2>\n                <div class=\"ax-field\">\n                    <label class=\"ax-label\" for=\"ax-username\">UserName</label>\n                    <input class=\"ax-input\" id=\"ax-username\" autocomplete=\"username\" />\n                </div>\n                <div class=\"ax-field\">\n                    <label class=\"ax-label\" for=\"ax-password\">Password</label>\n                    <input type=\"password\" class=\"ax-input\" id=\"ax-password\" autocomplete=\"current-password\" />\n                </div>\n                <div class=\"ax-actions\">\n                    <button id=\"ax-submit\" class=\"ax-btn\">Sign in</button>\n                </div>\n                <div id=\"ax-error\" class=\"ax-error\"></div>\n            </div>\n        </div>\n    ");
   var $ = function $(sel) {
     return rootEl.querySelector(sel);
   };
@@ -27799,7 +27799,6 @@ function mountLogin(rootEl) {
           case 3:
             data = _context.v;
             if (res.ok && data.token) {
-              // persist token for subsequent API calls
               window.localStorage.setItem('academix_token', data.token);
               if (typeof options.onSuccess === 'function') options.onSuccess(data);
             } else {
@@ -28576,18 +28575,18 @@ function api(_x) {
   return _api.apply(this, arguments);
 }
 function _api() {
-  _api = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee8(path) {
+  _api = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee7(path) {
     var options,
       token,
       res,
       data,
-      _args8 = arguments;
-    return _regenerator().w(function (_context8) {
-      while (1) switch (_context8.n) {
+      _args7 = arguments;
+    return _regenerator().w(function (_context7) {
+      while (1) switch (_context7.n) {
         case 0:
-          options = _args8.length > 1 && _args8[1] !== undefined ? _args8[1] : {};
+          options = _args7.length > 1 && _args7[1] !== undefined ? _args7[1] : {};
           token = getTokenOrRedirect();
-          _context8.n = 1;
+          _context7.n = 1;
           return fetch(path, _objectSpread({
             headers: _objectSpread({
               'Accept': 'application/json',
@@ -28596,29 +28595,29 @@ function _api() {
             }, options.headers || {})
           }, options));
         case 1:
-          res = _context8.v;
+          res = _context7.v;
           if (!(res.status === 401)) {
-            _context8.n = 2;
+            _context7.n = 2;
             break;
           }
           window.location.href = '/';
-          return _context8.a(2, Promise.reject(new Error('Unauthorized')));
+          return _context7.a(2, Promise.reject(new Error('Unauthorized')));
         case 2:
-          _context8.n = 3;
+          _context7.n = 3;
           return res.json()["catch"](function () {
             return {};
           });
         case 3:
-          data = _context8.v;
+          data = _context7.v;
           if (res.ok) {
-            _context8.n = 4;
+            _context7.n = 4;
             break;
           }
           throw new Error(data.message || 'Request failed');
         case 4:
-          return _context8.a(2, data);
+          return _context7.a(2, data);
       }
-    }, _callee8);
+    }, _callee7);
   }));
   return _api.apply(this, arguments);
 }
@@ -28640,7 +28639,7 @@ function h(tag) {
 }
 function mountStudents(rootEl) {
   if (!rootEl) throw new Error('mountStudents: root element is required');
-  rootEl.innerHTML = "\n        <style>\n            .s-wrap{padding:16px;color:#eee}\n            .s-actions{display:flex;gap:8px;align-items:center;margin-bottom:12px}\n            .s-input{padding:6px 8px;border:1px solid #666;border-radius:4px;background:#111;color:#eee}\n            .s-btn{padding:6px 10px;background:#2d6cdf;color:#fff;border:none;border-radius:4px;cursor:pointer}\n            .s-table{width:100%;border-collapse:collapse;background:#222}\n            .s-table th,.s-table td{border:1px solid #444;padding:8px;font-size:14px}\n            .s-pill{padding:2px 6px;border-radius:10px;background:#444}\n            .s-small{font-size:12px}\n        </style>\n        <div class=\"s-wrap\">\n            <div class=\"s-actions\">\n                <input id=\"s-q\" class=\"s-input\" placeholder=\"Search name or email\" />\n                <button id=\"s-search\" class=\"s-btn\">Search</button>\n                <button id=\"s-add\" class=\"s-btn\">Add Student</button>\n                <button id=\"s-archived\" class=\"s-btn\" style=\"background:#666\">Show Archived</button>\n            </div>\n            <div id=\"s-error\" class=\"s-small\" style=\"color:#ffb3b3;min-height:16px\"></div>\n            <table class=\"s-table\">\n                <thead>\n                    <tr><th>Student Name</th><th>Department</th><th>Course</th><th>Year</th><th>Status</th><th>Action</th></tr>\n                </thead>\n                <tbody id=\"s-body\"><tr><td colspan=\"6\" class=\"s-small\">Loading\u2026</td></tr></tbody>\n            </table>\n            <div id=\"s-modal\" style=\"position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;align-items:center;justify-content:center;z-index:2000\">\n              <div style=\"width:920px;max-width:96vw;background:#e8e8e8;color:#111;border-radius:8px;padding:20px;box-shadow:0 20px 60px rgba(0,0,0,.5)\">\n                <h3 id=\"f-title\" style=\"margin:0 0 14px\">Add Student</h3>\n                <div style=\"display:grid;grid-template-columns:1fr 1fr;gap:14px 16px;align-items:center\">\n                  <div>\n                    <label style=\"display:block;font-size:12px;margin-bottom:4px\">Student ID</label>\n                    <input id=\"f-student_id\" class=\"s-input\" style=\"width:100%\" placeholder=\"optional\" />\n                  </div>\n                  <div>\n                    <label style=\"display:block;font-size:12px;margin-bottom:4px\">Date of Birth</label>\n                    <input id=\"f-dob\" type=\"date\" class=\"s-input\" style=\"width:100%\" />\n                  </div>\n                  <div>\n                    <label style=\"display:block;font-size:12px;margin-bottom:4px\">First Name</label>\n                    <input id=\"f-f_name\" class=\"s-input\" style=\"width:100%\" />\n                  </div>\n                  <div>\n                    <label style=\"display:block;font-size:12px;margin-bottom:4px\">Sex</label>\n                    <select id=\"f-sex\" class=\"s-input\" style=\"width:100%\">\n                      <option value=\"\">Select</option>\n                      <option>Male</option>\n                      <option>Female</option>\n                    </select>\n                  </div>\n                  <div>\n                    <label style=\"display:block;font-size:12px;margin-bottom:4px\">Middle Name</label>\n                    <input id=\"f-m_name\" class=\"s-input\" style=\"width:100%\" />\n                  </div>\n                  <div>\n                    <label style=\"display:block;font-size:12px;margin-bottom:4px\">Phone Number</label>\n                    <input id=\"f-phone\" class=\"s-input\" style=\"width:100%\" />\n                  </div>\n                  <div>\n                    <label style=\"display:block;font-size:12px;margin-bottom:4px\">Last Name</label>\n                    <input id=\"f-l_name\" class=\"s-input\" style=\"width:100%\" />\n                  </div>\n                  <div>\n                    <label style=\"display:block;font-size:12px;margin-bottom:4px\">Email Address</label>\n                    <input id=\"f-email\" type=\"email\" class=\"s-input\" style=\"width:100%\" />\n                  </div>\n                  <div>\n                    <label style=\"display:block;font-size:12px;margin-bottom:4px\">Suffix</label>\n                    <input id=\"f-suffix\" class=\"s-input\" style=\"width:100%\" />\n                  </div>\n                  <div>\n                    <label style=\"display:block;font-size:12px;margin-bottom:4px\">Address</label>\n                    <input id=\"f-address\" class=\"s-input\" style=\"width:100%\" />\n                  </div>\n                  <div>\n                    <label style=\"display:block;font-size:12px;margin-bottom:4px\">Department</label>\n                    <select id=\"f-department\" class=\"s-input\" style=\"width:100%\"><option value=\"\">Loading\u2026</option></select>\n                  </div>\n                  <div>\n                    <label style=\"display:block;font-size:12px;margin-bottom:4px\">Status</label>\n                    <select id=\"f-status\" class=\"s-input\" style=\"width:100%\">\n                      <option value=\"active\">Active</option>\n                      <option value=\"inactive\">Inactive</option>\n                    </select>\n                  </div>\n                  <div>\n                    <label style=\"display:block;font-size:12px;margin-bottom:4px\">Course</label>\n                    <select id=\"f-course\" class=\"s-input\" style=\"width:100%\"><option value=\"\">Loading\u2026</option></select>\n                  </div>\n                  <div>\n                    <label style=\"display:block;font-size:12px;margin-bottom:4px\">Academic Year</label>\n                    <select id=\"f-ay\" class=\"s-input\" style=\"width:100%\"><option value=\"\">Loading\u2026</option></select>\n                  </div>\n                  <div>\n                    <label style=\"display:block;font-size:12px;margin-bottom:4px\">Year Level</label>\n                    <input id=\"f-year\" class=\"s-input\" style=\"width:100%\" placeholder=\"e.g., 1st, 2nd, 3rd\" />\n                  </div>\n                </div>\n                <div id=\"f-error\" style=\"color:#b00020;font-size:12px;min-height:16px;margin-top:8px;text-align:center\"></div>\n                <div style=\"display:flex;gap:12px;justify-content:center;margin-top:10px\">\n                  <button id=\"f-cancel\" class=\"s-btn\" style=\"background:#666\">Cancel</button>\n                  <button id=\"f-save\" class=\"s-btn\">Add</button>\n                </div>\n              </div>\n            </div>\n        </div>\n    ";
+  rootEl.innerHTML = "\n        <style>\n            .f-wrap{padding:18px;color:#fff;font-family:Arial,Helvetica,sans-serif}\n            .f-topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}\n            .f-title{margin:0;font-size:24px;font-weight:700}\n            .f-actions{display:flex;gap:8px;align-items:center}\n            .f-input{padding:8px 12px;border:1px solid #666;border-radius:4px;background:#2b2b2b;color:#fff;font-size:14px}\n            .f-btn{padding:8px 16px;background:#2d6cdf;color:#fff;border:none;border-radius:4px;cursor:pointer;font-size:14px}\n            .f-btn:hover{background:#1e5bb8}\n            .f-btn-outline{background:transparent;border:1px solid #666;color:#ddd}\n            .f-btn-outline:hover{background:#333}\n            .f-table{width:100%;border-collapse:collapse;background:#2b2b2b;border-radius:8px;overflow:hidden}\n            .f-table th{background:#333;padding:12px;text-align:left;font-weight:600;border-bottom:1px solid #444}\n            .f-table td{padding:12px;border-bottom:1px solid #444}\n            .f-table tr:hover{background:#333}\n            .f-pill{padding:4px 8px;border-radius:12px;background:#444;font-size:12px}\n            .f-small{font-size:12px}\n            .f-modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);display:none;align-items:center;justify-content:center;z-index:2000}\n            .f-modal{width:900px;max-width:95vw;background:#e8e8e8;color:#111;border-radius:8px;padding:24px;box-shadow:0 20px 60px rgba(0,0,0,.5)}\n            .f-modal h3{margin:0 0 16px;font-size:20px;font-weight:600}\n            .f-modal-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px 20px;align-items:start}\n            .f-modal-field{margin-bottom:12px}\n            .f-modal-label{display:block;font-size:13px;margin-bottom:4px;font-weight:500}\n            .f-modal-input{width:100%;padding:8px 12px;border:1px solid #ccc;border-radius:4px;background:#fff;color:#111;font-size:14px}\n            .f-modal-buttons{display:flex;gap:12px;justify-content:center;margin-top:20px}\n            .f-modal-btn{padding:10px 20px;border:none;border-radius:4px;cursor:pointer;font-size:14px;font-weight:500}\n            .f-modal-cancel{background:#666;color:#fff}\n            .f-modal-save{background:#2d6cdf;color:#fff}\n        </style>\n        <div class=\"f-wrap\">\n            <div class=\"f-topbar\">\n                <h2 class=\"f-title\">Students</h2>\n                <div class=\"f-actions\">\n                    <input id=\"s-q\" class=\"f-input\" placeholder=\"Search name or email\" style=\"width:200px\" />\n                    <button id=\"s-search\" class=\"f-btn\">Search</button>\n                    <button id=\"s-add\" class=\"f-btn\">Add Student</button>\n                    <button id=\"s-archived\" class=\"f-btn f-btn-outline\">Archived</button>\n                </div>\n            </div>\n            <div id=\"s-error\" class=\"f-small\" style=\"color:#ffb3b3;min-height:16px;margin-bottom:12px\"></div>\n            <table class=\"f-table\">\n                <thead>\n                    <tr><th>Name</th><th>Department</th><th>Course</th><th>Year</th><th>Status</th><th>Action</th></tr>\n                </thead>\n                <tbody id=\"s-body\"><tr><td colspan=\"6\" class=\"f-small\">Loading\u2026</td></tr></tbody>\n            </table>\n            <div id=\"s-modal\" class=\"f-modal-overlay\">\n              <div class=\"f-modal\">\n                <h3 id=\"sm-title\">Add Student</h3>\n                <div class=\"f-modal-grid\">\n                  <div class=\"f-modal-field\">\n                    <label class=\"f-modal-label\">Student ID</label>\n                    <input id=\"sm-student_id\" class=\"f-modal-input\" placeholder=\"optional\" />\n                  </div>\n                  <div class=\"f-modal-field\">\n                    <label class=\"f-modal-label\">Date of Birth</label>\n                    <input id=\"sm-dob\" type=\"date\" class=\"f-modal-input\" />\n                  </div>\n                  <div class=\"f-modal-field\">\n                    <label class=\"f-modal-label\">First Name</label>\n                    <input id=\"sm-f_name\" class=\"f-modal-input\" />\n                  </div>\n                  <div class=\"f-modal-field\">\n                    <label class=\"f-modal-label\">Sex</label>\n                    <select id=\"sm-sex\" class=\"f-modal-input\">\n                      <option value=\"\">Select</option>\n                      <option>Male</option>\n                      <option>Female</option>\n                    </select>\n                  </div>\n                  <div class=\"f-modal-field\">\n                    <label class=\"f-modal-label\">Middle Name</label>\n                    <input id=\"sm-m_name\" class=\"f-modal-input\" />\n                  </div>\n                  <div class=\"f-modal-field\">\n                    <label class=\"f-modal-label\">Phone Number</label>\n                    <input id=\"sm-phone\" class=\"f-modal-input\" />\n                  </div>\n                  <div class=\"f-modal-field\">\n                    <label class=\"f-modal-label\">Last Name</label>\n                    <input id=\"sm-l_name\" class=\"f-modal-input\" />\n                  </div>\n                  <div class=\"f-modal-field\">\n                    <label class=\"f-modal-label\">Email Address</label>\n                    <input id=\"sm-email\" type=\"email\" class=\"f-modal-input\" />\n                  </div>\n                  <div class=\"f-modal-field\">\n                    <label class=\"f-modal-label\">Suffix</label>\n                    <input id=\"sm-suffix\" class=\"f-modal-input\" />\n                  </div>\n                  <div class=\"f-modal-field\">\n                    <label class=\"f-modal-label\">Address</label>\n                    <input id=\"sm-address\" class=\"f-modal-input\" />\n                  </div>\n                  <div class=\"f-modal-field\">\n                    <label class=\"f-modal-label\">Department</label>\n                    <select id=\"sm-department\" class=\"f-modal-input\"><option value=\"\">Loading\u2026</option></select>\n                  </div>\n                  <div class=\"f-modal-field\">\n                    <label class=\"f-modal-label\">Course</label>\n                    <select id=\"sm-course\" class=\"f-modal-input\"><option value=\"\">Loading\u2026</option></select>\n                  </div>\n                  <div class=\"f-modal-field\">\n                    <label class=\"f-modal-label\">Academic Year</label>\n                    <select id=\"sm-ay\" class=\"f-modal-input\"><option value=\"\">Loading\u2026</option></select>\n                  </div>\n                  <div class=\"f-modal-field\">\n                    <label class=\"f-modal-label\">Year Level</label>\n                    <input id=\"sm-year\" class=\"f-modal-input\" placeholder=\"e.g., 1st, 2nd, 3rd\" />\n                  </div>\n                </div>\n                <div id=\"sm-error\" style=\"color:#b00020;font-size:12px;min-height:16px;margin-top:8px;text-align:center\"></div>\n                <div class=\"f-modal-buttons\">\n                  <button id=\"sm-cancel\" class=\"f-modal-btn f-modal-cancel\">Cancel</button>\n                  <button id=\"sm-save\" class=\"f-modal-btn f-modal-save\">Add</button>\n                </div>\n              </div>\n            </div>\n        </div>\n    ";
   var errorBox = rootEl.querySelector('#s-error');
   var qEl = rootEl.querySelector('#s-q');
   var archivedBtn = rootEl.querySelector('#s-archived');
@@ -28663,10 +28662,10 @@ function mountStudents(rootEl) {
   var qs = function qs(id) {
     return modal.querySelector(id);
   };
-  qs('#f-cancel').addEventListener('click', function () {
+  qs('#sm-cancel').addEventListener('click', function () {
     return closeModal();
   });
-  qs('#f-save').addEventListener('click', saveModal);
+  qs('#sm-save').addEventListener('click', saveModal);
   function openModal() {
     return _openModal.apply(this, arguments);
   }
@@ -28683,10 +28682,9 @@ function mountStudents(rootEl) {
             return ensureOptions();
           case 1:
             modal.style.display = 'flex';
-            qs('#f-title').textContent = init ? 'Edit Student' : 'Add Student';
-            qs('#f-save').textContent = init ? 'Save' : 'Add';
-            // reset
-            ['#f-student_id', '#f-f_name', '#f-m_name', '#f-l_name', '#f-suffix', '#f-dob', '#f-sex', '#f-phone', '#f-email', '#f-address', '#f-department', '#f-status', '#f-course', '#f-ay', '#f-year'].forEach(function (sel) {
+            qs('#sm-title').textContent = init ? 'Edit Student' : 'Add Student';
+            qs('#sm-save').textContent = init ? 'Save' : 'Add';
+            ['#sm-student_id', '#sm-f_name', '#sm-m_name', '#sm-l_name', '#sm-suffix', '#sm-dob', '#sm-sex', '#sm-phone', '#sm-email', '#sm-address', '#sm-department', '#sm-course', '#sm-ay', '#sm-year'].forEach(function (sel) {
               var el = qs(sel);
               if (el.tagName === 'SELECT') {
                 el.value = '';
@@ -28695,21 +28693,20 @@ function mountStudents(rootEl) {
               }
             });
             if (init) {
-              if (init.student_id) qs('#f-student_id').value = init.student_id;
-              qs('#f-f_name').value = init.f_name || '';
-              qs('#f-m_name').value = init.m_name || '';
-              qs('#f-l_name').value = init.l_name || '';
-              qs('#f-suffix').value = init.suffix || '';
-              qs('#f-dob').value = init.date_of_birth || '';
-              qs('#f-sex').value = init.sex || '';
-              qs('#f-phone').value = init.phone_number || '';
-              qs('#f-email').value = init.email_address || '';
-              qs('#f-address').value = init.address || '';
-              qs('#f-department').value = init.department_id != null ? String(init.department_id) : '';
-              qs('#f-status').value = init.status || 'active';
-              qs('#f-course').value = init.course_id != null ? String(init.course_id) : '';
-              qs('#f-ay').value = init.academic_year_id != null ? String(init.academic_year_id) : '';
-              qs('#f-year').value = init.year_level || '';
+              if (init.student_id) qs('#sm-student_id').value = init.student_id;
+              qs('#sm-f_name').value = init.f_name || '';
+              qs('#sm_m_name').value = init.m_name || '';
+              qs('#sm-l_name').value = init.l_name || '';
+              qs('#sm-suffix').value = init.suffix || '';
+              qs('#sm-dob').value = init.date_of_birth || '';
+              qs('#sm-sex').value = init.sex || '';
+              qs('#sm-phone').value = init.phone_number || '';
+              qs('#sm-email').value = init.email_address || '';
+              qs('#sm-address').value = init.address || '';
+              qs('#sm-department').value = init.department_id || '';
+              qs('#sm-course').value = init.course_id || '';
+              qs('#sm-ay').value = init.academic_year_id || '';
+              qs('#sm-year').value = init.year_level || '';
               modal.dataset.editId = init.student_id;
             } else {
               delete modal.dataset.editId;
@@ -28726,30 +28723,29 @@ function mountStudents(rootEl) {
   }
   function saveModal() {
     return _saveModal.apply(this, arguments);
-  } // Options caches
+  } // Option cache
   function _saveModal() {
     _saveModal = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee2() {
       var err, payload, _t;
       return _regenerator().w(function (_context2) {
         while (1) switch (_context2.p = _context2.n) {
           case 0:
-            err = qs('#f-error');
+            err = qs('#sm-error');
             err.textContent = '';
             payload = {
-              f_name: qs('#f-f_name').value.trim(),
-              m_name: qs('#f-m_name').value.trim() || null,
-              l_name: qs('#f-l_name').value.trim(),
-              suffix: qs('#f-suffix').value.trim() || null,
-              date_of_birth: qs('#f-dob').value || null,
-              sex: qs('#f-sex').value || null,
-              phone_number: qs('#f-phone').value || null,
-              email_address: qs('#f-email').value || null,
-              address: qs('#f-address').value || null,
-              status: qs('#f-status').value || 'active',
-              department_id: Number(qs('#f-department').value),
-              course_id: Number(qs('#f-course').value),
-              academic_year_id: Number(qs('#f-ay').value),
-              year_level: qs('#f-year').value.trim() || '1st'
+              f_name: qs('#sm-f_name').value.trim(),
+              m_name: qs('#sm-m_name').value.trim() || null,
+              l_name: qs('#sm-l_name').value.trim(),
+              suffix: qs('#sm-suffix').value.trim() || null,
+              date_of_birth: qs('#sm-dob').value || null,
+              sex: qs('#sm-sex').value || null,
+              phone_number: qs('#sm-phone').value || null,
+              email_address: qs('#sm-email').value || null,
+              address: qs('#sm-address').value || null,
+              department_id: Number(qs('#sm-department').value),
+              course_id: Number(qs('#sm-course').value),
+              academic_year_id: Number(qs('#sm-ay').value),
+              year_level: qs('#sm-year').value.trim() || '1st'
             };
             if (!(!payload.f_name || !payload.l_name)) {
               _context2.n = 1;
@@ -28762,7 +28758,7 @@ function mountStudents(rootEl) {
               _context2.n = 2;
               break;
             }
-            err.textContent = 'Please select Department, Course and Academic Year.';
+            err.textContent = 'Please select Department, Course, and Academic Year.';
             return _context2.a(2);
           case 2:
             _context2.p = 2;
@@ -28808,7 +28804,7 @@ function mountStudents(rootEl) {
   }
   function _ensureOptions() {
     _ensureOptions = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee3() {
-      var departments, courses, years, cs, it, depId, bscs, bsit, y, fill, _t2, _t3, _t4, _t5, _t6, _t7;
+      var departments, courses, years, cs, it, fill, _t2, _t3, _t4, _t5;
       return _regenerator().w(function (_context3) {
         while (1) switch (_context3.p = _context3.n) {
           case 0:
@@ -28872,91 +28868,31 @@ function mountStudents(rootEl) {
             _context3.p = 12;
             _t4 = _context3.v;
           case 13:
-            if (!(!Array.isArray(courses) || courses.length === 0)) {
-              _context3.n = 18;
-              break;
-            }
-            depId = departments[0] && (departments[0].department_id || departments[0].id) || null;
-            if (!depId) {
-              _context3.n = 18;
-              break;
-            }
-            _context3.p = 14;
-            _context3.n = 15;
-            return api('/api/settings/courses', {
-              method: 'POST',
-              body: JSON.stringify({
-                course_name: 'BSCS',
-                department_id: depId
-              })
-            });
-          case 15:
-            bscs = _context3.v;
-            _context3.n = 16;
-            return api('/api/settings/courses', {
-              method: 'POST',
-              body: JSON.stringify({
-                course_name: 'BSIT',
-                department_id: depId
-              })
-            });
-          case 16:
-            bsit = _context3.v;
-            courses = [bscs, bsit].filter(Boolean);
-            _context3.n = 18;
-            break;
-          case 17:
-            _context3.p = 17;
-            _t5 = _context3.v;
-            courses = [];
-          case 18:
-            _context3.p = 18;
-            _context3.n = 19;
+            _context3.p = 13;
+            _context3.n = 14;
             return api('/api/settings/academic-years');
-          case 19:
+          case 14:
             years = _context3.v;
-            _context3.n = 21;
+            _context3.n = 16;
             break;
-          case 20:
-            _context3.p = 20;
-            _t6 = _context3.v;
-          case 21:
-            if (!(!Array.isArray(years) || years.length === 0)) {
-              _context3.n = 25;
-              break;
-            }
-            _context3.p = 22;
-            _context3.n = 23;
-            return api('/api/settings/academic-years', {
-              method: 'POST',
-              body: JSON.stringify({
-                school_year: '2025-2026'
-              })
-            });
-          case 23:
-            y = _context3.v;
-            years = [y];
-            _context3.n = 25;
-            break;
-          case 24:
-            _context3.p = 24;
-            _t7 = _context3.v;
-            years = [];
-          case 25:
+          case 15:
+            _context3.p = 15;
+            _t5 = _context3.v;
+          case 16:
             fill = function fill(sel, rows, id, label) {
               var el = qs(sel);
               el.innerHTML = '<option value="">Select</option>' + rows.map(function (r) {
-                return "<option value=\"".concat(r[id], "\">").concat(r[label] || r[id], "</option>");
+                return "<option value=\"".concat(r[id], "\">").concat(r[label], "</option>");
               }).join('');
             };
-            fill('#f-department', departments, departments[0] && ('department_id' in departments[0] ? 'department_id' : 'id') || 'department_id', 'department_name');
-            fill('#f-course', courses, courses[0] && ('course_id' in courses[0] ? 'course_id' : 'id') || 'course_id', 'course_name');
-            fill('#f-ay', years, years[0] && ('academic_year_id' in years[0] ? 'academic_year_id' : 'id') || 'academic_year_id', 'school_year');
+            if (departments.length) fill('#sm-department', departments, 'department_id', 'department_name');
+            if (courses.length) fill('#sm-course', courses, 'course_id', 'course_name');
+            if (years.length) fill('#sm-ay', years, 'academic_year_id', 'school_year');
             optionsLoaded = true;
-          case 26:
+          case 17:
             return _context3.a(2);
         }
-      }, _callee3, null, [[22, 24], [18, 20], [14, 17], [10, 12], [6, 9], [2, 4]]);
+      }, _callee3, null, [[13, 15], [10, 12], [6, 9], [2, 4]]);
     }));
     return _ensureOptions.apply(this, arguments);
   }
@@ -28970,7 +28906,7 @@ function mountStudents(rootEl) {
         qVal,
         data,
         _args4 = arguments,
-        _t8;
+        _t6;
       return _regenerator().w(function (_context4) {
         while (1) switch (_context4.p = _context4.n) {
           case 0:
@@ -28991,8 +28927,8 @@ function mountStudents(rootEl) {
             break;
           case 3:
             _context4.p = 3;
-            _t8 = _context4.v;
-            errorBox.textContent = _t8.message;
+            _t6 = _context4.v;
+            errorBox.textContent = _t6.message;
           case 4:
             return _context4.a(2);
         }
@@ -29015,35 +28951,33 @@ function mountStudents(rootEl) {
       var tr = h('tr', {}, [h('td', {
         text: "".concat(stu.f_name || '', " ").concat(stu.l_name || '').trim()
       }), h('td', {
-        text: ((_stu$department = stu.department) === null || _stu$department === void 0 ? void 0 : _stu$department.department_name) || stu.department_name || stu.department_id || ''
+        text: ((_stu$department = stu.department) === null || _stu$department === void 0 ? void 0 : _stu$department.department_name) || stu.department_name || ''
       }), h('td', {
-        text: ((_stu$course = stu.course) === null || _stu$course === void 0 ? void 0 : _stu$course.course_name) || stu.course_name || stu.course_id || ''
+        text: ((_stu$course = stu.course) === null || _stu$course === void 0 ? void 0 : _stu$course.course_name) || stu.course_name || ''
       }), h('td', {
-        text: ((_stu$academic_year = stu.academic_year) === null || _stu$academic_year === void 0 ? void 0 : _stu$academic_year.school_year) || stu.academic_year || stu.academic_year_id || ''
+        text: ((_stu$academic_year = stu.academic_year) === null || _stu$academic_year === void 0 ? void 0 : _stu$academic_year.school_year) || ''
       }), h('td', {}, [h('span', {
-        "class": 's-pill s-small',
+        "class": 'f-pill f-small',
         text: stu.archived_at ? 'Archived' : 'Active'
       })]), h('td', {}, [h('button', {
-        "class": 's-btn s-small',
+        "class": 'f-btn f-small',
         'data-action': 'edit',
         'data-id': stu.student_id
       }, 'Edit'), h('span', {
         text: ' '
       }), showingArchived ? h('button', {
-        "class": 's-btn s-small',
+        "class": 'f-btn f-small',
         style: 'background:#4caf50',
         'data-action': 'restore',
         'data-id': stu.student_id
       }, 'Restore') : h('button', {
-        "class": 's-btn s-small',
+        "class": 'f-btn f-small',
         style: 'background:#d32f2f',
         'data-action': 'delete',
         'data-id': stu.student_id
       }, 'Delete')])]);
       tbody.appendChild(tr);
     });
-
-    // Add event listeners for Edit/Delete/Restore buttons
     tbody.addEventListener('click', function (e) {
       if (e.target.dataset.action === 'edit') {
         var studentId = e.target.dataset.id;
@@ -29066,52 +29000,53 @@ function mountStudents(rootEl) {
       }
     });
   }
-  function promptStudent() {
-    var init = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-    var f = prompt('First name:', init.f_name || '');
-    if (f == null) return null;
-    var l = prompt('Last name:', init.l_name || '');
-    if (l == null) return null;
-    var dept = prompt('Department ID:', init.department_id || '');
-    if (dept == null) return null;
-    var course = prompt('Course ID:', init.course_id || '');
-    if (course == null) return null;
-    var ay = prompt('Academic Year ID:', init.academic_year_id || '');
-    if (ay == null) return null;
-    return {
-      f_name: f.trim(),
-      l_name: l.trim(),
-      department_id: Number(dept),
-      course_id: Number(course),
-      academic_year_id: Number(ay)
-    };
-  }
-  function onEdit(_x2) {
-    return _onEdit.apply(this, arguments);
-  }
-  function _onEdit() {
-    _onEdit = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee5(stu) {
-      return _regenerator().w(function (_context5) {
-        while (1) switch (_context5.n) {
-          case 0:
-            openModal(stu);
-          case 1:
-            return _context5.a(2);
-        }
-      }, _callee5);
-    }));
-    return _onEdit.apply(this, arguments);
-  }
-  function onArchive(_x3) {
+  function onArchive(_x2) {
     return _onArchive.apply(this, arguments);
   }
   function _onArchive() {
-    _onArchive = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee6(stu) {
-      var _t9;
+    _onArchive = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee5(student) {
+      var _t7;
+      return _regenerator().w(function (_context5) {
+        while (1) switch (_context5.p = _context5.n) {
+          case 0:
+            if (confirm('Archive this student?')) {
+              _context5.n = 1;
+              break;
+            }
+            return _context5.a(2);
+          case 1:
+            _context5.p = 1;
+            _context5.n = 2;
+            return api("/api/students/".concat(student.student_id, "/archive"), {
+              method: 'POST'
+            });
+          case 2:
+            _context5.n = 3;
+            return load();
+          case 3:
+            _context5.n = 5;
+            break;
+          case 4:
+            _context5.p = 4;
+            _t7 = _context5.v;
+            errorBox.textContent = _t7.message;
+          case 5:
+            return _context5.a(2);
+        }
+      }, _callee5, null, [[1, 4]]);
+    }));
+    return _onArchive.apply(this, arguments);
+  }
+  function onRestore(_x3) {
+    return _onRestore.apply(this, arguments);
+  }
+  function _onRestore() {
+    _onRestore = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee6(student) {
+      var _t8;
       return _regenerator().w(function (_context6) {
         while (1) switch (_context6.p = _context6.n) {
           case 0:
-            if (confirm('Archive this student?')) {
+            if (confirm('Restore this archived student?')) {
               _context6.n = 1;
               break;
             }
@@ -29119,7 +29054,7 @@ function mountStudents(rootEl) {
           case 1:
             _context6.p = 1;
             _context6.n = 2;
-            return api("/api/students/".concat(stu.student_id, "/archive"), {
+            return api("/api/students/".concat(student.student_id, "/restore"), {
               method: 'POST'
             });
           case 2:
@@ -29130,49 +29065,12 @@ function mountStudents(rootEl) {
             break;
           case 4:
             _context6.p = 4;
-            _t9 = _context6.v;
-            errorBox.textContent = _t9.message;
+            _t8 = _context6.v;
+            errorBox.textContent = _t8.message;
           case 5:
             return _context6.a(2);
         }
       }, _callee6, null, [[1, 4]]);
-    }));
-    return _onArchive.apply(this, arguments);
-  }
-  function onRestore(_x4) {
-    return _onRestore.apply(this, arguments);
-  }
-  function _onRestore() {
-    _onRestore = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee7(stu) {
-      var _t0;
-      return _regenerator().w(function (_context7) {
-        while (1) switch (_context7.p = _context7.n) {
-          case 0:
-            if (confirm('Restore this student?')) {
-              _context7.n = 1;
-              break;
-            }
-            return _context7.a(2);
-          case 1:
-            _context7.p = 1;
-            _context7.n = 2;
-            return api("/api/students/".concat(stu.student_id, "/restore"), {
-              method: 'POST'
-            });
-          case 2:
-            _context7.n = 3;
-            return load();
-          case 3:
-            _context7.n = 5;
-            break;
-          case 4:
-            _context7.p = 4;
-            _t0 = _context7.v;
-            errorBox.textContent = _t0.message;
-          case 5:
-            return _context7.a(2);
-        }
-      }, _callee7, null, [[1, 4]]);
     }));
     return _onRestore.apply(this, arguments);
   }
