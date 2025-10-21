@@ -59,7 +59,7 @@ export function mountDashboard(rootEl) {
             </div>
           </div>
           <nav class="menu">
-            <a href="dashboard.html">Dashboard</a>
+            <a href="dashboard">Dashboard</a>
             <a href="#" id="menu-students">Students</a>
             <a href="#" id="menu-faculty">Faculty</a>
             <a href="#" id="menu-report">Report</a>
