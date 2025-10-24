@@ -77,4 +77,10 @@ Route::middleware('auth:sanctum')->group(function () {
     // merged report endpoints
     Route::get('/reports/search', [\App\Http\Controllers\Api\ReportController::class, 'search']);
     Route::get('/reports/person', [\App\Http\Controllers\Api\ReportController::class, 'person']);
+        Route::post('/reports/import', [\App\Http\Controllers\Api\ReportController::class, 'import']);
 });
+
+    // Debug sample route: only register when app is local or debug is enabled to avoid exposing in production
+    if (app()->environment('local') || config('app.debug')) {
+        Route::get('/reports/debug-sample', [\App\Http\Controllers\Api\ReportController::class, 'debugSample']);
+    }

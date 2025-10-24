@@ -290,8 +290,9 @@ export function mountFaculty(rootEl) {
                     await api(`/api/faculty/${modal.dataset.editId}`, { method:'PUT', body: JSON.stringify(payload) });
                     notify('Successfully updated', 'Faculty', 'success');
                 } else {
-                    await api('/api/faculty', { method:'POST', body: JSON.stringify(payload) });
+                    const created = await api('/api/faculty', { method:'POST', body: JSON.stringify(payload) });
                     notify('Successfully added', 'Faculty', 'success');
+                    try { window.dispatchEvent(new CustomEvent('faculty:created', { detail: created })); } catch(e) {}
                 }
                 closeModal();
                 await load();

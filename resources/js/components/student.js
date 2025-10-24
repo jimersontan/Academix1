@@ -315,8 +315,10 @@ export function mountStudents(rootEl) {
                     await api(`/api/students/${modal.dataset.editId}`, { method:'PUT', body: JSON.stringify(payload) });
                     notify('Successfully updated', 'Student', 'success');
                 } else {
-                    await api('/api/students', { method:'POST', body: JSON.stringify(payload) });
+                    const created = await api('/api/students', { method:'POST', body: JSON.stringify(payload) });
+                    // notify and emit global event so other components (Reports) can react
                     notify('Successfully added', 'Student', 'success');
+                    try { window.dispatchEvent(new CustomEvent('student:created', { detail: created })); } catch(e) {}
                 }
                 closeModal();
                 await load();

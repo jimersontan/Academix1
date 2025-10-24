@@ -11,15 +11,19 @@ class ReportController extends Controller
 {
     public function studentsByCourse(Request $request)
     {
-        $courseId = $request->integer('course_id');
-        $data = StudentProfile::where('course_id', $courseId)->whereNull('archived_at')->get();
+        $courseId = $request->input('course_id') !== null ? (int)$request->input('course_id') : null;
+        $query = StudentProfile::query()->whereNull('archived_at');
+        if ($courseId) $query->where('course_id', $courseId);
+        $data = $query->get();
         return response()->json(['data' => $data]);
     }
 
     public function facultyByDepartment(Request $request)
     {
-        $deptId = $request->integer('department_id');
-        $data = FacultyProfile::where('department_id', $deptId)->whereNull('deleted_at')->get();
+        $deptId = $request->input('department_id') !== null ? (int)$request->input('department_id') : null;
+        $query = FacultyProfile::query()->whereNull('deleted_at');
+        if ($deptId) $query->where('department_id', $deptId);
+        $data = $query->get();
         return response()->json(['data' => $data]);
     }
 }

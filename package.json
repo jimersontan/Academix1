@@ -24,6 +24,7 @@
         "sass-loader": "^11.0.1"
     },
     "dependencies": {
-        "recharts": "^3.3.0"
+        "recharts": "^3.3.0",
+        "jszip": "^3.10.1"
     }
 }
