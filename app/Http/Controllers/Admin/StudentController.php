@@ -86,6 +86,8 @@ class StudentController extends Controller
     {
         $student = StudentProfile::findOrFail($id);
         $student->archived_at = now();
+        // mark as inactive for dashboard and other logic
+        $student->status = 'inactive';
         $student->save();
         return response()->json(['ok'=>true]);
     }
@@ -94,8 +96,18 @@ class StudentController extends Controller
     {
         $student = StudentProfile::findOrFail($id);
         $student->archived_at = null;
+        // restore to active status
+        $student->status = 'active';
         $student->save();
         return response()->json(['ok'=>true]);
+    }
+
+    // permanent delete
+    public function destroy(int $id)
+    {
+        $student = StudentProfile::findOrFail($id);
+        $student->delete();
+        return response()->json(['ok' => true]);
     }
 }
 

@@ -38,6 +38,8 @@ function h(tag, attrs = {}, children = []) {
     return el;
 }
 
+import notify from './notify';
+
 export function mountSettings(rootEl) {
     if (!rootEl) throw new Error('mountSettings: root element is required');
 
@@ -58,10 +60,17 @@ export function mountSettings(rootEl) {
             .st-btn:hover{background:#1e5bb8}
             .st-btn-outline{background:transparent;border:1px solid #666;color:#ddd}
             .st-btn-outline:hover{background:#333}
-            .st-table{width:100%;border-collapse:collapse;background:#333;border-radius:8px;overflow:hidden}
-            .st-table th{background:#444;padding:12px;text-align:left;font-weight:600;border-bottom:1px solid #555}
-            .st-table td{padding:12px;border-bottom:1px solid #555}
-            .st-table tr:hover{background:#444}
+            .st-table{width:100%;border-collapse:collapse;border-spacing:0;background:transparent}
+            .st-table thead tr{background:#444}
+            .st-table thead th{padding:12px 14px;text-align:left;font-weight:600;color:#fff}
+            .st-table thead th:first-child{border-radius:8px 0 0 8px}
+            .st-table thead th:last-child{border-radius:0 8px 8px 0}
+            .st-table tbody tr{background:#333}
+            .st-table td{padding:14px 12px;border:none;vertical-align:middle}
+            .st-table tbody tr:first-child td:first-child{border-top-left-radius:8px}
+            .st-table tbody tr:first-child td:last-child{border-top-right-radius:8px}
+            .st-table tbody tr:last-child td:first-child{border-bottom-left-radius:8px}
+            .st-table tbody tr:last-child td:last-child{border-bottom-right-radius:8px}
             .st-pill{padding:4px 8px;border-radius:12px;background:#555;font-size:12px}
             .st-small{font-size:12px}
             .st-error{color:#ffb3b3;font-size:12px;min-height:16px;margin-bottom:12px}
@@ -76,7 +85,7 @@ export function mountSettings(rootEl) {
             .st-modal-cancel{background:#666;color:#fff}
             .st-modal-save{background:#2d6cdf;color:#fff}
         </style>
-        <div class="st-wrap">
+    <div class="st-wrap" style="padding-top:32px">
             <div class="st-topbar">
                 <h2 class="st-title">Settings</h2>
             </div>
@@ -97,7 +106,12 @@ export function mountSettings(rootEl) {
                     <div id="st-error-courses" class="st-error"></div>
                     <table class="st-table">
                         <thead>
-                            <tr><th>Course Name</th><th>Department</th><th>Status</th><th>Action</th></tr>
+                            <tr>
+                        <th>Course Name</th>
+                        <th>Department</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                            </tr>
                         </thead>
                         <tbody id="st-body-courses"><tr><td colspan="4" class="st-small">Loading…</td></tr></tbody>
                     </table>
@@ -110,7 +124,11 @@ export function mountSettings(rootEl) {
                     <div id="st-error-departments" class="st-error"></div>
                     <table class="st-table">
                         <thead>
-                            <tr><th>Department Name</th><th>Status</th><th>Action</th></tr>
+                            <tr>
+                                <th>Department Name</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
                         </thead>
                         <tbody id="st-body-departments"><tr><td colspan="3" class="st-small">Loading…</td></tr></tbody>
                     </table>
@@ -123,7 +141,11 @@ export function mountSettings(rootEl) {
                     <div id="st-error-academic-years" class="st-error"></div>
                     <table class="st-table">
                         <thead>
-                            <tr><th>School Year</th><th>Status</th><th>Action</th></tr>
+                            <tr>
+                                <th>School Year</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
                         </thead>
                         <tbody id="st-body-academic-years"><tr><td colspan="3" class="st-small">Loading…</td></tr></tbody>
                     </table>
@@ -221,6 +243,27 @@ export function mountSettings(rootEl) {
     setupModal('department');
     setupModal('academic-year');
 
+    // When the top-level department filter exists, update the top-level course filter to only show courses for that department
+    const topDeptSelect = rootEl.querySelector('#s-department-filter');
+    const topCourseSelect = rootEl.querySelector('#s-course-filter');
+    if (topDeptSelect && topCourseSelect) {
+        topDeptSelect.addEventListener('change', () => {
+            const v = topDeptSelect.value;
+            // refresh top course options
+            refreshCoursesForDepartment(v, '#s-course-filter', true);
+        });
+    }
+
+    // When opening the course modal, the department select is loaded via loadDepartmentsForCourse(); ensure that if the modal's department select changes we reflect that in any other course selects (defensive)
+    const modalCourseDept = rootEl.querySelector('#stm-course-department');
+    if (modalCourseDept) {
+        modalCourseDept.addEventListener('change', () => {
+            const v = modalCourseDept.value;
+            // nothing to do in settings modal itself (course modal only needs dept id), but keep course lists consistent
+            refreshCoursesForDepartment(v, '#s-course-filter', true);
+        });
+    }
+
     function setupModal(type) {
         const modal = rootEl.querySelector(`#st-modal-${type}`);
         const cancelBtn = rootEl.querySelector(`#stm-${type}-cancel`);
@@ -305,13 +348,15 @@ export function mountSettings(rootEl) {
         }
         
         try {
-            if (modal.dataset.editId) {
-                await api(`${endpoint}/${modal.dataset.editId}`, { method: 'PUT', body: JSON.stringify(payload) });
-            } else {
-                await api(endpoint, { method: 'POST', body: JSON.stringify(payload) });
-            }
-            closeModal(type);
-            loadCurrentTab();
+                if (modal.dataset.editId) {
+                    await api(`${endpoint}/${modal.dataset.editId}`, { method: 'PUT', body: JSON.stringify(payload) });
+                    notify('Successfully updated', type === 'course' ? 'Course' : type === 'department' ? 'Department' : 'Academic Year', 'success');
+                } else {
+                    await api(endpoint, { method: 'POST', body: JSON.stringify(payload) });
+                    notify('Successfully added', type === 'course' ? 'Course' : type === 'department' ? 'Department' : 'Academic Year', 'success');
+                }
+                closeModal(type);
+                loadCurrentTab();
         } catch (e) {
             errorEl.textContent = e.message;
         }
@@ -326,6 +371,19 @@ export function mountSettings(rootEl) {
         } catch (e) {
             console.error('Failed to load departments:', e);
         }
+    }
+
+    // helper to refresh course list based on selected department (used by settings page top filters)
+    async function refreshCoursesForDepartment(deptId, targetSelectSelector, includeAll = false) {
+        try {
+            let courses = await api('/api/settings/courses');
+            if (deptId) courses = courses.filter(c => String(c.department_id ?? (c.department && (c.department.department_id ?? c.department.id)) ?? '') === String(deptId));
+            const select = rootEl.querySelector(targetSelectSelector);
+            if (select) {
+                const courseIdKey = (courses[0] && ('course_id' in courses[0] ? 'course_id' : 'id')) || 'course_id';
+                select.innerHTML = (includeAll ? '<option value="">All</option>' : '<option value="">Select</option>') + courses.map(c => `<option value="${c[courseIdKey]}">${c.course_name || c[courseIdKey]}</option>`).join('');
+            }
+        } catch (e) { console.error('Failed to load courses for dept', e); }
     }
 
     async function loadCurrentTab() {
@@ -362,17 +420,23 @@ export function mountSettings(rootEl) {
             return;
         }
         courses.forEach(course => {
+            const actionChildren = showingArchived.courses
+                ? [
+                    h('button', { class: 'st-btn st-small', style: 'background:#4caf50', 'data-action': 'restore', 'data-id': course.course_id }, 'Restore'),
+                    h('span', { text: ' ' }),
+                    h('button', { class: 'st-btn st-small', style: 'background:#d32f2f', 'data-action': 'delete', 'data-id': course.course_id }, 'Delete')
+                  ]
+                : [
+                    h('button', { class: 'st-btn st-small', 'data-action': 'edit', 'data-id': course.course_id }, 'Edit'),
+                    h('span', { text: ' ' }),
+                    h('button', { class: 'st-btn st-small', style: 'background:#d32f2f', 'data-action': 'archive', 'data-id': course.course_id }, 'Archive')
+                  ];
+
             const tr = h('tr', {}, [
                 h('td', { text: course.course_name }),
                 h('td', { text: course.department?.department_name || course.department_name || course.department_id || '' }),
                 h('td', {}, [h('span', { class: 'st-pill st-small', text: course.archived_at ? 'Archived' : 'Active' })]),
-                h('td', {}, [
-                    h('button', { class: 'st-btn st-small', 'data-action': 'edit', 'data-id': course.course_id }, 'Edit'),
-                    h('span', { text: ' ' }),
-                    showingArchived.courses 
-                        ? h('button', { class: 'st-btn st-small', style: 'background:#4caf50', 'data-action': 'restore', 'data-id': course.course_id }, 'Restore')
-                        : h('button', { class: 'st-btn st-small', style: 'background:#d32f2f', 'data-action': 'archive', 'data-id': course.course_id }, 'Archive')
-                ])
+                                h('td', {}, actionChildren)
             ]);
             tbody.appendChild(tr);
         });
@@ -387,16 +451,22 @@ export function mountSettings(rootEl) {
             return;
         }
         departments.forEach(dept => {
+            const actionChildren = showingArchived.departments
+                ? [
+                    h('button', { class: 'st-btn st-small', style: 'background:#4caf50', 'data-action': 'restore', 'data-id': dept.department_id }, 'Restore'),
+                    h('span', { text: ' ' }),
+                    h('button', { class: 'st-btn st-small', style: 'background:#d32f2f', 'data-action': 'delete', 'data-id': dept.department_id }, 'Delete')
+                  ]
+                : [
+                    h('button', { class: 'st-btn st-small', 'data-action': 'edit', 'data-id': dept.department_id }, 'Edit'),
+                    h('span', { text: ' ' }),
+                    h('button', { class: 'st-btn st-small', style: 'background:#d32f2f', 'data-action': 'archive', 'data-id': dept.department_id }, 'Archive')
+                  ];
+
             const tr = h('tr', {}, [
                 h('td', { text: dept.department_name }),
                 h('td', {}, [h('span', { class: 'st-pill st-small', text: dept.deleted_at ? 'Archived' : 'Active' })]),
-                h('td', {}, [
-                    h('button', { class: 'st-btn st-small', 'data-action': 'edit', 'data-id': dept.department_id }, 'Edit'),
-                    h('span', { text: ' ' }),
-                    showingArchived.departments 
-                        ? h('button', { class: 'st-btn st-small', style: 'background:#4caf50', 'data-action': 'restore', 'data-id': dept.department_id }, 'Restore')
-                        : h('button', { class: 'st-btn st-small', style: 'background:#d32f2f', 'data-action': 'archive', 'data-id': dept.department_id }, 'Archive')
-                ])
+                                h('td', {}, actionChildren)
             ]);
             tbody.appendChild(tr);
         });
@@ -411,51 +481,117 @@ export function mountSettings(rootEl) {
             return;
         }
         years.forEach(year => {
+            const actionChildren = showingArchived['academic-years']
+                ? [
+                    h('button', { class: 'st-btn st-small', style: 'background:#4caf50', 'data-action': 'restore', 'data-id': year.academic_year_id }, 'Restore'),
+                    h('span', { text: ' ' }),
+                    h('button', { class: 'st-btn st-small', style: 'background:#d32f2f', 'data-action': 'delete', 'data-id': year.academic_year_id }, 'Delete')
+                  ]
+                : [
+                    h('button', { class: 'st-btn st-small', 'data-action': 'edit', 'data-id': year.academic_year_id }, 'Edit'),
+                    h('span', { text: ' ' }),
+                    h('button', { class: 'st-btn st-small', style: 'background:#d32f2f', 'data-action': 'archive', 'data-id': year.academic_year_id }, 'Archive')
+                  ];
+
             const tr = h('tr', {}, [
                 h('td', { text: year.school_year }),
                 h('td', {}, [h('span', { class: 'st-pill st-small', text: year.archived_at ? 'Archived' : 'Active' })]),
-                h('td', {}, [
-                    h('button', { class: 'st-btn st-small', 'data-action': 'edit', 'data-id': year.academic_year_id }, 'Edit'),
-                    h('span', { text: ' ' }),
-                    showingArchived['academic-years'] 
-                        ? h('button', { class: 'st-btn st-small', style: 'background:#4caf50', 'data-action': 'restore', 'data-id': year.academic_year_id }, 'Restore')
-                        : h('button', { class: 'st-btn st-small', style: 'background:#d32f2f', 'data-action': 'archive', 'data-id': year.academic_year_id }, 'Archive')
-                ])
+                                h('td', {}, actionChildren)
             ]);
             tbody.appendChild(tr);
         });
         setupTableEvents('academic-years', years);
     }
 
+    // using shared notify imported at top
+
     function setupTableEvents(type, items) {
         const tbody = rootEl.querySelector(`#st-body-${type}`);
-        tbody.addEventListener('click', (e) => {
-            if (e.target.dataset.action === 'edit') {
-                const id = e.target.dataset.id;
-                const item = items.find(i => (i[`${type.replace('-', '_')}_id`] || i.id) == id);
-                if (item) openModal(type.replace('-', '-'), item);
-            } else if (e.target.dataset.action === 'archive') {
-                const id = e.target.dataset.id;
-                if (confirm('Archive this item?')) {
-                    archiveItem(type, id);
-                }
-            } else if (e.target.dataset.action === 'restore') {
-                const id = e.target.dataset.id;
-                if (confirm('Restore this item?')) {
-                    restoreItem(type, id);
+        const disableOnce = (btn) => { if (!btn) return function(){}; btn.disabled = true; btn.style.opacity = '0.6'; return () => { btn.disabled = false; btn.style.opacity = ''; }; };
+        // Single onclick handler so listeners don't stack and clicks register immediately
+    tbody.onclick = async function (e) {
+            const btn = e.target && e.target.closest ? e.target.closest('button') : null;
+            if (!btn) return;
+            const action = btn.dataset.action;
+            const id = btn.dataset.id;
+            // robust item lookup by common id fields
+            const findItemById = (idVal) => items.find(i => {
+                const vals = [i.course_id, i.department_id, i.academic_year_id, i.id];
+                return vals.some(v => v != null && String(v) === String(idVal));
+            });
+            if (action === 'edit') {
+                const item = findItemById(id);
+                if (!item) return;
+                // map plural type to modal short type
+                const short = type === 'courses' ? 'course' : type === 'departments' ? 'department' : type === 'academic-years' ? 'academic-year' : type;
+                openModal(short, item);
+            } else if (action === 'archive') {
+                const restore = disableOnce(btn);
+                (async () => { try { if (confirm('Archive this item?')) await archiveItem(type, id); } catch(e){}; restore(); })();
+            } else if (action === 'restore') {
+                const restore = disableOnce(btn);
+                (async () => { try { if (confirm('Restore this item?')) await restoreItem(type, id); } catch(e){}; restore(); })();
+            } else if (action === 'delete') {
+                const restore = disableOnce(btn);
+                // call pre-check to tell how many student profiles reference this item
+                try {
+                    const short = type === 'courses' ? 'course' : type === 'departments' ? 'department' : 'academic-year';
+                    const counts = await api(`/api/settings/${type}/${id}/related-counts`);
+                    const count = counts && counts.related_students ? Number(counts.related_students) : 0;
+                    const confirmMsg = count > 0
+                        ? `Permanently delete this item? This will affect ${count} student profile(s). This cannot be undone.`
+                        : 'Permanently delete this item? This cannot be undone.';
+                    if (!confirm(confirmMsg)) { restore(); return; }
+
+                    (async () => {
+                        try {
+                            if (type === 'courses') await api(`/api/settings/courses/${id}`, { method: 'DELETE' });
+                            else if (type === 'departments') await api(`/api/settings/departments/${id}`, { method: 'DELETE' });
+                            else if (type === 'academic-years') await api(`/api/settings/academic-years/${id}`, { method: 'DELETE' });
+                            loadCurrentTab();
+                            notify('Successfully deleted', type === 'courses' ? 'Course' : type === 'departments' ? 'Department' : 'Academic Year', 'success');
+                        } catch (err) {
+                            const friendly = err.message && err.message.toString().toLowerCase().includes('cannot delete')
+                                ? err.message
+                                : 'Delete failed. There may be related records referencing this item.';
+                            notify(friendly, type === 'courses' ? 'Course' : type === 'departments' ? 'Department' : 'Academic Year', 'error');
+                            rootEl.querySelector(`#st-error-${type}`).textContent = friendly;
+                        }
+                        restore();
+                    })();
+                } catch (e) {
+                    // failed to fetch counts, fallback to original confirmation
+                    if (!confirm('Permanently delete this item? This cannot be undone.')) { restore(); return; }
+                    try {
+                        if (type === 'courses') await api(`/api/settings/courses/${id}`, { method: 'DELETE' });
+                        else if (type === 'departments') await api(`/api/settings/departments/${id}`, { method: 'DELETE' });
+                        else if (type === 'academic-years') await api(`/api/settings/academic-years/${id}`, { method: 'DELETE' });
+                        loadCurrentTab();
+                        notify('Successfully deleted', type === 'courses' ? 'Course' : type === 'departments' ? 'Department' : 'Academic Year', 'success');
+                    } catch (err) {
+                        const friendly = err.message && err.message.toString().toLowerCase().includes('cannot delete')
+                            ? err.message
+                            : 'Delete failed. There may be related records referencing this item.';
+                        notify(friendly, type === 'courses' ? 'Course' : type === 'departments' ? 'Department' : 'Academic Year', 'error');
+                        rootEl.querySelector(`#st-error-${type}`).textContent = friendly;
+                    }
+                    restore();
                 }
             }
-        });
+        };
     }
 
     async function archiveItem(type, id) {
         try {
             if (type === 'courses') {
                 await api(`/api/settings/courses/${id}/archive`, { method: 'POST' });
+                notify('Successfully archived', 'Course', 'success');
             } else if (type === 'departments') {
                 await api(`/api/settings/departments/${id}/archive`, { method: 'POST' });
+                notify('Successfully archived', 'Department', 'success');
             } else if (type === 'academic-years') {
                 await api(`/api/settings/academic-years/${id}/archive`, { method: 'POST' });
+                notify('Successfully archived', 'Academic Year', 'success');
             }
             loadCurrentTab();
         } catch (e) {
@@ -467,10 +603,13 @@ export function mountSettings(rootEl) {
         try {
             if (type === 'courses') {
                 await api(`/api/settings/courses/${id}/restore`, { method: 'POST' });
+                notify('Successfully restored', 'Course', 'success');
             } else if (type === 'departments') {
                 await api(`/api/settings/departments/${id}/restore`, { method: 'POST' });
+                notify('Successfully restored', 'Department', 'success');
             } else if (type === 'academic-years') {
                 await api(`/api/settings/academic-years/${id}/restore`, { method: 'POST' });
+                notify('Successfully restored', 'Academic Year', 'success');
             }
             loadCurrentTab();
         } catch (e) {

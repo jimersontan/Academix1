@@ -7,6 +7,7 @@ use App\Models\Course;
 use App\Models\Department;
 use App\Models\AcademicYear;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class SettingsController extends Controller
 {
@@ -42,6 +43,19 @@ class SettingsController extends Controller
         $c->save();
         return response()->json(['ok'=>true]);
     }
+    // permanent delete
+    public function destroyCourse(int $id){
+        $c=Course::findOrFail($id);
+        try {
+            $c->delete();
+            return response()->json(['ok'=>true]);
+        } catch (\Illuminate\Database\QueryException $ex) {
+            // foreign key constraint or other DB-level issue
+            return response()->json([
+                'message' => 'Cannot delete: related records exist. Reassign or remove them first.'
+            ], 409);
+        }
+    }
 
     // Departments
     public function listDepartments(Request $request){
@@ -75,6 +89,18 @@ class SettingsController extends Controller
         $dpt->save();
         return response()->json(['ok'=>true]);
     }
+    // permanent delete
+    public function destroyDepartment(int $id){
+        $dpt=Department::findOrFail($id);
+        try {
+            $dpt->delete();
+            return response()->json(['ok'=>true]);
+        } catch (\Illuminate\Database\QueryException $ex) {
+            return response()->json([
+                'message' => 'Cannot delete: related records exist. Reassign or remove them first.'
+            ], 409);
+        }
+    }
 
     // Academic Years
     public function listAcademicYears(Request $request){
@@ -107,6 +133,32 @@ class SettingsController extends Controller
         $ay->archived_at=null;
         $ay->save();
         return response()->json(['ok'=>true]);
+    }
+    // permanent delete
+    public function destroyAcademicYear(int $id){
+        $ay=AcademicYear::findOrFail($id);
+        try {
+            $ay->delete();
+            return response()->json(['ok'=>true]);
+        } catch (\Illuminate\Database\QueryException $ex) {
+            return response()->json([
+                'message' => 'Cannot delete: related records exist. Reassign or remove them first.'
+            ], 409);
+        }
+    }
+
+    // return counts of related records to show in UI before delete
+    public function countRelated(Request $request, $type, $id) {
+        // only allow the three supported types
+        $allowed = ['courses', 'departments', 'academic-years'];
+        if (!in_array($type, $allowed)) return response()->json(['message'=>'Invalid type'], 400);
+
+        // map to column name
+        $col = $type === 'courses' ? 'course_id' : ($type === 'departments' ? 'department_id' : 'academic_year_id');
+
+        $count = DB::table('student_profile')->where($col, $id)->count();
+
+        return response()->json(['related_students' => $count]);
     }
 }
 

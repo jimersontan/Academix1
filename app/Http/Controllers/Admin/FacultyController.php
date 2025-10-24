@@ -44,7 +44,8 @@ class FacultyController extends Controller
             'email_address' => 'nullable|string',
             'address' => 'nullable|string',
             'position' => 'nullable|string',
-            'department_id' => 'required|integer'
+            'department_id' => 'required|integer',
+            'status' => 'nullable|string'
         ]);
         $faculty = FacultyProfile::create($data);
         return response()->json($faculty, 201);
@@ -64,7 +65,8 @@ class FacultyController extends Controller
             'email_address' => 'sometimes|nullable|string',
             'address' => 'sometimes|nullable|string',
             'position' => 'sometimes|nullable|string',
-            'department_id' => 'sometimes|integer'
+            'department_id' => 'sometimes|integer',
+            'status' => 'sometimes|nullable|string'
         ]);
         $faculty->update($data);
         return response()->json($faculty);
@@ -73,7 +75,9 @@ class FacultyController extends Controller
     public function archive(int $id)
     {
         $faculty = FacultyProfile::findOrFail($id);
+        // mark as deleted/archived and set status inactive
         $faculty->deleted_at = now();
+        $faculty->status = 'inactive';
         $faculty->save();
         return response()->json(['ok'=>true]);
     }
@@ -82,8 +86,17 @@ class FacultyController extends Controller
     {
         $faculty = FacultyProfile::findOrFail($id);
         $faculty->deleted_at = null;
+        $faculty->status = 'active';
         $faculty->save();
         return response()->json(['ok'=>true]);
+    }
+
+    // permanent delete
+    public function destroy(int $id)
+    {
+        $faculty = FacultyProfile::findOrFail($id);
+        $faculty->delete();
+        return response()->json(['ok' => true]);
     }
 }
 

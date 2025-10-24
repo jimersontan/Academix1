@@ -49,6 +49,34 @@ class AuthController extends Controller
         }
         return response()->json(['ok' => true]);
     }
+
+    // Update profile (username/email) and optionally password
+    public function updateProfile(Request $request)
+    {
+        $user = $request->user();
+        if (!$user) return response()->json(['error' => 'Unauthenticated'], 401);
+
+        $data = $request->validate([
+            'username' => 'sometimes|string',
+            'email' => 'sometimes|email',
+            'current_password' => 'sometimes|string',
+            'new_password' => 'sometimes|string|min:6|confirmed'
+        ]);
+
+        if (array_key_exists('username', $data)) $user->username = $data['username'];
+        if (array_key_exists('email', $data)) $user->email = $data['email'];
+
+        // Change password if requested
+        if (isset($data['new_password'])) {
+            if (empty($data['current_password']) || !\Illuminate\Support\Facades\Hash::check($data['current_password'], $user->password)) {
+                return response()->json(['error' => 'Current password is incorrect'], 422);
+            }
+            $user->password = \Illuminate\Support\Facades\Hash::make($data['new_password']);
+        }
+
+        $user->save();
+        return response()->json(['user' => $user]);
+    }
 }
 
 

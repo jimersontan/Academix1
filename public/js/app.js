@@ -26970,6 +26970,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_student__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/student */ "./resources/js/components/student.js");
 /* harmony import */ var _components_faculty__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/faculty */ "./resources/js/components/faculty.js");
 /* harmony import */ var _components_settings__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/settings */ "./resources/js/components/settings.js");
+/* harmony import */ var _components_report__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./components/report */ "./resources/js/components/report.js");
 /**
  * First we will load all of this project's JavaScript dependencies which
  * includes React and other helpers. It's a great starting point while
@@ -26984,12 +26985,14 @@ __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 
 
+
 window.Academix = window.Academix || {};
 window.Academix.mountLogin = _components_login__WEBPACK_IMPORTED_MODULE_0__.mountLogin;
 window.Academix.mountDashboard = _components_dashboard__WEBPACK_IMPORTED_MODULE_1__.mountDashboard;
 window.Academix.mountStudents = _components_student__WEBPACK_IMPORTED_MODULE_2__.mountStudents;
 window.Academix.mountFaculty = _components_faculty__WEBPACK_IMPORTED_MODULE_3__.mountFaculty;
 window.Academix.mountSettings = _components_settings__WEBPACK_IMPORTED_MODULE_4__.mountSettings;
+window.Academix.mountReport = _components_report__WEBPACK_IMPORTED_MODULE_5__.mountReport;
 
 /***/ }),
 
@@ -27044,6 +27047,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   fetchJson: () => (/* binding */ fetchJson),
 /* harmony export */   mountDashboard: () => (/* binding */ mountDashboard)
 /* harmony export */ });
+/* harmony import */ var _notify__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./notify */ "./resources/js/components/notify.js");
 function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
 function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
 function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { _defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
@@ -27070,17 +27074,17 @@ function fetchJson(_x) {
   return _fetchJson.apply(this, arguments);
 }
 function _fetchJson() {
-  _fetchJson = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee2(url) {
+  _fetchJson = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee7(url) {
     var options,
       token,
       res,
-      _args2 = arguments;
-    return _regenerator().w(function (_context2) {
-      while (1) switch (_context2.n) {
+      _args7 = arguments;
+    return _regenerator().w(function (_context7) {
+      while (1) switch (_context7.n) {
         case 0:
-          options = _args2.length > 1 && _args2[1] !== undefined ? _args2[1] : {};
+          options = _args7.length > 1 && _args7[1] !== undefined ? _args7[1] : {};
           token = requireToken();
-          _context2.n = 1;
+          _context7.n = 1;
           return fetch(url, _objectSpread(_objectSpread({}, options), {}, {
             headers: _objectSpread({
               'Accept': 'application/json',
@@ -27088,41 +27092,80 @@ function _fetchJson() {
             }, options.headers || {})
           }));
         case 1:
-          res = _context2.v;
+          res = _context7.v;
           if (!(res.status === 401)) {
-            _context2.n = 2;
+            _context7.n = 2;
             break;
           }
           window.localStorage.removeItem('academix_token');
           window.location.href = 'index.html';
-          return _context2.a(2);
+          return _context7.a(2);
         case 2:
-          return _context2.a(2, res.json());
+          return _context7.a(2, res.json());
       }
-    }, _callee2);
+    }, _callee7);
   }));
   return _fetchJson.apply(this, arguments);
 }
+
 function mountDashboard(rootEl) {
   if (!rootEl) throw new Error('mountDashboard: root element is required');
-  rootEl.innerHTML = "\n      <style>\n        body{background:#000;color:#fff;font-family:Arial,Helvetica,sans-serif}\n        .shell{min-height:100vh;display:grid;grid-template-columns:240px 1fr}\n        .sidebar{background:#111;padding:14px}\n        .brand{display:flex;align-items:center;gap:10px;margin-bottom:18px}\n        .brand img{width:40px;height:40px}\n        .menu a{display:block;color:#ddd;text-decoration:none;padding:8px 6px;border-radius:4px}\n        .menu a:hover{background:#1f1f1f}\n        .content{padding:18px}\n        .cards{display:grid;grid-template-columns:repeat(3,200px);gap:16px}\n        .card{background:#2b2b2b;border-radius:8px;padding:12px}\n        .card h4{margin:0 0 8px;font-weight:700}\n        .list{margin-top:18px;background:#2b2b2b;border-radius:8px;padding:12px}\n        .topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}\n        .btn{background:#2d6cdf;color:#fff;border:none;padding:8px 12px;border-radius:4px;cursor:pointer}\n      </style>\n      <div class=\"shell\">\n        <aside class=\"sidebar\">\n          <div class=\"brand\">\n            <img src=\"https://cdn.vectorstock.com/i/500p/25/20/books-stack-logo-template-vector-27212520.jpg\" alt=\"logo\" />\n            <div>\n              <div style=\"font-weight:700\">Academix</div>\n              <div style=\"font-size:12px;opacity:.8\">Student Management Portal</div>\n            </div>\n          </div>\n          <nav class=\"menu\">\n            <a href=\"dashboard.html\">Dashboard</a>\n            <a href=\"#\" id=\"menu-students\">Students</a>\n            <a href=\"#\" id=\"menu-faculty\">Faculty</a>\n            <a href=\"#\" id=\"menu-report\">Report</a>\n            <a href=\"#\" id=\"menu-settings\">Settings</a>\n            <a href=\"#\" id=\"menu-profile\">My Profile</a>\n            <a href=\"#\" id=\"menu-logout\">Logout</a>\n          </nav>\n        </aside>\n        <main class=\"content\" id=\"main\">\n          <div class=\"topbar\">\n            <h2 style=\"margin:0\">Dashboard</h2>\n          </div>\n          <section class=\"cards\">\n            <div class=\"card\">\n              <h4>Total Student</h4>\n              <div id=\"stat-students\">0</div>\n            </div>\n            <div class=\"card\">\n              <h4>Total Faculty</h4>\n              <div id=\"stat-faculty\">0</div>\n            </div>\n            <div class=\"card\">\n              <h4>Course Offered</h4>\n              <div id=\"stat-courses\">0</div>\n            </div>\n          </section>\n          <section class=\"list\">\n            <h4 style=\"margin:0 0 10px\">Departments</h4>\n            <div id=\"departments\">Loading...</div>\n          </section>\n        </main>\n      </div>\n    ";
-  var main = rootEl.querySelector('#main');
+  rootEl.innerHTML = "\n      <style>\n        :root{--bg:#0b0b0b;--panel:#2b2b2b;--muted:#8a8a8a}\n        body{background:var(--bg);color:#fff;font-family:Arial,Helvetica,sans-serif}\n        .shell{min-height:100vh;display:grid;grid-template-columns:320px 1fr;gap:20px;padding:24px}\n        /* left navigation card (rounded) */\n        .left-card{background:#0f0f0f;border-radius:20px;padding:22px;width:280px;box-shadow:0 10px 30px rgba(0,0,0,0.6)}\n        .brand{display:flex;align-items:center;gap:12px;margin-bottom:18px}\n        .brand img{width:64px;height:64px;border-radius:8px}\n        .brand h1{font-size:30px;margin:0}\n  .nav-links{margin-top:14px}\n  /* inner nav container to match Figma-like dark rounded box */\n  .nav-inner{background:#0b0b0b;padding:18px;border-radius:28px;box-shadow:0 8px 30px rgba(0,0,0,0.6)}\n  .nav-links a{display:block;color:#ddd;text-decoration:none;padding:12px;border-radius:6px;margin:6px 0}\n  .nav-links a:hover{background:#151515}\n\n        /* main header/banner */\n        .banner{background-image:url('https://tse4.mm.bing.net/th/id/OIP.tgQYDIWK0Z67zJ1pohyo4QHaEK?pid=Api&P=0');background-size:cover;border-radius:12px;padding:28px;color:#fff;position:relative}\n        .banner::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0.45),rgba(0,0,0,0.65));border-radius:12px}\n        .banner-inner{position:relative;z-index:2;display:flex;gap:20px;align-items:center}\n        .banner h2{margin:0;font-size:34px}\n\n        /* stat cards */\n        .stats{display:flex;gap:18px;margin-top:18px}\n        .stat{background:var(--panel);padding:18px;border-radius:12px;display:flex;gap:14px;align-items:center;min-width:220px}\n        .stat .icon{width:40px;height:40px;background:#e6e6e6;border-radius:6px}\n        .stat .label{font-weight:700}\n        .stat .value{font-size:22px;margin-top:6px}\n\n        /* departments big list */\n        .dept-list{margin-top:22px;background:var(--panel);padding:18px;border-radius:12px}\n        .dept-list h3{margin:0 0 10px}\n        .dept-item{padding:10px 12px;border-top:1px solid rgba(255,255,255,0.03)}\n        .dept-item:first-child{border-top:none}\n\n        /* small helpers */\n        .muted{color:var(--muted);font-size:13px}\n      </style>\n\n      <div style=\"display:flex;gap:20px\">\n        <aside class=\"left-card\">\n          <div class=\"brand\">\n            <img src=\"/public/css/../img/logo.png\" onerror=\"this.src='https://cdn.vectorstock.com/i/500p/25/20/books-stack-logo-template-vector-27212520.jpg'\" />\n            <div>\n              <div style=\"font-weight:800;font-size:18px\">Academix</div>\n              <div class=\"muted\">Student Management Portal</div>\n            </div>\n          </div>\n          <nav class=\"nav-links\">\n            <div class=\"nav-inner\">\n              <a href=\"#\" id=\"menu-dashboard\">Dashboard</a>\n              <a href=\"#\" id=\"menu-students\">Students</a>\n              <a href=\"#\" id=\"menu-faculty\">Faculty</a>\n              <a href=\"#\" id=\"menu-report\">Report</a>\n              <a href=\"#\" id=\"menu-profile\">My Profile</a>\n              <a href=\"#\" id=\"menu-settings\">Settings</a>\n            </div>\n          </nav>\n        </aside>\n\n        <main style=\"flex:1\">\n          <div class=\"banner\">\n            <div class=\"banner-inner\">\n              <div style=\"flex:1\">\n                <h2>Dashboard</h2>\n                <div class=\"muted\">Academic Management</div>\n              </div>\n            </div>\n            <div class=\"stats\" style=\"position:relative;z-index:3\">\n              <div class=\"stat\">\n                <div class=\"icon\"></div>\n                <div>\n                  <div class=\"label\">Total Student</div>\n                  <div id=\"stat-students\" class=\"value\">0</div>\n                </div>\n              </div>\n              <div class=\"stat\">\n                <div class=\"icon\"></div>\n                <div>\n                  <div class=\"label\">Total Faculty</div>\n                  <div id=\"stat-faculty\" class=\"value\">0</div>\n                </div>\n              </div>\n              <div class=\"stat\">\n                <div class=\"icon\"></div>\n                <div>\n                  <div class=\"label\">Course Offered</div>\n                  <div id=\"stat-courses\" class=\"value\">0</div>\n                </div>\n              </div>\n            </div>\n          </div>\n\n          <section class=\"dept-list\">\n            <h3>Departments</h3>\n            <div id=\"departments\">Loading...</div>\n          </section>\n        </main>\n      </div>\n    ";
 
-  // Load stats for dashboard
-  fetchJson('/api/dashboard/stats').then(function (data) {
-    var _data$total_students, _data$total_faculty;
-    if (!data) return;
-    rootEl.querySelector('#stat-students').textContent = (_data$total_students = data.total_students) !== null && _data$total_students !== void 0 ? _data$total_students : 0;
-    rootEl.querySelector('#stat-faculty').textContent = (_data$total_faculty = data.total_faculty) !== null && _data$total_faculty !== void 0 ? _data$total_faculty : 0;
-    rootEl.querySelector('#stat-courses').textContent = data.students_per_course ? new Set(data.students_per_course.map(function (x) {
-      return x.course_id;
-    })).size : 0;
-    var dept = data.faculty_per_department || [];
-    var html = dept.map(function (d) {
-      return "<div style=\"padding:6px 0;border-top:1px solid #3a3a3a\">".concat(d.department_name || 'N/A', " \u2014 ").concat(d.total, "</div>");
-    }).join('') || 'No data';
-    rootEl.querySelector('#departments').innerHTML = html;
-  });
+  // select the main element inside the dashboard shell
+  var main = rootEl.querySelector('main');
+
+  // Load stats for dashboard (and poll every 5s so new students/faculty are reflected automatically)
+  function fetchStats() {
+    return _fetchStats.apply(this, arguments);
+  }
+  function _fetchStats() {
+    _fetchStats = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee3() {
+      var _data$total_students, _data$total_faculty, data, sEl, fEl, cEl, dEl, dept, html, _t3;
+      return _regenerator().w(function (_context3) {
+        while (1) switch (_context3.p = _context3.n) {
+          case 0:
+            _context3.p = 0;
+            _context3.n = 1;
+            return fetchJson('/api/dashboard/stats');
+          case 1:
+            data = _context3.v;
+            if (data) {
+              _context3.n = 2;
+              break;
+            }
+            return _context3.a(2);
+          case 2:
+            sEl = rootEl.querySelector('#stat-students');
+            fEl = rootEl.querySelector('#stat-faculty');
+            cEl = rootEl.querySelector('#stat-courses');
+            dEl = rootEl.querySelector('#departments');
+            if (sEl) sEl.textContent = (_data$total_students = data.total_students) !== null && _data$total_students !== void 0 ? _data$total_students : 0;
+            if (fEl) fEl.textContent = (_data$total_faculty = data.total_faculty) !== null && _data$total_faculty !== void 0 ? _data$total_faculty : 0;
+            if (cEl) cEl.textContent = data.students_per_course ? new Set((data.students_per_course || []).map(function (x) {
+              return x.course_id;
+            })).size : 0;
+            dept = data.faculty_per_department || [];
+            html = dept.map(function (d) {
+              return "<div class=\"dept-item\">".concat(d.department_name || 'N/A', " \u2014 ").concat(d.total, "</div>");
+            }).join('') || '<div class="muted">No data</div>';
+            if (dEl) dEl.innerHTML = html;
+            _context3.n = 4;
+            break;
+          case 3:
+            _context3.p = 3;
+            _t3 = _context3.v;
+            console.warn('dashboard stats failed', _t3);
+          case 4:
+            return _context3.a(2);
+        }
+      }, _callee3, null, [[0, 3]]);
+    }));
+    return _fetchStats.apply(this, arguments);
+  }
+  fetchStats();
+  // Poll so updates appear when new students/faculty/courses are added elsewhere
+  var statsInterval = setInterval(fetchStats, 5000);
 
   // Logout
   var logout = /*#__PURE__*/function () {
@@ -27154,10 +27197,529 @@ function mountDashboard(rootEl) {
       return _ref.apply(this, arguments);
     };
   }();
-  rootEl.querySelector('#menu-logout').addEventListener('click', function (e) {
+  // Profile modal (contains logout button)
+  var profileModalHtml = "\n      <div id=\"profile-modal\" style=\"position:fixed;inset:0;display:none;align-items:center;justify-content:center;z-index:3000\">\n        <div style=\"background:#111;color:#fff;padding:20px;border-radius:8px;width:360px;box-shadow:0 20px 60px rgba(0,0,0,.6)\">\n          <h3 style=\"margin:0 0 8px\">My Profile</h3>\n          <div id=\"profile-info\" style=\"margin-bottom:12px;display:flex;gap:12px;align-items:center\">\n            <img id=\"profile-avatar\" src=\"\" alt=\"avatar\" style=\"width:64px;height:64px;border-radius:50%;background:#222;object-fit:cover\" />\n            <div style=\"flex:1\">\n              <div id=\"profile-name-modal\" style=\"font-weight:700\">Admin</div>\n              <div id=\"profile-email-modal\" style=\"font-size:12px;opacity:.8\">admin@example.com</div>\n              <div style=\"margin-top:8px\">\n                <input id=\"profile-avatar-input\" type=\"file\" accept=\"image/*\" style=\"color:#fff\" />\n              </div>\n            </div>\n          </div>\n          <div style=\"display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px\">\n            <div>\n              <label style=\"display:block;font-size:12px;opacity:.9;margin-bottom:6px\">Username</label>\n              <input id=\"profile-username\" type=\"text\" style=\"width:100%;padding:8px;border-radius:6px;border:1px solid #333;background:#0f0f0f;color:#fff\" />\n            </div>\n            <div>\n              <label style=\"display:block;font-size:12px;opacity:.9;margin-bottom:6px\">Email</label>\n              <input id=\"profile-email\" type=\"email\" style=\"width:100%;padding:8px;border-radius:6px;border:1px solid #333;background:#0f0f0f;color:#fff\" />\n            </div>\n          </div>\n          <div style=\"margin-bottom:12px\">\n            <h4 style=\"margin:0 0 8px;font-size:14px\">Change Password</h4>\n            <div style=\"display:grid;gap:8px\">\n              <input id=\"profile-current-password\" type=\"password\" placeholder=\"Current password\" style=\"width:100%;padding:8px;border-radius:6px;border:1px solid #333;background:#0f0f0f;color:#fff\" />\n              <input id=\"profile-new-password\" type=\"password\" placeholder=\"New password\" style=\"width:100%;padding:8px;border-radius:6px;border:1px solid #333;background:#0f0f0f;color:#fff\" />\n              <input id=\"profile-new-password-confirm\" type=\"password\" placeholder=\"Confirm new password\" style=\"width:100%;padding:8px;border-radius:6px;border:1px solid #333;background:#0f0f0f;color:#fff\" />\n            </div>\n          </div>\n          <div style=\"display:flex;gap:8px;justify-content:flex-end\">\n            <button id=\"profile-save\" style=\"background:#2d6cdf;color:#fff;border:none;padding:8px 10px;border-radius:4px\">Save</button>\n            <button id=\"profile-close\" style=\"background:#666;color:#fff;border:none;padding:8px 10px;border-radius:4px\">Close</button>\n            <button id=\"profile-logout\" style=\"background:#d32f2f;color:#fff;border:none;padding:8px 10px;border-radius:4px\">Logout</button>\n          </div>\n        </div>\n      </div>";
+  main.insertAdjacentHTML('beforeend', profileModalHtml);
+  var profileModal = rootEl.querySelector('#profile-modal');
+  // Open profile modal from menu-profile (default) -> we will also support in-main profile page
+  var menuProfile = rootEl.querySelector('#menu-profile');
+  // Render profile page inside main (replaces main content) with left admin card and right edit form
+  function renderProfilePage(_x2) {
+    return _renderProfilePage.apply(this, arguments);
+  }
+  function _renderProfilePage() {
+    _renderProfilePage = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee6(container) {
+      var avatarImg, avatarInput, avatarChoose, nameEl, emailEl, firstNameInput, middleNameInput, lastNameInput, roleInput, avatarWrap, avatarOverlay, storedAvatar, storedPos, dragging, startClient, startPos, parsePos, toPosStr, beginDrag, updateDrag, endDrag, user, first, middle, last, role, displayName, mail, disableOnce, saveBtn, logoutBtn, removeBtn, editBtn;
+      return _regenerator().w(function (_context6) {
+        while (1) switch (_context6.n) {
+          case 0:
+            container.innerHTML = "\n      <div class=\"topbar\">\n        <h2 style=\"margin:0\">My Profile</h2>\n      </div>\n      <div style=\"display:grid;grid-template-columns:320px 1fr;gap:18px\">\n        <div style=\"background:#2b2b2b;padding:18px;border-radius:8px;display:flex;flex-direction:column;justify-content:space-between;min-height:300px\">\n          <div>\n            <div style=\"display:flex;flex-direction:column;align-items:center;gap:8px;position:relative\">\n              <div id=\"profile-avatar-wrap\" style=\"width:120px;height:120px;border-radius:50%;overflow:hidden;position:relative;background:#111;background-size:cover;background-position:center center;cursor:grab;display:flex;align-items:center;justify-content:center\">\n                <div id=\"profile-avatar-overlay\" style=\"position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none\">\n                  <button id=\"profile-avatar-choose\" style=\"pointer-events:auto;background:rgba(0,0,0,0.5);color:#fff;border:none;padding:6px 10px;border-radius:6px;cursor:pointer;\">Choose file</button>\n                </div>\n                <input id=\"profile-avatar-input-page\" type=\"file\" accept=\"image/*\" style=\"display:none\" />\n              </div>\n              <div id=\"profile-name-page\" style=\"font-weight:700;color:#fff\">Admin</div>\n              <div id=\"profile-email-page\" style=\"font-size:13px;opacity:.8;color:#ddd\">admin@example.com</div>\n            </div>\n          </div>\n          <div style=\"display:flex;flex-direction:column;gap:8px\">\n            <div style=\"display:flex;justify-content:flex-start\">\n              <button id=\"profile-edit-page\" class=\"btn\">Edit Profile</button>\n            </div>\n            <div style=\"display:flex;gap:8px\">\n              <button id=\"profile-remove-page\" style=\"background:#2d6cdf;color:#fff;border:none;padding:8px 12px;border-radius:6px;cursor:pointer\">Remove Profile</button>\n              <button id=\"profile-logout-page\" style=\"background:#d32f2f;color:#fff;border:none;padding:8px 12px;border-radius:6px;cursor:pointer\">Logout</button>\n            </div>\n          </div>\n        </div>\n        <div style=\"background:#2b2b2b;padding:18px;border-radius:8px;\">\n          <div style=\"margin-bottom:12px\">\n            <label style=\"display:block;font-size:12px;opacity:.9;margin-bottom:6px\">First Name</label>\n            <input id=\"profile-first-name-page\" type=\"text\" style=\"width:100%;padding:8px;border-radius:6px;border:1px solid #333;background:#0f0f0f;color:#fff\" />\n          </div>\n          <div style=\"margin-bottom:12px\">\n            <label style=\"display:block;font-size:12px;opacity:.9;margin-bottom:6px\">Middle Name</label>\n            <input id=\"profile-middle-name-page\" type=\"text\" style=\"width:100%;padding:8px;border-radius:6px;border:1px solid #333;background:#0f0f0f;color:#fff\" />\n          </div>\n          <div style=\"margin-bottom:12px\">\n            <label style=\"display:block;font-size:12px;opacity:.9;margin-bottom:6px\">Last Name</label>\n            <input id=\"profile-last-name-page\" type=\"text\" style=\"width:100%;padding:8px;border-radius:6px;border:1px solid #333;background:#0f0f0f;color:#fff\" />\n          </div>\n          <!-- edit form container (hidden until Edit Profile clicked) -->\n          <div id=\"profile-edit-container\" style=\"display:none;margin-bottom:12px;background:rgba(0,0,0,0.06);padding:12px;border-radius:6px\">\n            <div style=\"display:grid;gap:8px;margin-bottom:8px\">\n              <label style=\"display:block;font-size:12px;opacity:.9;margin-bottom:6px\">Email</label>\n              <input id=\"profile-email-edit-page\" type=\"email\" style=\"width:100%;padding:8px;border-radius:6px;border:1px solid #333;background:#0f0f0f;color:#fff\" />\n            </div>\n            <div style=\"display:grid;gap:8px\">\n              <input id=\"profile-current-password-page\" type=\"password\" placeholder=\"Current password\" style=\"width:100%;padding:8px;border-radius:6px;border:1px solid #333;background:#0f0f0f;color:#fff\" />\n              <input id=\"profile-new-password-page\" type=\"password\" placeholder=\"New password\" style=\"width:100%;padding:8px;border-radius:6px;border:1px solid #333;background:#0f0f0f;color:#fff\" />\n              <input id=\"profile-new-password-confirm-page\" type=\"password\" placeholder=\"Confirm new password\" style=\"width:100%;padding:8px;border-radius:6px;border:1px solid #333;background:#0f0f0f;color:#fff\" />\n            </div>\n          </div>\n          <div style=\"margin-bottom:12px\">\n            <label style=\"display:block;font-size:12px;opacity:.9;margin-bottom:6px\">Role</label>\n            <input id=\"profile-role-page\" type=\"text\" readonly style=\"width:100%;padding:8px;border-radius:6px;border:1px solid #333;background:#0f0f0f;color:#fff;opacity:.9\" />\n          </div>\n          <div style=\"display:flex;gap:8px;justify-content:flex-end\">\n            <button id=\"profile-save-page\" class=\"btn\" style=\"background:#2d6cdf;color:#fff;border:none;padding:8px 12px;border-radius:6px\">Save</button>\n          </div>\n        </div>\n      </div>\n    ";
+
+            // Populate values from API
+            avatarImg = container.querySelector('#profile-avatar-page');
+            avatarInput = container.querySelector('#profile-avatar-input-page');
+            avatarChoose = container.querySelector('#profile-avatar-choose');
+            nameEl = container.querySelector('#profile-name-page');
+            emailEl = container.querySelector('#profile-email-page');
+            firstNameInput = container.querySelector('#profile-first-name-page');
+            middleNameInput = container.querySelector('#profile-middle-name-page');
+            lastNameInput = container.querySelector('#profile-last-name-page');
+            roleInput = container.querySelector('#profile-role-page'); // load stored avatar (image data and position)
+            avatarWrap = container.querySelector('#profile-avatar-wrap');
+            avatarOverlay = container.querySelector('#profile-avatar-overlay');
+            storedAvatar = window.localStorage.getItem('academix_avatar');
+            storedPos = window.localStorage.getItem('academix_avatar_pos');
+            if (avatarWrap && storedAvatar) {
+              avatarWrap.style.backgroundImage = "url(".concat(storedAvatar, ")");
+              if (storedPos) avatarWrap.style.backgroundPosition = storedPos;
+              // hide the choose overlay when an avatar already exists
+              if (avatarOverlay) avatarOverlay.style.display = 'none';
+            }
+
+            // Avatar choose button
+            if (avatarChoose && avatarInput) avatarChoose.addEventListener('click', function () {
+              avatarInput.click();
+            });
+
+            // Avatar upload: set as background and persist
+            if (avatarInput && avatarWrap) {
+              avatarInput.addEventListener('change', function (ev) {
+                var f = ev.target.files && ev.target.files[0];
+                if (!f) return;
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                  try {
+                    window.localStorage.setItem('academix_avatar', e.target.result);
+                  } catch (err) {
+                    console.warn('Avatar save failed', err);
+                  }
+                  avatarWrap.style.backgroundImage = "url(".concat(e.target.result, ")");
+                  avatarWrap.style.backgroundSize = 'cover';
+                  avatarWrap.style.backgroundPosition = 'center center';
+                  // hide the choose overlay once an image has been set
+                  if (avatarOverlay) avatarOverlay.style.display = 'none';
+                  try {
+                    window.localStorage.setItem('academix_avatar_pos', 'center center');
+                  } catch (err) {}
+                };
+                reader.readAsDataURL(f);
+              });
+            }
+
+            // Drag-to-pan implementation for avatarWrap (mouse + touch)
+            if (avatarWrap) {
+              dragging = false;
+              startClient = {
+                x: 0,
+                y: 0
+              };
+              startPos = {
+                x: 50,
+                y: 50
+              };
+              parsePos = function parsePos(posStr) {
+                try {
+                  var parts = (posStr || '50% 50%').trim().split(/\s+/);
+                  var x = parts[0] && parts[0].includes('%') ? parseFloat(parts[0]) : parts[0] === 'center' ? 50 : 50;
+                  var y = parts[1] && parts[1].includes('%') ? parseFloat(parts[1]) : parts[1] === 'center' ? 50 : 50;
+                  return {
+                    x: x,
+                    y: y
+                  };
+                } catch (e) {
+                  return {
+                    x: 50,
+                    y: 50
+                  };
+                }
+              };
+              toPosStr = function toPosStr(p) {
+                return "".concat(p.x, "% ").concat(p.y, "%");
+              }; // initialize from persisted value
+              try {
+                startPos = parsePos(window.localStorage.getItem('academix_avatar_pos') || avatarWrap.style.backgroundPosition || '50% 50%');
+              } catch (e) {
+                startPos = {
+                  x: 50,
+                  y: 50
+                };
+              }
+              beginDrag = function beginDrag(clientX, clientY) {
+                dragging = true;
+                startClient.x = clientX;
+                startClient.y = clientY;
+                // anchor the start position so moves are relative to it
+                startPos = parsePos(avatarWrap.style.backgroundPosition || window.localStorage.getItem('academix_avatar_pos') || '50% 50%');
+                avatarWrap.style.cursor = 'grabbing';
+              };
+              updateDrag = function updateDrag(clientX, clientY) {
+                if (!dragging) return;
+                var dx = clientX - startClient.x;
+                var dy = clientY - startClient.y;
+                var rect = avatarWrap.getBoundingClientRect();
+                // convert pixel delta to percent relative to element size
+                var deltaX = dx / rect.width * 100;
+                var deltaY = dy / rect.height * 100;
+                var nx = startPos.x + deltaX;
+                var ny = startPos.y + deltaY;
+                nx = Math.max(0, Math.min(100, nx));
+                ny = Math.max(0, Math.min(100, ny));
+                avatarWrap.style.backgroundPosition = toPosStr({
+                  x: nx,
+                  y: ny
+                });
+              };
+              endDrag = function endDrag() {
+                if (!dragging) return;
+                dragging = false;
+                avatarWrap.style.cursor = 'grab';
+                var pos = avatarWrap.style.backgroundPosition || window.localStorage.getItem('academix_avatar_pos') || '50% 50%';
+                try {
+                  window.localStorage.setItem('academix_avatar_pos', pos);
+                } catch (e) {}
+              }; // Mouse events
+              avatarWrap.addEventListener('mousedown', function (ev) {
+                ev.preventDefault();
+                beginDrag(ev.clientX, ev.clientY);
+              });
+              document.addEventListener('mousemove', function (ev) {
+                updateDrag(ev.clientX, ev.clientY);
+              });
+              document.addEventListener('mouseup', function (ev) {
+                endDrag();
+              });
+
+              // Touch events (basic support)
+              avatarWrap.addEventListener('touchstart', function (ev) {
+                if (!ev.touches || !ev.touches[0]) return;
+                var t = ev.touches[0];
+                beginDrag(t.clientX, t.clientY);
+              }, {
+                passive: false
+              });
+              document.addEventListener('touchmove', function (ev) {
+                if (!ev.touches || !ev.touches[0]) return;
+                var t = ev.touches[0];
+                updateDrag(t.clientX, t.clientY);
+              }, {
+                passive: false
+              });
+              document.addEventListener('touchend', function (ev) {
+                endDrag();
+              });
+            }
+
+            // fetch current user
+            _context6.n = 1;
+            return fetchJson('/api/auth/me');
+          case 1:
+            user = _context6.v;
+            if (user) {
+              first = user.f_name || user.first_name || user.first || '';
+              middle = user.m_name || user.middle_name || '';
+              last = user.l_name || user.last_name || user.last || '';
+              role = user.type || user.role || 'admin';
+              displayName = "".concat(first, " ").concat(last).trim() || user.name || 'Admin';
+              mail = user.email || '';
+              if (nameEl) nameEl.textContent = displayName;
+              if (emailEl) emailEl.textContent = mail;
+              if (firstNameInput) firstNameInput.value = first || '';
+              if (middleNameInput) middleNameInput.value = middle || '';
+              if (lastNameInput) lastNameInput.value = last || '';
+              if (roleInput) roleInput.value = role || '';
+            }
+
+            // helper: disable button while async action runs
+            disableOnce = function disableOnce(btn) {
+              if (!btn) return function () {};
+              btn.disabled = true;
+              btn.style.opacity = '0.6';
+              return function () {
+                btn.disabled = false;
+                btn.style.opacity = '';
+              };
+            }; // Save handler
+            saveBtn = container.querySelector('#profile-save-page');
+            if (saveBtn) saveBtn.addEventListener('click', /*#__PURE__*/_asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee4() {
+              var first, middle, last, current_password, new_password, new_password_confirmation, payload, editContainer, email, emailRe, restore, res, _t4;
+              return _regenerator().w(function (_context4) {
+                while (1) switch (_context4.p = _context4.n) {
+                  case 0:
+                    first = (container.querySelector('#profile-first-name-page') || {}).value || '';
+                    middle = (container.querySelector('#profile-middle-name-page') || {}).value || '';
+                    last = (container.querySelector('#profile-last-name-page') || {}).value || ''; // role is read-only, do not submit changes to role from client
+                    current_password = (container.querySelector('#profile-current-password-page') || {}).value || '';
+                    new_password = (container.querySelector('#profile-new-password-page') || {}).value || '';
+                    new_password_confirmation = (container.querySelector('#profile-new-password-confirm-page') || {}).value || ''; // Validation: require First and Last name
+                    if (!(!first.trim() || !last.trim())) {
+                      _context4.n = 1;
+                      break;
+                    }
+                    (0,_notify__WEBPACK_IMPORTED_MODULE_0__["default"])('First and Last name are required.', 'Profile', 'error');
+                    return _context4.a(2);
+                  case 1:
+                    payload = {}; // Always include name fields
+                    payload.first_name = first.trim() || null;
+                    payload.middle_name = middle.trim() || null;
+                    payload.last_name = last.trim() || null;
+                    // include email if edit mode is visible
+                    editContainer = container.querySelector('#profile-edit-container');
+                    if (!(editContainer && editContainer.style.display !== 'none')) {
+                      _context4.n = 4;
+                      break;
+                    }
+                    email = (container.querySelector('#profile-email-edit-page') || {}).value || '';
+                    if (email.trim()) {
+                      _context4.n = 2;
+                      break;
+                    }
+                    (0,_notify__WEBPACK_IMPORTED_MODULE_0__["default"])('Email is required to save profile changes.', 'Profile', 'error');
+                    return _context4.a(2);
+                  case 2:
+                    // basic email format check
+                    emailRe = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
+                    if (emailRe.test(email)) {
+                      _context4.n = 3;
+                      break;
+                    }
+                    (0,_notify__WEBPACK_IMPORTED_MODULE_0__["default"])('Please enter a valid email address.', 'Profile', 'error');
+                    return _context4.a(2);
+                  case 3:
+                    payload.email = email.trim();
+                  case 4:
+                    if (!new_password) {
+                      _context4.n = 7;
+                      break;
+                    }
+                    if (current_password) {
+                      _context4.n = 5;
+                      break;
+                    }
+                    (0,_notify__WEBPACK_IMPORTED_MODULE_0__["default"])('Current password is required to set a new password.', 'Profile', 'error');
+                    return _context4.a(2);
+                  case 5:
+                    if (!(new_password !== new_password_confirmation)) {
+                      _context4.n = 6;
+                      break;
+                    }
+                    (0,_notify__WEBPACK_IMPORTED_MODULE_0__["default"])('New password and confirmation do not match.', 'Profile', 'error');
+                    return _context4.a(2);
+                  case 6:
+                    payload.new_password = new_password;
+                    payload.new_password_confirmation = new_password_confirmation;
+                    payload.current_password = current_password;
+                  case 7:
+                    restore = disableOnce(saveBtn);
+                    _context4.p = 8;
+                    _context4.n = 9;
+                    return fetchJson('/api/auth/profile', {
+                      method: 'POST',
+                      headers: {
+                        'Content-Type': 'application/json'
+                      },
+                      body: JSON.stringify(payload)
+                    });
+                  case 9:
+                    res = _context4.v;
+                    if (res) {
+                      _context4.n = 10;
+                      break;
+                    }
+                    restore();
+                    return _context4.a(2);
+                  case 10:
+                    (0,_notify__WEBPACK_IMPORTED_MODULE_0__["default"])('Profile updated', 'Admin', 'success');
+                    restore();
+                    _context4.n = 12;
+                    break;
+                  case 11:
+                    _context4.p = 11;
+                    _t4 = _context4.v;
+                    console.error(_t4);
+                    (0,_notify__WEBPACK_IMPORTED_MODULE_0__["default"])(_t4.message || 'Update failed', 'Profile', 'error');
+                    restore();
+                  case 12:
+                    return _context4.a(2);
+                }
+              }, _callee4, null, [[8, 11]]);
+            })));
+
+            // Logout handler
+            logoutBtn = container.querySelector('#profile-logout-page');
+            if (logoutBtn) logoutBtn.addEventListener('click', function () {
+              logout();
+            });
+
+            // Remove Profile (clear avatar)
+            removeBtn = container.querySelector('#profile-remove-page');
+            if (removeBtn) removeBtn.addEventListener('click', function () {
+              if (!confirm('Remove profile picture? This will clear the current avatar.')) return;
+              try {
+                window.localStorage.removeItem('academix_avatar');
+                window.localStorage.removeItem('academix_avatar_pos');
+              } catch (e) {}
+              var avatarWrap = container.querySelector('#profile-avatar-wrap');
+              if (avatarWrap) {
+                avatarWrap.style.backgroundImage = '';
+                avatarWrap.style.backgroundPosition = 'center center';
+                avatarWrap.style.backgroundSize = '';
+              }
+              // show the choose overlay again
+              if (avatarOverlay) avatarOverlay.style.display = 'flex';
+              (0,_notify__WEBPACK_IMPORTED_MODULE_0__["default"])('Profile picture removed', 'Admin', 'success');
+            });
+
+            // Edit Profile toggles edit mode: show username/email/password inputs in right column
+            editBtn = container.querySelector('#profile-edit-page');
+            if (editBtn) editBtn.addEventListener('click', /*#__PURE__*/_asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee5() {
+              var editContainer, _user, email, eEl;
+              return _regenerator().w(function (_context5) {
+                while (1) switch (_context5.n) {
+                  case 0:
+                    editContainer = container.querySelector('#profile-edit-container');
+                    if (editContainer) {
+                      _context5.n = 1;
+                      break;
+                    }
+                    return _context5.a(2);
+                  case 1:
+                    if (!(editContainer.style.display === 'none' || !editContainer.style.display)) {
+                      _context5.n = 3;
+                      break;
+                    }
+                    // show and populate from API
+                    editContainer.style.display = 'block';
+                    _context5.n = 2;
+                    return fetchJson('/api/auth/me');
+                  case 2:
+                    _user = _context5.v;
+                    if (_user) {
+                      email = _user.email || '';
+                      eEl = container.querySelector('#profile-email-edit-page');
+                      if (eEl) eEl.value = email;
+                    }
+                    _context5.n = 4;
+                    break;
+                  case 3:
+                    // hide
+                    editContainer.style.display = 'none';
+                  case 4:
+                    return _context5.a(2);
+                }
+              }, _callee5);
+            })));
+          case 2:
+            return _context6.a(2);
+        }
+      }, _callee6);
+    }));
+    return _renderProfilePage.apply(this, arguments);
+  }
+  if (menuProfile) menuProfile.addEventListener('click', function (e) {
     e.preventDefault();
+    main.innerHTML = '';
+    renderProfilePage(main);
+  });
+  rootEl.querySelector('#profile-close').addEventListener('click', function () {
+    profileModal.style.display = 'none';
+  });
+  // Logout from modal and sidebar
+  rootEl.querySelector('#profile-logout').addEventListener('click', function () {
     logout();
   });
+  // Sidebar profile card removed; logout remains available in the profile modal
+
+  // Populate profile info from API
+  fetchJson('/api/auth/me').then(function (user) {
+    if (!user) return;
+    var name = user.name || user.f_name || "".concat(user.f_name || '', " ").concat(user.l_name || '').trim() || 'Admin';
+    var email = user.email || user.email_address || '';
+    var elName = rootEl.querySelector('#profile-name');
+    var elEmail = rootEl.querySelector('#profile-email');
+    if (elName) elName.textContent = name;
+    if (elEmail) elEmail.textContent = email;
+    var modalName = rootEl.querySelector('#profile-name-modal');
+    var modalEmail = rootEl.querySelector('#profile-email-modal');
+    if (modalName) modalName.textContent = name;
+    if (modalEmail) modalEmail.textContent = email;
+    // Load avatar from localStorage if present
+    var avatarData = window.localStorage.getItem('academix_avatar');
+    var avatarImg = rootEl.querySelector('#profile-avatar');
+    if (avatarData && avatarImg) {
+      avatarImg.src = avatarData;
+    }
+    var avatarInput = rootEl.querySelector('#profile-avatar-input');
+    if (avatarInput && avatarImg) {
+      avatarInput.addEventListener('change', function (ev) {
+        var f = ev.target.files && ev.target.files[0];
+        if (!f) return;
+        var reader = new FileReader();
+        reader.onload = function (e) {
+          avatarImg.src = e.target.result;
+          try {
+            window.localStorage.setItem('academix_avatar', e.target.result);
+          } catch (err) {
+            console.warn('Avatar save failed', err);
+          }
+        };
+        reader.readAsDataURL(f);
+      });
+    }
+  })["catch"](function (err) {/* ignore - user may be unauthenticated */});
+
+  // Profile save handler
+  var profileSaveBtn = rootEl.querySelector('#profile-save');
+  if (profileSaveBtn) profileSaveBtn.addEventListener('click', /*#__PURE__*/_asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee2() {
+    var emailEl, current_password_el, new_password_el, new_password_confirmation_el, email, current_password, new_password, new_password_confirmation, emailRe, payload, res, returned, modalEmail, _t2;
+    return _regenerator().w(function (_context2) {
+      while (1) switch (_context2.p = _context2.n) {
+        case 0:
+          emailEl = rootEl.querySelector('#profile-email');
+          current_password_el = rootEl.querySelector('#profile-current-password');
+          new_password_el = rootEl.querySelector('#profile-new-password');
+          new_password_confirmation_el = rootEl.querySelector('#profile-new-password-confirm');
+          email = emailEl ? (emailEl.value || '').trim() : '';
+          current_password = current_password_el ? current_password_el.value || '' : '';
+          new_password = new_password_el ? new_password_el.value || '' : '';
+          new_password_confirmation = new_password_confirmation_el ? new_password_confirmation_el.value || '' : ''; // Require email to be present
+          if (email) {
+            _context2.n = 1;
+            break;
+          }
+          (0,_notify__WEBPACK_IMPORTED_MODULE_0__["default"])('Email is required to save profile.', 'Profile', 'error');
+          return _context2.a(2);
+        case 1:
+          emailRe = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
+          if (emailRe.test(email)) {
+            _context2.n = 2;
+            break;
+          }
+          (0,_notify__WEBPACK_IMPORTED_MODULE_0__["default"])('Please enter a valid email address.', 'Profile', 'error');
+          return _context2.a(2);
+        case 2:
+          if (!new_password) {
+            _context2.n = 4;
+            break;
+          }
+          if (current_password) {
+            _context2.n = 3;
+            break;
+          }
+          (0,_notify__WEBPACK_IMPORTED_MODULE_0__["default"])('Current password is required to change password.', 'Profile', 'error');
+          return _context2.a(2);
+        case 3:
+          if (!(new_password !== new_password_confirmation)) {
+            _context2.n = 4;
+            break;
+          }
+          (0,_notify__WEBPACK_IMPORTED_MODULE_0__["default"])('New password and confirmation do not match.', 'Profile', 'error');
+          return _context2.a(2);
+        case 4:
+          payload = {
+            email: email
+          };
+          if (new_password) {
+            payload.new_password = new_password;
+            payload.new_password_confirmation = new_password_confirmation;
+            payload.current_password = current_password;
+          }
+          _context2.p = 5;
+          _context2.n = 6;
+          return fetchJson('/api/auth/profile', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(payload)
+          });
+        case 6:
+          res = _context2.v;
+          if (res) {
+            _context2.n = 7;
+            break;
+          }
+          return _context2.a(2);
+        case 7:
+          // update UI with returned user
+          returned = res.user || res;
+          if (returned) {
+            modalEmail = rootEl.querySelector('#profile-email-modal');
+            if (modalEmail && returned.email) modalEmail.textContent = returned.email;
+          }
+          (0,_notify__WEBPACK_IMPORTED_MODULE_0__["default"])('Profile updated', 'Admin', 'success');
+          _context2.n = 9;
+          break;
+        case 8:
+          _context2.p = 8;
+          _t2 = _context2.v;
+          console.error(_t2);
+          (0,_notify__WEBPACK_IMPORTED_MODULE_0__["default"])(_t2.message || 'Update failed', 'Profile', 'error');
+        case 9:
+          return _context2.a(2);
+      }
+    }, _callee2, null, [[5, 8]]);
+  })));
+  // Sidebar logout removed: logout is available inside the Profile modal only
 
   // Navigate to Students inside the same dashboard shell
   var menuStudents = rootEl.querySelector('#menu-students');
@@ -27197,6 +27759,39 @@ function mountDashboard(rootEl) {
       }
     });
   }
+
+  // Navigate to Dashboard (re-render dashboard main area)
+  var menuDashboard = rootEl.querySelector('#menu-dashboard');
+  if (menuDashboard) {
+    menuDashboard.addEventListener('click', function (e) {
+      e.preventDefault();
+      // clear and re-render the dashboard template into rootEl
+      rootEl.innerHTML = '';
+      // remount dashboard into the same root element
+      // call mountDashboard to fully re-initialize UI
+      setTimeout(function () {
+        try {
+          mountDashboard(rootEl);
+        } catch (err) {
+          console.error('re-mount dashboard failed', err);
+        }
+      }, 0);
+    });
+  }
+  var menuReport = rootEl.querySelector('#menu-report');
+  if (menuReport) {
+    menuReport.addEventListener('click', function (e) {
+      e.preventDefault();
+      try {
+        var mountReport = window.Academix && window.Academix.mountReport;
+        if (mountReport) {
+          mountReport(main);
+        }
+      } catch (err) {
+        console.error('mount report failed', err);
+      }
+    });
+  }
 }
 
 /***/ }),
@@ -27212,6 +27807,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   mountFaculty: () => (/* binding */ mountFaculty)
 /* harmony export */ });
+/* harmony import */ var _notify__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./notify */ "./resources/js/components/notify.js");
 function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
 function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
 function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { _defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
@@ -27243,49 +27839,60 @@ function api(_x) {
   return _api.apply(this, arguments);
 }
 function _api() {
-  _api = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee7(path) {
+  _api = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee10(path) {
     var options,
       token,
+      url,
       res,
       data,
-      _args7 = arguments;
-    return _regenerator().w(function (_context7) {
-      while (1) switch (_context7.n) {
+      _args10 = arguments,
+      _t10;
+    return _regenerator().w(function (_context10) {
+      while (1) switch (_context10.p = _context10.n) {
         case 0:
-          options = _args7.length > 1 && _args7[1] !== undefined ? _args7[1] : {};
+          options = _args10.length > 1 && _args10[1] !== undefined ? _args10[1] : {};
           token = getTokenOrRedirect();
-          _context7.n = 1;
-          return fetch(path, _objectSpread({
+          url = path && (path.indexOf('http://') === 0 || path.indexOf('https://') === 0) ? path : window.location.origin + path;
+          _context10.p = 1;
+          _context10.n = 2;
+          return fetch(url, _objectSpread({
             headers: _objectSpread({
               'Accept': 'application/json',
               'Content-Type': 'application/json',
               'Authorization': "Bearer ".concat(token)
             }, options.headers || {})
           }, options));
-        case 1:
-          res = _context7.v;
+        case 2:
+          res = _context10.v;
+          _context10.n = 4;
+          break;
+        case 3:
+          _context10.p = 3;
+          _t10 = _context10.v;
+          throw new Error('Network error: could not reach API. Make sure the backend server is running and reachable.');
+        case 4:
           if (!(res.status === 401)) {
-            _context7.n = 2;
+            _context10.n = 5;
             break;
           }
           window.location.href = '/';
-          return _context7.a(2, Promise.reject(new Error('Unauthorized')));
-        case 2:
-          _context7.n = 3;
+          return _context10.a(2, Promise.reject(new Error('Unauthorized')));
+        case 5:
+          _context10.n = 6;
           return res.json()["catch"](function () {
             return {};
           });
-        case 3:
-          data = _context7.v;
+        case 6:
+          data = _context10.v;
           if (res.ok) {
-            _context7.n = 4;
+            _context10.n = 7;
             break;
           }
           throw new Error(data.message || 'Request failed');
-        case 4:
-          return _context7.a(2, data);
+        case 7:
+          return _context10.a(2, data);
       }
-    }, _callee7);
+    }, _callee10, null, [[1, 3]]);
   }));
   return _api.apply(this, arguments);
 }
@@ -27305,9 +27912,10 @@ function h(tag) {
   });
   return el;
 }
+
 function mountFaculty(rootEl) {
   if (!rootEl) throw new Error('mountFaculty: root element is required');
-  rootEl.innerHTML = "\n        <style>\n            .f-wrap{padding:18px;color:#fff;font-family:Arial,Helvetica,sans-serif}\n            .f-topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}\n            .f-title{margin:0;font-size:24px;font-weight:700}\n            .f-actions{display:flex;gap:8px;align-items:center}\n            .f-input{padding:8px 12px;border:1px solid #666;border-radius:4px;background:#2b2b2b;color:#fff;font-size:14px}\n            .f-btn{padding:8px 16px;background:#2d6cdf;color:#fff;border:none;border-radius:4px;cursor:pointer;font-size:14px}\n            .f-btn:hover{background:#1e5bb8}\n            .f-btn-outline{background:transparent;border:1px solid #666;color:#ddd}\n            .f-btn-outline:hover{background:#333}\n            .f-table{width:100%;border-collapse:collapse;background:#2b2b2b;border-radius:8px;overflow:hidden}\n            .f-table th{background:#333;padding:12px;text-align:left;font-weight:600;border-bottom:1px solid #444}\n            .f-table td{padding:12px;border-bottom:1px solid #444}\n            .f-table tr:hover{background:#333}\n            .f-pill{padding:4px 8px;border-radius:12px;background:#444;font-size:12px}\n            .f-small{font-size:12px}\n            .f-modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);display:none;align-items:center;justify-content:center;z-index:2000}\n            .f-modal{width:900px;max-width:95vw;background:#e8e8e8;color:#111;border-radius:8px;padding:24px;box-shadow:0 20px 60px rgba(0,0,0,.5)}\n            .f-modal h3{margin:0 0 16px;font-size:20px;font-weight:600}\n            .f-modal-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px 20px;align-items:start}\n            .f-modal-field{margin-bottom:12px}\n            .f-modal-label{display:block;font-size:13px;margin-bottom:4px;font-weight:500}\n            .f-modal-input{width:100%;padding:8px 12px;border:1px solid #ccc;border-radius:4px;background:#fff;color:#111;font-size:14px}\n            .f-modal-buttons{display:flex;gap:12px;justify-content:center;margin-top:20px}\n            .f-modal-btn{padding:10px 20px;border:none;border-radius:4px;cursor:pointer;font-size:14px;font-weight:500}\n            .f-modal-cancel{background:#666;color:#fff}\n            .f-modal-save{background:#2d6cdf;color:#fff}\n        </style>\n        <div class=\"f-wrap\">\n            <div class=\"f-topbar\">\n                <h2 class=\"f-title\">Faculty</h2>\n                <div class=\"f-actions\">\n                    <input id=\"f-q\" class=\"f-input\" placeholder=\"Search name or email\" style=\"width:200px\" />\n                    <button id=\"f-search\" class=\"f-btn\">Search</button>\n                    <button id=\"f-add\" class=\"f-btn\">Add Faculty</button>\n                    <button id=\"f-archived\" class=\"f-btn f-btn-outline\">Archived</button>\n                </div>\n            </div>\n            <div id=\"f-error\" class=\"f-small\" style=\"color:#ffb3b3;min-height:16px;margin-bottom:12px\"></div>\n            <table class=\"f-table\">\n                <thead>\n                    <tr><th>Name</th><th>Department</th><th>Position</th><th>Status</th><th>Action</th></tr>\n                </thead>\n                <tbody id=\"f-body\"><tr><td colspan=\"5\" class=\"f-small\">Loading\u2026</td></tr></tbody>\n            </table>\n            <div id=\"f-modal\" class=\"f-modal-overlay\">\n              <div class=\"f-modal\">\n                <h3 id=\"fm-title\">Add Faculty</h3>\n                <div class=\"f-modal-grid\">\n                  <div class=\"f-modal-field\">\n                    <label class=\"f-modal-label\">Faculty ID</label>\n                    <input id=\"fm-faculty_id\" class=\"f-modal-input\" placeholder=\"optional\" />\n                  </div>\n                  <div class=\"f-modal-field\">\n                    <label class=\"f-modal-label\">Date of Birth</label>\n                    <input id=\"fm-dob\" type=\"date\" class=\"f-modal-input\" />\n                  </div>\n                  <div class=\"f-modal-field\">\n                    <label class=\"f-modal-label\">First Name</label>\n                    <input id=\"fm-f_name\" class=\"f-modal-input\" />\n                  </div>\n                  <div class=\"f-modal-field\">\n                    <label class=\"f-modal-label\">Sex</label>\n                    <select id=\"fm-sex\" class=\"f-modal-input\">\n                      <option value=\"\">Select</option>\n                      <option>Male</option>\n                      <option>Female</option>\n                    </select>\n                  </div>\n                  <div class=\"f-modal-field\">\n                    <label class=\"f-modal-label\">Middle Name</label>\n                    <input id=\"fm-m_name\" class=\"f-modal-input\" />\n                  </div>\n                  <div class=\"f-modal-field\">\n                    <label class=\"f-modal-label\">Phone Number</label>\n                    <input id=\"fm-phone\" class=\"f-modal-input\" />\n                  </div>\n                  <div class=\"f-modal-field\">\n                    <label class=\"f-modal-label\">Last Name</label>\n                    <input id=\"fm-l_name\" class=\"f-modal-input\" />\n                  </div>\n                  <div class=\"f-modal-field\">\n                    <label class=\"f-modal-label\">Email Address</label>\n                    <input id=\"fm-email\" type=\"email\" class=\"f-modal-input\" />\n                  </div>\n                  <div class=\"f-modal-field\">\n                    <label class=\"f-modal-label\">Suffix</label>\n                    <input id=\"fm-suffix\" class=\"f-modal-input\" />\n                  </div>\n                  <div class=\"f-modal-field\">\n                    <label class=\"f-modal-label\">Address</label>\n                    <input id=\"fm-address\" class=\"f-modal-input\" />\n                  </div>\n                  <div class=\"f-modal-field\">\n                    <label class=\"f-modal-label\">Position</label>\n                    <input id=\"fm-position\" class=\"f-modal-input\" placeholder=\"e.g., Professor, Instructor\" />\n                  </div>\n                  <div class=\"f-modal-field\">\n                    <label class=\"f-modal-label\">Department</label>\n                    <select id=\"fm-department\" class=\"f-modal-input\"><option value=\"\">Loading\u2026</option></select>\n                  </div>\n                </div>\n                <div id=\"fm-error\" style=\"color:#b00020;font-size:12px;min-height:16px;margin-top:8px;text-align:center\"></div>\n                <div class=\"f-modal-buttons\">\n                  <button id=\"fm-cancel\" class=\"f-modal-btn f-modal-cancel\">Cancel</button>\n                  <button id=\"fm-save\" class=\"f-modal-btn f-modal-save\">Add</button>\n                </div>\n              </div>\n            </div>\n        </div>\n    ";
+  rootEl.innerHTML = "\n        <style>\n            .f-wrap{padding:32px 18px;color:#fff;font-family:Arial,Helvetica,sans-serif}\n            .f-topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}\n            .f-title{margin:0;font-size:24px;font-weight:700}\n            .f-actions{display:flex;gap:8px;align-items:center}\n            .f-input{padding:8px 12px;border:1px solid #666;border-radius:4px;background:#2b2b2b;color:#fff;font-size:14px}\n            .f-btn{padding:8px 16px;background:#2d6cdf;color:#fff;border:none;border-radius:4px;cursor:pointer;font-size:14px}\n            .f-btn:hover{background:#1e5bb8}\n            .f-btn-outline{background:transparent;border:1px solid #666;color:#ddd}\n            .f-btn-outline:hover{background:#333}\n            .f-table{width:100%;border-collapse:separate;border-spacing:12px 12px;background:transparent}\n            .f-table thead th{padding:0;text-align:left;font-weight:600}\n            .f-header{background:#333;padding:12px 14px;border-radius:8px;color:#fff;font-weight:700}\n            .f-table thead tr th:first-child .f-header{border-radius:8px 0 0 8px}\n            .f-table thead tr th:last-child .f-header{border-radius:0 8px 8px 0}\n            .f-table tbody tr{background:transparent}\n            .f-table td{padding:0;border:none;vertical-align:middle}\n            .f-cell{background:#2b2b2b;padding:14px 12px;border-radius:8px;color:#fff;box-shadow:inset 0 -1px 0 rgba(255,255,255,0.03)}\n            .f-table tbody tr td:first-child .f-cell{border-radius:8px 0 0 8px}\n            .f-table tbody tr td:last-child .f-cell{border-radius:0 8px 8px 0}\n                .f-table{width:100%;border-collapse:collapse;border-spacing:0;background:transparent}\n                .f-table thead tr{background:#333}\n                .f-table thead th{padding:12px 14px;text-align:left;font-weight:600;color:#fff}\n                .f-table thead th:first-child{border-radius:8px 0 0 8px}\n                .f-table thead th:last-child{border-radius:0 8px 8px 0}\n                .f-table tbody tr{background:#2b2b2b}\n                .f-table td{padding:14px 12px;border:none;vertical-align:middle}\n                .f-table tbody tr:first-child td:first-child{border-top-left-radius:8px}\n                .f-table tbody tr:first-child td:last-child{border-top-right-radius:8px}\n                .f-table tbody tr:last-child td:first-child{border-bottom-left-radius:8px}\n                .f-table tbody tr:last-child td:last-child{border-bottom-right-radius:8px}\n            .f-table tr:hover{background:#333}\n            .f-pill{padding:4px 8px;border-radius:12px;background:#444;font-size:12px}\n            .f-small{font-size:12px}\n            .f-modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);display:none;align-items:center;justify-content:center;z-index:2000}\n            .f-modal{width:900px;max-width:95vw;background:#e8e8e8;color:#111;border-radius:8px;padding:24px;box-shadow:0 20px 60px rgba(0,0,0,.5)}\n            .f-modal h3{margin:0 0 16px;font-size:26px;font-weight:800}\n            /* More spacing between fields/columns to match design */\n                .f-modal-grid{display:grid;grid-template-columns:1fr 1fr;gap:34px 26px;align-items:start}\n            .f-modal-field{margin-bottom:18px}\n            .f-modal-label{display:block;font-size:18px;margin-bottom:12px;font-weight:700}\n            .f-modal-input{width:100%;padding:14px 16px;border:1px solid #ccc;border-radius:6px;background:#fff;color:#111;font-size:20px;height:56px;box-sizing:border-box}\n                .f-modal-buttons{display:flex;gap:18px;justify-content:center;margin-top:24px}\n                .f-modal-btn{padding:12px 20px;border:none;border-radius:6px;cursor:pointer;font-size:16px;font-weight:600}\n            .f-modal-cancel{background:#666;color:#fff}\n            .f-modal-save{background:#2d6cdf;color:#fff}\n        </style>\n        <div class=\"f-wrap\">\n            <div class=\"f-topbar\">\n                <h2 class=\"f-title\">Faculty</h2>\n                <div class=\"f-actions\">\n                    <input id=\"f-q\" class=\"f-input\" placeholder=\"Search name or email\" style=\"width:220px\" />\n                    <select id=\"f-department-filter\" class=\"f-input\" style=\"width:220px\"><option value=\"\">All Departments</option></select>\n                    <button id=\"f-search\" class=\"f-btn\">Search</button>\n                    <button id=\"f-add\" class=\"f-btn\">Add Faculty</button>\n                    <button id=\"f-archived\" class=\"f-btn f-btn-outline\">Archived</button>\n                </div>\n            </div>\n            <div id=\"f-error\" class=\"f-small\" style=\"color:#ffb3b3;min-height:16px;margin-bottom:12px\"></div>\n            <table class=\"f-table\">\n                <thead>\n                    <tr>\n                        <th>Name</th>\n                        <th>Department</th>\n                        <th>Position</th>\n                        <th>Status</th>\n                        <th>Action</th>\n                    </tr>\n                </thead>\n                <tbody id=\"f-body\"><tr><td colspan=\"5\" class=\"f-small\">Loading\u2026</td></tr></tbody>\n            </table>\n            <div id=\"f-modal\" class=\"f-modal-overlay\">\n              <div class=\"f-modal\">\n                <h3 id=\"fm-title\">Add Faculty</h3>\n                <div class=\"f-modal-grid\">\n                                    <div class=\"f-modal-field\">\n                                        <label class=\"f-modal-label\">Faculty ID</label>\n                                        <input id=\"fm-faculty_id\" class=\"f-modal-input\" />\n                                    </div>\n                  <div class=\"f-modal-field\">\n                    <label class=\"f-modal-label\">Date of Birth</label>\n                    <input id=\"fm-dob\" type=\"date\" class=\"f-modal-input\" />\n                  </div>\n                  <div class=\"f-modal-field\">\n                    <label class=\"f-modal-label\">First Name</label>\n                    <input id=\"fm-f_name\" class=\"f-modal-input\" />\n                  </div>\n                  <div class=\"f-modal-field\">\n                    <label class=\"f-modal-label\">Sex</label>\n                    <select id=\"fm-sex\" class=\"f-modal-input\">\n                      <option value=\"\">Select</option>\n                      <option>Male</option>\n                      <option>Female</option>\n                    </select>\n                  </div>\n                  <div class=\"f-modal-field\">\n                    <label class=\"f-modal-label\">Middle Name</label>\n                    <input id=\"fm-m_name\" class=\"f-modal-input\" />\n                  </div>\n                                    <div class=\"f-modal-field\">\n                                        <label class=\"f-modal-label\">Phone Number</label>\n                                        <input id=\"fm-phone\" class=\"f-modal-input\" maxlength=\"11\" inputmode=\"numeric\" pattern=\"d*\" />\n                                    </div>\n                  <div class=\"f-modal-field\">\n                    <label class=\"f-modal-label\">Last Name</label>\n                    <input id=\"fm-l_name\" class=\"f-modal-input\" />\n                  </div>\n                  <div class=\"f-modal-field\">\n                    <label class=\"f-modal-label\">Email Address</label>\n                    <input id=\"fm-email\" type=\"email\" class=\"f-modal-input\" />\n                  </div>\n                                    <div class=\"f-modal-field\">\n                                        <label class=\"f-modal-label\">Suffix <span style=\"font-weight:400;font-size:12px;color:#666\">(optional)</span></label>\n                                        <input id=\"fm-suffix\" class=\"f-modal-input\" placeholder=\"optional\" />\n                                    </div>\n                  <div class=\"f-modal-field\">\n                    <label class=\"f-modal-label\">Address</label>\n                    <input id=\"fm-address\" class=\"f-modal-input\" />\n                  </div>\n                                    <div class=\"f-modal-field\">\n                                        <label class=\"f-modal-label\">Position</label>\n                                        <select id=\"fm-position\" class=\"f-modal-input\">\n                                            <option value=\"\">Select position</option>\n                                            <option>Dean</option>\n                                            <option>Chairperson</option>\n                                            <option>Instructor</option>\n                                            <option>Professor</option>\n                                            <option>Associate Professor</option>\n                                            <option>Assistant Professor</option>\n                                            <option>Lecturer</option>\n                                            <option>Program Coordinator</option>\n                                        </select>\n                                    </div>\n                  <div class=\"f-modal-field\">\n                    <label class=\"f-modal-label\">Department</label>\n                    <select id=\"fm-department\" class=\"f-modal-input\"><option value=\"\">Loading\u2026</option></select>\n                  </div>\n                </div>\n                <div id=\"fm-error\" style=\"color:#b00020;font-size:12px;min-height:16px;margin-top:8px;text-align:center\"></div>\n                <div class=\"f-modal-buttons\">\n                  <button id=\"fm-cancel\" class=\"f-modal-btn f-modal-cancel\">Cancel</button>\n                  <button id=\"fm-save\" class=\"f-modal-btn f-modal-save\">Add</button>\n                </div>\n              </div>\n            </div>\n        </div>\n    ";
   var errorBox = rootEl.querySelector('#f-error');
   var qEl = rootEl.querySelector('#f-q');
   var archivedBtn = rootEl.querySelector('#f-archived');
@@ -27325,6 +27933,20 @@ function mountFaculty(rootEl) {
     load();
   });
 
+  // live search + department filter (guard for missing elements)
+  var fQ = rootEl.querySelector('#f-q');
+  var fDept = rootEl.querySelector('#f-department-filter');
+  var fTimer = null;
+  if (fQ) fQ.addEventListener('input', function () {
+    clearTimeout(fTimer);
+    fTimer = setTimeout(function () {
+      return load();
+    }, 300);
+  });
+  if (fDept) fDept.addEventListener('change', function () {
+    return load();
+  });
+
   // Modal helpers
   var modal = rootEl.querySelector('#f-modal');
   var qs = function qs(id) {
@@ -27338,15 +27960,15 @@ function mountFaculty(rootEl) {
     return _openModal.apply(this, arguments);
   }
   function _openModal() {
-    _openModal = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee() {
+    _openModal = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee6() {
       var init,
-        _args = arguments;
-      return _regenerator().w(function (_context) {
-        while (1) switch (_context.n) {
+        _args6 = arguments;
+      return _regenerator().w(function (_context6) {
+        while (1) switch (_context6.n) {
           case 0:
-            init = _args.length > 0 && _args[0] !== undefined ? _args[0] : null;
+            init = _args6.length > 0 && _args6[0] !== undefined ? _args6[0] : null;
             errorBox.textContent = '';
-            _context.n = 1;
+            _context6.n = 1;
             return ensureOptions();
           case 1:
             modal.style.display = 'flex';
@@ -27379,9 +28001,9 @@ function mountFaculty(rootEl) {
               delete modal.dataset.editId;
             }
           case 2:
-            return _context.a(2);
+            return _context6.a(2);
         }
-      }, _callee);
+      }, _callee6);
     }));
     return _openModal.apply(this, arguments);
   }
@@ -27392,13 +28014,15 @@ function mountFaculty(rootEl) {
     return _saveModal.apply(this, arguments);
   } // Options caches
   function _saveModal() {
-    _saveModal = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee2() {
-      var err, payload, _t;
-      return _regenerator().w(function (_context2) {
-        while (1) switch (_context2.p = _context2.n) {
+    _saveModal = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee7() {
+      var err, phoneVal, payload, dobVal, dobRe, dobDate, year, _t6;
+      return _regenerator().w(function (_context7) {
+        while (1) switch (_context7.p = _context7.n) {
           case 0:
             err = qs('#fm-error');
             err.textContent = '';
+            phoneVal = qs('#fm-phone').value || '';
+            phoneVal = phoneVal.replace(/[^0-9]/g, '');
             payload = {
               f_name: qs('#fm-f_name').value.trim(),
               m_name: qs('#fm-m_name').value.trim() || null,
@@ -27406,60 +28030,100 @@ function mountFaculty(rootEl) {
               suffix: qs('#fm-suffix').value.trim() || null,
               date_of_birth: qs('#fm-dob').value || null,
               sex: qs('#fm-sex').value || null,
-              phone_number: qs('#fm-phone').value || null,
+              phone_number: phoneVal || null,
               email_address: qs('#fm-email').value || null,
               address: qs('#fm-address').value || null,
               position: qs('#fm-position').value.trim() || null,
               department_id: Number(qs('#fm-department').value)
             };
             if (!(!payload.f_name || !payload.l_name)) {
-              _context2.n = 1;
+              _context7.n = 1;
               break;
             }
             err.textContent = 'First and Last name are required.';
-            return _context2.a(2);
+            return _context7.a(2);
           case 1:
             if (payload.department_id) {
-              _context2.n = 2;
+              _context7.n = 2;
               break;
             }
             err.textContent = 'Please select Department.';
-            return _context2.a(2);
+            return _context7.a(2);
           case 2:
-            _context2.p = 2;
-            if (!modal.dataset.editId) {
-              _context2.n = 4;
+            if (!(phoneVal && phoneVal.length !== 11)) {
+              _context7.n = 3;
               break;
             }
-            _context2.n = 3;
+            qs('#fm-error').textContent = 'Phone number must be 11 digits.';
+            return _context7.a(2);
+          case 3:
+            // Validate DOB if provided
+            dobVal = qs('#fm-dob').value || '';
+            if (!dobVal) {
+              _context7.n = 6;
+              break;
+            }
+            dobRe = /^\d{4}-\d{2}-\d{2}$/;
+            if (dobRe.test(dobVal)) {
+              _context7.n = 4;
+              break;
+            }
+            qs('#fm-error').textContent = 'Date of birth must be in YYYY-MM-DD format.';
+            return _context7.a(2);
+          case 4:
+            dobDate = new Date(dobVal);
+            if (!Number.isNaN(dobDate.getTime())) {
+              _context7.n = 5;
+              break;
+            }
+            qs('#fm-error').textContent = 'Invalid date of birth.';
+            return _context7.a(2);
+          case 5:
+            year = dobDate.getUTCFullYear();
+            if (!(year < 1900 || year > new Date().getFullYear() - 18)) {
+              _context7.n = 6;
+              break;
+            }
+            qs('#fm-error').textContent = 'Date of birth looks unrealistic.';
+            return _context7.a(2);
+          case 6:
+            _context7.p = 6;
+            if (!modal.dataset.editId) {
+              _context7.n = 8;
+              break;
+            }
+            _context7.n = 7;
             return api("/api/faculty/".concat(modal.dataset.editId), {
               method: 'PUT',
               body: JSON.stringify(payload)
             });
-          case 3:
-            _context2.n = 5;
+          case 7:
+            (0,_notify__WEBPACK_IMPORTED_MODULE_0__["default"])('Successfully updated', 'Faculty', 'success');
+            _context7.n = 10;
             break;
-          case 4:
-            _context2.n = 5;
+          case 8:
+            _context7.n = 9;
             return api('/api/faculty', {
               method: 'POST',
               body: JSON.stringify(payload)
             });
-          case 5:
+          case 9:
+            (0,_notify__WEBPACK_IMPORTED_MODULE_0__["default"])('Successfully added', 'Faculty', 'success');
+          case 10:
             closeModal();
-            _context2.n = 6;
+            _context7.n = 11;
             return load();
-          case 6:
-            _context2.n = 8;
+          case 11:
+            _context7.n = 13;
             break;
-          case 7:
-            _context2.p = 7;
-            _t = _context2.v;
-            errorBox.textContent = _t.message;
-          case 8:
-            return _context2.a(2);
+          case 12:
+            _context7.p = 12;
+            _t6 = _context7.v;
+            errorBox.textContent = _t6.message;
+          case 13:
+            return _context7.a(2);
         }
-      }, _callee2, null, [[2, 7]]);
+      }, _callee7, null, [[6, 12]]);
     }));
     return _saveModal.apply(this, arguments);
   }
@@ -27468,35 +28132,35 @@ function mountFaculty(rootEl) {
     return _ensureOptions.apply(this, arguments);
   }
   function _ensureOptions() {
-    _ensureOptions = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee3() {
-      var departments, cs, it, fill, _t2, _t3;
-      return _regenerator().w(function (_context3) {
-        while (1) switch (_context3.p = _context3.n) {
+    _ensureOptions = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee8() {
+      var departments, cs, it, idKey, modalDept, topDept, _t7, _t8;
+      return _regenerator().w(function (_context8) {
+        while (1) switch (_context8.p = _context8.n) {
           case 0:
             if (!optionsLoaded) {
-              _context3.n = 1;
+              _context8.n = 1;
               break;
             }
-            return _context3.a(2);
+            return _context8.a(2);
           case 1:
             departments = [];
-            _context3.p = 2;
-            _context3.n = 3;
+            _context8.p = 2;
+            _context8.n = 3;
             return api('/api/settings/departments');
           case 3:
-            departments = _context3.v;
-            _context3.n = 5;
+            departments = _context8.v;
+            _context8.n = 5;
             break;
           case 4:
-            _context3.p = 4;
-            _t2 = _context3.v;
+            _context8.p = 4;
+            _t7 = _context8.v;
           case 5:
             if (!(!Array.isArray(departments) || departments.length === 0)) {
-              _context3.n = 10;
+              _context8.n = 10;
               break;
             }
-            _context3.p = 6;
-            _context3.n = 7;
+            _context8.p = 6;
+            _context8.n = 7;
             return api('/api/settings/departments', {
               method: 'POST',
               body: JSON.stringify({
@@ -27504,8 +28168,8 @@ function mountFaculty(rootEl) {
               })
             });
           case 7:
-            cs = _context3.v;
-            _context3.n = 8;
+            cs = _context8.v;
+            _context8.n = 8;
             return api('/api/settings/departments', {
               method: 'POST',
               body: JSON.stringify({
@@ -27513,27 +28177,30 @@ function mountFaculty(rootEl) {
               })
             });
           case 8:
-            it = _context3.v;
+            it = _context8.v;
             departments = [cs, it].filter(Boolean);
-            _context3.n = 10;
+            _context8.n = 10;
             break;
           case 9:
-            _context3.p = 9;
-            _t3 = _context3.v;
+            _context8.p = 9;
+            _t8 = _context8.v;
             departments = [];
           case 10:
-            fill = function fill(sel, rows, id, label) {
-              var el = qs(sel);
-              el.innerHTML = '<option value="">Select</option>' + rows.map(function (r) {
-                return "<option value=\"".concat(r[id], "\">").concat(r[label] || r[id], "</option>");
-              }).join('');
-            };
-            fill('#fm-department', departments, departments[0] && ('department_id' in departments[0] ? 'department_id' : 'id') || 'department_id', 'department_name');
+            idKey = departments[0] && ('department_id' in departments[0] ? 'department_id' : 'id') || 'department_id'; // fill modal select
+            modalDept = qs('#fm-department');
+            if (modalDept) modalDept.innerHTML = '<option value="">Select</option>' + departments.map(function (r) {
+              return "<option value=\"".concat(r[idKey], "\">").concat(r.department_name || r[idKey], "</option>");
+            }).join('');
+            // fill top-level filter select
+            topDept = rootEl.querySelector('#f-department-filter');
+            if (topDept) topDept.innerHTML = '<option value="">All Departments</option>' + departments.map(function (r) {
+              return "<option value=\"".concat(r[idKey], "\">").concat(r.department_name || r[idKey], "</option>");
+            }).join('');
             optionsLoaded = true;
           case 11:
-            return _context3.a(2);
+            return _context8.a(2);
         }
-      }, _callee3, null, [[6, 9], [2, 4]]);
+      }, _callee8, null, [[6, 9], [2, 4]]);
     }));
     return _ensureOptions.apply(this, arguments);
   }
@@ -27541,39 +28208,56 @@ function mountFaculty(rootEl) {
     return _load.apply(this, arguments);
   }
   function _load() {
-    _load = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee4() {
+    _load = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee9() {
       var page,
         params,
         qVal,
         data,
-        _args4 = arguments,
-        _t4;
-      return _regenerator().w(function (_context4) {
-        while (1) switch (_context4.p = _context4.n) {
+        rows,
+        qLower,
+        deptVal,
+        _args9 = arguments,
+        _t9;
+      return _regenerator().w(function (_context9) {
+        while (1) switch (_context9.p = _context9.n) {
           case 0:
-            page = _args4.length > 0 && _args4[0] !== undefined ? _args4[0] : 1;
+            page = _args9.length > 0 && _args9[0] !== undefined ? _args9[0] : 1;
             errorBox.textContent = '';
             params = new URLSearchParams();
             qVal = qEl.value.trim();
             if (qVal) params.set('q', qVal);
             params.set('page', String(page));
             if (showingArchived) params.set('archived', '1');
-            _context4.p = 1;
-            _context4.n = 2;
+            _context9.p = 1;
+            _context9.n = 2;
             return api("/api/faculty?".concat(params.toString()));
           case 2:
-            data = _context4.v;
-            renderRows(data.data || []);
-            _context4.n = 4;
+            data = _context9.v;
+            rows = data.data || [];
+            qLower = fQ && fQ.value ? fQ.value.trim().toLowerCase() : '';
+            deptVal = fDept && fDept.value ? fDept.value : '';
+            if (qLower || deptVal) {
+              rows = rows.filter(function (f) {
+                var _f$department, _f$department$departm;
+                var fullName = "".concat(f.f_name || '', " ").concat(f.l_name || '').toLowerCase();
+                var deptName = (((_f$department = f.department) === null || _f$department === void 0 ? void 0 : _f$department.department_name) || f.department_name || '').toLowerCase();
+                var pos = (f.position || '').toLowerCase();
+                var matchesQ = !qLower || fullName.includes(qLower) || deptName.includes(qLower) || pos.includes(qLower) || (f.email_address || '').toLowerCase().includes(qLower);
+                var matchesDept = !deptVal || String(f.department && ((_f$department$departm = f.department.department_id) !== null && _f$department$departm !== void 0 ? _f$department$departm : f.department.id) || f.department_id || '') === String(deptVal);
+                return matchesQ && matchesDept;
+              });
+            }
+            renderRows(rows || []);
+            _context9.n = 4;
             break;
           case 3:
-            _context4.p = 3;
-            _t4 = _context4.v;
-            errorBox.textContent = _t4.message;
+            _context9.p = 3;
+            _t9 = _context9.v;
+            errorBox.textContent = _t9.message;
           case 4:
-            return _context4.a(2);
+            return _context9.a(2);
         }
-      }, _callee4, null, [[1, 3]]);
+      }, _callee9, null, [[1, 3]]);
     }));
     return _load.apply(this, arguments);
   }
@@ -27589,133 +28273,310 @@ function mountFaculty(rootEl) {
     }
     rows.forEach(function (fac) {
       var _fac$department;
-      var tr = h('tr', {}, [h('td', {
-        text: "".concat(fac.f_name || '', " ").concat(fac.l_name || '').trim()
-      }), h('td', {
-        text: ((_fac$department = fac.department) === null || _fac$department === void 0 ? void 0 : _fac$department.department_name) || fac.department_name || fac.department_id || ''
-      }), h('td', {
-        text: fac.position || ''
-      }), h('td', {}, [h('span', {
-        "class": 'f-pill f-small',
-        text: fac.deleted_at ? 'Archived' : 'Active'
-      })]), h('td', {}, [h('button', {
+      var actionChildren = showingArchived ? [h('button', {
+        "class": 'f-btn f-small',
+        style: 'background:#4caf50',
+        'data-action': 'restore',
+        'data-id': fac.faculty_id
+      }, 'Restore'), h('span', {
+        text: ' '
+      }), h('button', {
+        "class": 'f-btn f-small',
+        style: 'background:#d32f2f',
+        'data-action': 'delete',
+        'data-id': fac.faculty_id
+      }, 'Delete')] : [h('button', {
         "class": 'f-btn f-small',
         'data-action': 'edit',
         'data-id': fac.faculty_id
       }, 'Edit'), h('span', {
         text: ' '
-      }), showingArchived ? h('button', {
-        "class": 'f-btn f-small',
-        style: 'background:#4caf50',
-        'data-action': 'restore',
-        'data-id': fac.faculty_id
-      }, 'Restore') : h('button', {
+      }), h('button', {
         "class": 'f-btn f-small',
         style: 'background:#d32f2f',
-        'data-action': 'delete',
+        'data-action': 'archive',
         'data-id': fac.faculty_id
-      }, 'Delete')])]);
+      }, 'Archive')];
+      var tr = h('tr', {}, [h('td', {}, h('div', {
+        "class": 'f-cell',
+        text: "".concat(fac.f_name || '', " ").concat(fac.l_name || '').trim()
+      })), h('td', {}, h('div', {
+        "class": 'f-cell',
+        text: ((_fac$department = fac.department) === null || _fac$department === void 0 ? void 0 : _fac$department.department_name) || fac.department_name || fac.department_id || ''
+      })), h('td', {}, h('div', {
+        "class": 'f-cell',
+        text: fac.position || ''
+      })), h('td', {}, h('div', {
+        "class": 'f-cell'
+      }, [h('span', {
+        "class": 'f-pill f-small',
+        text: fac.deleted_at ? 'Archived' : 'Active'
+      })])), h('td', {}, h('div', {
+        "class": 'f-cell'
+      }, actionChildren))]);
       tbody.appendChild(tr);
     });
 
-    // Add event listeners for Edit/Delete/Restore buttons
-    tbody.addEventListener('click', function (e) {
-      if (e.target.dataset.action === 'edit') {
-        var facultyId = e.target.dataset.id;
-        var faculty = rows.find(function (f) {
-          return f.faculty_id == facultyId;
+    // helper to disable a button until async work completes
+    var disableOnce = function disableOnce(btn) {
+      if (!btn) return function () {};
+      btn.disabled = true;
+      btn.style.opacity = '0.6';
+      return function () {
+        btn.disabled = false;
+        btn.style.opacity = '';
+      };
+    };
+
+    // Single onclick handler so listeners don't stack and every click registers immediately
+    tbody.onclick = function (e) {
+      var btn = e.target && e.target.closest ? e.target.closest('button') : null;
+      if (!btn) return;
+      var action = btn.dataset.action;
+      var id = btn.dataset.id;
+      var findFaculty = function findFaculty(idVal) {
+        return rows.find(function (f) {
+          return String(f.faculty_id) === String(idVal);
         });
+      };
+      if (action === 'edit') {
+        var faculty = findFaculty(id);
         if (faculty) openModal(faculty);
-      } else if (e.target.dataset.action === 'delete') {
-        var _facultyId = e.target.dataset.id;
-        var _faculty = rows.find(function (f) {
-          return f.faculty_id == _facultyId;
-        });
-        if (_faculty) onArchive(_faculty);
-      } else if (e.target.dataset.action === 'restore') {
-        var _facultyId2 = e.target.dataset.id;
-        var _faculty2 = rows.find(function (f) {
-          return f.faculty_id == _facultyId2;
-        });
-        if (_faculty2) onRestore(_faculty2);
+      } else if (action === 'archive') {
+        var _faculty = findFaculty(id);
+        if (!_faculty) return;
+        var restore = disableOnce(btn);
+        _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee() {
+          var _t;
+          return _regenerator().w(function (_context) {
+            while (1) switch (_context.p = _context.n) {
+              case 0:
+                _context.p = 0;
+                _context.n = 1;
+                return onArchive(_faculty);
+              case 1:
+                _context.n = 2;
+                return load();
+              case 2:
+                (0,_notify__WEBPACK_IMPORTED_MODULE_0__["default"])('Successfully archived', 'Faculty', 'success');
+                _context.n = 4;
+                break;
+              case 3:
+                _context.p = 3;
+                _t = _context.v;
+                errorBox.textContent = _t.message;
+              case 4:
+                _context.p = 4;
+                restore();
+                return _context.f(4);
+              case 5:
+                return _context.a(2);
+            }
+          }, _callee, null, [[0, 3, 4, 5]]);
+        }))();
+      } else if (action === 'restore') {
+        var _faculty2 = findFaculty(id);
+        if (!_faculty2) return;
+        var _restore = disableOnce(btn);
+        _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee2() {
+          var _t2;
+          return _regenerator().w(function (_context2) {
+            while (1) switch (_context2.p = _context2.n) {
+              case 0:
+                _context2.p = 0;
+                _context2.n = 1;
+                return onRestore(_faculty2);
+              case 1:
+                _context2.n = 2;
+                return load();
+              case 2:
+                (0,_notify__WEBPACK_IMPORTED_MODULE_0__["default"])('Successfully restored', 'Faculty', 'success');
+                _context2.n = 4;
+                break;
+              case 3:
+                _context2.p = 3;
+                _t2 = _context2.v;
+                errorBox.textContent = _t2.message;
+              case 4:
+                _context2.p = 4;
+                _restore();
+                return _context2.f(4);
+              case 5:
+                return _context2.a(2);
+            }
+          }, _callee2, null, [[0, 3, 4, 5]]);
+        }))();
+      } else if (action === 'delete') {
+        var _faculty3 = findFaculty(id);
+        if (!_faculty3) return;
+        if (!confirm('Permanently delete this faculty record? This cannot be undone.')) return;
+        var _restore2 = disableOnce(btn);
+        _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee3() {
+          var _t3;
+          return _regenerator().w(function (_context3) {
+            while (1) switch (_context3.p = _context3.n) {
+              case 0:
+                _context3.p = 0;
+                _context3.n = 1;
+                return api("/api/faculty/".concat(id), {
+                  method: 'DELETE'
+                });
+              case 1:
+                _context3.n = 2;
+                return load();
+              case 2:
+                (0,_notify__WEBPACK_IMPORTED_MODULE_0__["default"])('Successfully deleted', 'Faculty', 'success');
+                _context3.n = 4;
+                break;
+              case 3:
+                _context3.p = 3;
+                _t3 = _context3.v;
+                errorBox.textContent = _t3.message;
+              case 4:
+                _restore2();
+              case 5:
+                return _context3.a(2);
+            }
+          }, _callee3, null, [[0, 3]]);
+        }))();
       }
-    });
+    };
+    function awaitOnArchive(_x2, _x3) {
+      return _awaitOnArchive.apply(this, arguments);
+    }
+    function _awaitOnArchive() {
+      _awaitOnArchive = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee4(fac, restore) {
+        var _t4;
+        return _regenerator().w(function (_context4) {
+          while (1) switch (_context4.p = _context4.n) {
+            case 0:
+              _context4.p = 0;
+              _context4.n = 1;
+              return onArchive(fac);
+            case 1:
+              _context4.n = 3;
+              break;
+            case 2:
+              _context4.p = 2;
+              _t4 = _context4.v;
+            case 3:
+              ;
+              restore();
+            case 4:
+              return _context4.a(2);
+          }
+        }, _callee4, null, [[0, 2]]);
+      }));
+      return _awaitOnArchive.apply(this, arguments);
+    }
+    function awaitOnRestore(_x4, _x5) {
+      return _awaitOnRestore.apply(this, arguments);
+    }
+    function _awaitOnRestore() {
+      _awaitOnRestore = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee5(fac, restore) {
+        var _t5;
+        return _regenerator().w(function (_context5) {
+          while (1) switch (_context5.p = _context5.n) {
+            case 0:
+              _context5.p = 0;
+              _context5.n = 1;
+              return onRestore(fac);
+            case 1:
+              _context5.n = 3;
+              break;
+            case 2:
+              _context5.p = 2;
+              _t5 = _context5.v;
+            case 3:
+              ;
+              restore();
+            case 4:
+              return _context5.a(2);
+          }
+        }, _callee5, null, [[0, 2]]);
+      }));
+      return _awaitOnRestore.apply(this, arguments);
+    }
   }
-  function onArchive(_x2) {
+  function onArchive(_x6) {
     return _onArchive.apply(this, arguments);
   }
   function _onArchive() {
-    _onArchive = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee5(fac) {
-      var _t5;
-      return _regenerator().w(function (_context5) {
-        while (1) switch (_context5.p = _context5.n) {
+    _onArchive = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee0(fac) {
+      var _t0;
+      return _regenerator().w(function (_context0) {
+        while (1) switch (_context0.p = _context0.n) {
           case 0:
             if (confirm('Archive this faculty member?')) {
-              _context5.n = 1;
+              _context0.n = 1;
               break;
             }
-            return _context5.a(2);
+            return _context0.a(2);
           case 1:
-            _context5.p = 1;
-            _context5.n = 2;
+            _context0.p = 1;
+            _context0.n = 2;
             return api("/api/faculty/".concat(fac.faculty_id, "/archive"), {
               method: 'POST'
             });
           case 2:
-            _context5.n = 3;
+            _context0.n = 3;
             return load();
           case 3:
-            _context5.n = 5;
+            (0,_notify__WEBPACK_IMPORTED_MODULE_0__["default"])('Successfully archived', 'Faculty', 'success');
+            _context0.n = 5;
             break;
           case 4:
-            _context5.p = 4;
-            _t5 = _context5.v;
-            errorBox.textContent = _t5.message;
+            _context0.p = 4;
+            _t0 = _context0.v;
+            errorBox.textContent = _t0.message;
           case 5:
-            return _context5.a(2);
+            return _context0.a(2);
         }
-      }, _callee5, null, [[1, 4]]);
+      }, _callee0, null, [[1, 4]]);
     }));
     return _onArchive.apply(this, arguments);
   }
-  function onRestore(_x3) {
+  function onRestore(_x7) {
     return _onRestore.apply(this, arguments);
-  }
+  } // Ensure department filter is populated before first load
   function _onRestore() {
-    _onRestore = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee6(fac) {
-      var _t6;
-      return _regenerator().w(function (_context6) {
-        while (1) switch (_context6.p = _context6.n) {
+    _onRestore = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee1(fac) {
+      var _t1;
+      return _regenerator().w(function (_context1) {
+        while (1) switch (_context1.p = _context1.n) {
           case 0:
             if (confirm('Restore this faculty member?')) {
-              _context6.n = 1;
+              _context1.n = 1;
               break;
             }
-            return _context6.a(2);
+            return _context1.a(2);
           case 1:
-            _context6.p = 1;
-            _context6.n = 2;
+            _context1.p = 1;
+            _context1.n = 2;
             return api("/api/faculty/".concat(fac.faculty_id, "/restore"), {
               method: 'POST'
             });
           case 2:
-            _context6.n = 3;
+            _context1.n = 3;
             return load();
           case 3:
-            _context6.n = 5;
+            (0,_notify__WEBPACK_IMPORTED_MODULE_0__["default"])('Successfully restored', 'Faculty', 'success');
+            _context1.n = 5;
             break;
           case 4:
-            _context6.p = 4;
-            _t6 = _context6.v;
-            errorBox.textContent = _t6.message;
+            _context1.p = 4;
+            _t1 = _context1.v;
+            errorBox.textContent = _t1.message;
           case 5:
-            return _context6.a(2);
+            return _context1.a(2);
         }
-      }, _callee6, null, [[1, 4]]);
+      }, _callee1, null, [[1, 4]]);
     }));
     return _onRestore.apply(this, arguments);
   }
-  load();
+  ensureOptions().then(function () {
+    return load();
+  });
 }
 
 /***/ }),
@@ -27743,9 +28604,11 @@ function _asyncToGenerator(n) { return function () { var t = this, e = arguments
 function mountLogin(rootEl) {
   var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
   if (!rootEl) throw new Error('mountLogin: root element is required');
-  var bgUrl = options.backgroundUrl || 'https://tse4.mm.bing.net/th/id/OIP.tgQYDIWK0Z67zJ1pohyo4QHaEK?pid=Api&P=0&h=180';
-  var logoUrl = options.logoUrl || 'https://tse3.mm.bing.net/th/id/OIP.kNZRsLF495e1651A1kiMvwHaHa?pid=Api&P=0&h=180';
-  rootEl.innerHTML = "\n        <style>\n            .ax-bg{position:fixed;inset:0;background:url('".concat(bgUrl, "') center/cover no-repeat;filter:brightness(.75)}\n            .ax-wrap{position:relative;min-height:100vh;display:flex;align-items:center;justify-content:center}\n            .ax-brand{position:absolute;top:32px;left:32px;color:#fff;display:flex;align-items:center;gap:12px}\n            .ax-brand img{width:64px;height:64px;border-radius:8px}\n            .ax-brand h1{margin:0;font-size:44px;font-weight:700}\n            .ax-brand p{margin:0;opacity:.95}\n            .ax-card{width:360px;background:#333;color:#fff;padding:22px;border-radius:6px;box-shadow:0 12px 28px rgba(0,0,0,.45)}\n            .ax-card h2{margin:0 0 10px;font-size:18px}\n            .ax-field{margin:10px 0}\n            .ax-label{display:block;font-size:13px;color:#ddd;margin-bottom:6px}\n            .ax-input{width:100%;padding:8px 10px;border:1px solid #777;border-radius:3px;background:#eee;color:#222}\n            .ax-actions{margin-top:14px;display:flex;justify-content:flex-end}\n            .ax-btn{background:#2d6cdf;color:#fff;border:none;padding:8px 14px;border-radius:3px;cursor:pointer}\n            .ax-btn:disabled{opacity:.6;cursor:not-allowed}\n            .ax-error{margin-top:10px;color:#ffb3b3;min-height:18px;font-size:13px}\n        </style>\n        <div class=\"ax-bg\" aria-hidden=\"true\"></div>\n        <div class=\"ax-wrap\">\n            <div class=\"ax-brand\">\n                <img alt=\"logo\" src=\"").concat(logoUrl, "\">\n                <div>\n                    <h1>Academix</h1>\n                    <p>Student Management Portal</p>\n                </div>\n            </div>\n            <div class=\"ax-card\">\n                <h2>LOGIN</h2>\n                <div class=\"ax-field\">\n                    <label class=\"ax-label\" for=\"ax-username\">UserName</label>\n                    <input class=\"ax-input\" id=\"ax-username\" autocomplete=\"username\" />\n                </div>\n                <div class=\"ax-field\">\n                    <label class=\"ax-label\" for=\"ax-password\">Password</label>\n                    <input type=\"password\" class=\"ax-input\" id=\"ax-password\" autocomplete=\"current-password\" />\n                </div>\n                <div class=\"ax-actions\">\n                    <button id=\"ax-submit\" class=\"ax-btn\">Sign In</button>\n                </div>\n                <div id=\"ax-error\" class=\"ax-error\"></div>\n            </div>\n        </div>\n    ");
+
+  // Use a higher-resolution default image (remove small h=180 query) so background isn't blurry when scaled
+  var bgUrl = options.backgroundUrl || 'https://tse4.mm.bing.net/th/id/OIP.tgQYDIWK0Z67zJ1pohyo4QHaEK?pid=Api&P=0';
+  var logoUrl = options.logoUrl || 'https://tse3.mm.bing.net/th/id/OIP.kNZRsLF495e1651A1kiMvwHaHa?pid=Api&P=0';
+  rootEl.innerHTML = "\n        <style>\n            .ax-bg{position:fixed;inset:0;background-image:url('".concat(bgUrl, "');background-position:center;background-size:cover;background-repeat:no-repeat;background-attachment:fixed;filter:brightness(.75)}\n            .ax-wrap{position:relative;min-height:100vh;display:flex;align-items:center;justify-content:center}\n            .ax-brand{position:absolute;top:28px;left:28px;color:#fff;display:flex;align-items:center;gap:12px;z-index:3}\n            .ax-brand img{width:64px;height:64px;border-radius:8px;object-fit:cover}\n            .ax-brand h1{margin:0;font-size:40px;font-weight:700}\n            .ax-brand p{margin:0;opacity:.95}\n            /* Larger, centered login card for projector */\n            .ax-card{width:520px;max-width:96vw;background:rgba(34,34,34,0.95);color:#fff;padding:28px;border-radius:10px;box-shadow:0 18px 48px rgba(0,0,0,.6);z-index:4}\n            .ax-card h2{margin:0 0 12px;font-size:24px;letter-spacing:0.6px}\n            .ax-field{margin:12px 0}\n            .ax-label{display:block;font-size:16px;color:#e7e7e7;margin-bottom:8px;font-weight:600}\n            /* Type bars (inputs) \u2014 bigger and more touch-friendly */\n            .ax-input{width:100%;padding:12px 14px;border:1px solid #999;border-radius:6px;background:#fff;color:#111;font-size:18px;height:48px;box-sizing:border-box}\n            .ax-actions{margin-top:18px;display:flex;justify-content:flex-end}\n            .ax-btn{background:#2d6cdf;color:#fff;border:none;padding:10px 18px;border-radius:6px;cursor:pointer;font-size:16px}\n            .ax-btn:disabled{opacity:.6;cursor:not-allowed}\n            .ax-error{margin-top:12px;color:#ffb3b3;min-height:20px;font-size:14px}\n        </style>\n        <div class=\"ax-bg\" aria-hidden=\"true\"></div>\n        <div class=\"ax-wrap\">\n            <div class=\"ax-brand\">\n                <img alt=\"logo\" src=\"").concat(logoUrl, "\">\n                <div>\n                    <h1>Academix</h1>\n                    <p>Student Management Portal</p>\n                </div>\n            </div>\n            <div class=\"ax-card\">\n                <h2>LOGIN</h2>\n                <div class=\"ax-field\">\n                    <label class=\"ax-label\" for=\"ax-username\">UserName</label>\n                    <input class=\"ax-input\" id=\"ax-username\" autocomplete=\"username\" />\n                </div>\n                <div class=\"ax-field\" style=\"position:relative\">\n                    <label class=\"ax-label\" for=\"ax-password\">Password</label>\n                    <input type=\"password\" class=\"ax-input\" id=\"ax-password\" autocomplete=\"current-password\" style=\"padding-right:84px\" />\n                    <button id=\"ax-toggle-password\" type=\"button\" style=\"position:absolute;right:12px;top:38px;background:transparent;border:1px solid rgba(255,255,255,0.12);color:#fff;padding:6px 10px;border-radius:6px;cursor:pointer;font-size:14px\">Show</button>\n                </div>\n                <div class=\"ax-actions\">\n                    <button id=\"ax-submit\" class=\"ax-btn\">Sign In</button>\n                </div>\n                <div id=\"ax-error\" class=\"ax-error\"></div>\n            </div>\n        </div>\n    ");
   var $ = function $(sel) {
     return rootEl.querySelector(sel);
   };
@@ -27753,6 +28616,7 @@ function mountLogin(rootEl) {
   var passwordEl = $('#ax-password');
   var submitBtn = $('#ax-submit');
   var errorBox = $('#ax-error');
+  var toggleBtn = $('#ax-toggle-password');
   function login() {
     return _login.apply(this, arguments);
   }
@@ -27826,7 +28690,471 @@ function mountLogin(rootEl) {
       login();
     }
   });
+  // Toggle show/hide password so users can reveal what they typed
+  if (toggleBtn) {
+    toggleBtn.addEventListener('click', function () {
+      if (passwordEl.type === 'password') {
+        passwordEl.type = 'text';
+        toggleBtn.textContent = 'Hide';
+        toggleBtn.setAttribute('aria-pressed', 'true');
+      } else {
+        passwordEl.type = 'password';
+        toggleBtn.textContent = 'Show';
+        toggleBtn.setAttribute('aria-pressed', 'false');
+      }
+    });
+  }
 }
+
+/***/ }),
+
+/***/ "./resources/js/components/notify.js":
+/*!*******************************************!*\
+  !*** ./resources/js/components/notify.js ***!
+  \*******************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__),
+/* harmony export */   notify: () => (/* binding */ notify)
+/* harmony export */ });
+// Simple centered top toast used by multiple components
+function notify(title, message) {
+  var type = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'success';
+  var duration = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 2800;
+  var containerId = 'ax-toast-top';
+  var c = document.getElementById(containerId);
+  if (!c) {
+    c = document.createElement('div');
+    c.id = containerId;
+    // center container in viewport
+    c.style.position = 'fixed';
+    c.style.top = '50%';
+    c.style.left = '50%';
+    c.style.transform = 'translate(-50%, -50%)';
+    c.style.zIndex = 99999;
+    c.style.pointerEvents = 'none';
+    document.body.appendChild(c);
+  }
+  var card = document.createElement('div');
+  // larger centered card for clearer visibility
+  card.style.width = '620px';
+  card.style.maxWidth = '96vw';
+  card.style.background = '#0f0f0f';
+  card.style.color = '#fff';
+  card.style.borderRadius = '10px';
+  card.style.padding = '22px 28px';
+  card.style.boxShadow = '0 18px 60px rgba(0,0,0,.6)';
+  card.style.display = 'flex';
+  card.style.flexDirection = 'row';
+  card.style.alignItems = 'center';
+  card.style.gap = '16px';
+  card.style.pointerEvents = 'auto';
+
+  // Check icon box on top
+  var iconWrap = document.createElement('div');
+  iconWrap.style.width = '48px';
+  iconWrap.style.height = '48px';
+  iconWrap.style.borderRadius = '8px';
+  iconWrap.style.display = 'flex';
+  iconWrap.style.alignItems = 'center';
+  iconWrap.style.justifyContent = 'center';
+  iconWrap.style.background = type === 'success' ? '#4caf50' : '#d32f2f';
+  var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  svg.setAttribute('width', '24');
+  svg.setAttribute('height', '24');
+  svg.setAttribute('viewBox', '0 0 24 24');
+  var path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+  path.setAttribute('fill', '#fff');
+  path.setAttribute('d', 'M9 16.2l-3.5-3.5L4 14.2 9 19.2 20 8.2 18.6 6.8z');
+  svg.appendChild(path);
+  iconWrap.appendChild(svg);
+  var titleEl = document.createElement('div');
+  titleEl.textContent = title;
+  titleEl.style.fontWeight = '800';
+  titleEl.style.fontSize = '20px';
+  var msgEl = document.createElement('div');
+  msgEl.textContent = message;
+  msgEl.style.fontSize = '16px';
+  msgEl.style.opacity = '0.95';
+  msgEl.style.marginLeft = '6px';
+  msgEl.style.flex = '1';
+  var textWrap = document.createElement('div');
+  textWrap.style.display = 'flex';
+  textWrap.style.flexDirection = 'column';
+  textWrap.style.alignItems = 'flex-start';
+  textWrap.appendChild(titleEl);
+  textWrap.appendChild(msgEl);
+  card.appendChild(iconWrap);
+  card.appendChild(textWrap);
+
+  // animate in
+  card.style.opacity = '0';
+  card.style.transform = 'translateY(-6px)';
+  c.appendChild(card);
+  requestAnimationFrame(function () {
+    card.style.transition = 'opacity .18s, transform .18s';
+    card.style.opacity = '1';
+    card.style.transform = 'translateY(0)';
+  });
+  setTimeout(function () {
+    card.style.opacity = '0';
+    card.style.transform = 'translateY(-6px)';
+    setTimeout(function () {
+      return card.remove();
+    }, 250);
+  }, duration);
+}
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (notify);
+
+/***/ }),
+
+/***/ "./resources/js/components/report.js":
+/*!*******************************************!*\
+  !*** ./resources/js/components/report.js ***!
+  \*******************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__),
+/* harmony export */   mountReport: () => (/* binding */ mountReport)
+/* harmony export */ });
+/* harmony import */ var _notify__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./notify */ "./resources/js/components/notify.js");
+function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
+function _regenerator() { /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/babel/babel/blob/main/packages/babel-helpers/LICENSE */ var e, t, r = "function" == typeof Symbol ? Symbol : {}, n = r.iterator || "@@iterator", o = r.toStringTag || "@@toStringTag"; function i(r, n, o, i) { var c = n && n.prototype instanceof Generator ? n : Generator, u = Object.create(c.prototype); return _regeneratorDefine2(u, "_invoke", function (r, n, o) { var i, c, u, f = 0, p = o || [], y = !1, G = { p: 0, n: 0, v: e, a: d, f: d.bind(e, 4), d: function d(t, r) { return i = t, c = 0, u = e, G.n = r, a; } }; function d(r, n) { for (c = r, u = n, t = 0; !y && f && !o && t < p.length; t++) { var o, i = p[t], d = G.p, l = i[2]; r > 3 ? (o = l === n) && (u = i[(c = i[4]) ? 5 : (c = 3, 3)], i[4] = i[5] = e) : i[0] <= d && ((o = r < 2 && d < i[1]) ? (c = 0, G.v = n, G.n = i[1]) : d < l && (o = r < 3 || i[0] > n || n > l) && (i[4] = r, i[5] = n, G.n = l, c = 0)); } if (o || r > 1) return a; throw y = !0, n; } return function (o, p, l) { if (f > 1) throw TypeError("Generator is already running"); for (y && 1 === p && d(p, l), c = p, u = l; (t = c < 2 ? e : u) || !y;) { i || (c ? c < 3 ? (c > 1 && (G.n = -1), d(c, u)) : G.n = u : G.v = u); try { if (f = 2, i) { if (c || (o = "next"), t = i[o]) { if (!(t = t.call(i, u))) throw TypeError("iterator result is not an object"); if (!t.done) return t; u = t.value, c < 2 && (c = 0); } else 1 === c && (t = i["return"]) && t.call(i), c < 2 && (u = TypeError("The iterator does not provide a '" + o + "' method"), c = 1); i = e; } else if ((t = (y = G.n < 0) ? u : r.call(n, G)) !== a) break; } catch (t) { i = e, c = 1, u = t; } finally { f = 1; } } return { value: t, done: y }; }; }(r, o, i), !0), u; } var a = {}; function Generator() {} function GeneratorFunction() {} function GeneratorFunctionPrototype() {} t = Object.getPrototypeOf; var c = [][n] ? t(t([][n]())) : (_regeneratorDefine2(t = {}, n, function () { return this; }), t), u = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(c); function f(e) { return Object.setPrototypeOf ? Object.setPrototypeOf(e, GeneratorFunctionPrototype) : (e.__proto__ = GeneratorFunctionPrototype, _regeneratorDefine2(e, o, "GeneratorFunction")), e.prototype = Object.create(u), e; } return GeneratorFunction.prototype = GeneratorFunctionPrototype, _regeneratorDefine2(u, "constructor", GeneratorFunctionPrototype), _regeneratorDefine2(GeneratorFunctionPrototype, "constructor", GeneratorFunction), GeneratorFunction.displayName = "GeneratorFunction", _regeneratorDefine2(GeneratorFunctionPrototype, o, "GeneratorFunction"), _regeneratorDefine2(u), _regeneratorDefine2(u, o, "Generator"), _regeneratorDefine2(u, n, function () { return this; }), _regeneratorDefine2(u, "toString", function () { return "[object Generator]"; }), (_regenerator = function _regenerator() { return { w: i, m: f }; })(); }
+function _regeneratorDefine2(e, r, n, t) { var i = Object.defineProperty; try { i({}, "", {}); } catch (e) { i = 0; } _regeneratorDefine2 = function _regeneratorDefine(e, r, n, t) { function o(r, n) { _regeneratorDefine2(e, r, function (e) { return this._invoke(r, n, e); }); } r ? i ? i(e, r, { value: n, enumerable: !t, configurable: !t, writable: !t }) : e[r] = n : (o("next", 0), o("throw", 1), o("return", 2)); }, _regeneratorDefine2(e, r, n, t); }
+function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { _defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
+function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : i + ""; }
+function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+function asyncGeneratorStep(n, t, e, r, o, a, c) { try { var i = n[a](c), u = i.value; } catch (n) { return void e(n); } i.done ? t(u) : Promise.resolve(u).then(r, o); }
+function _asyncToGenerator(n) { return function () { var t = this, e = arguments; return new Promise(function (r, o) { var a = n.apply(t, e); function _next(n) { asyncGeneratorStep(a, r, o, _next, _throw, "next", n); } function _throw(n) { asyncGeneratorStep(a, r, o, _next, _throw, "throw", n); } _next(void 0); }); }; }
+// Merged Reports UI: choose type (Student/Faculty), search, pick a person, view details, export CSV
+
+function mountReport(rootEl) {
+  if (!rootEl) throw new Error('mountReport: root element is required');
+  rootEl.innerHTML = "\n        <style>\n        .r-wrap{padding:20px;color:#fff;font-family:Arial,Helvetica,sans-serif}\n        .r-card{background:#1b1b1b;padding:18px;border-radius:8px}\n        .r-controls{display:flex;gap:8px;align-items:center;margin-bottom:12px}\n        .r-input{padding:10px 12px;border-radius:6px;border:1px solid #444;background:#222;color:#fff}\n        .r-btn{padding:10px 12px;border-radius:6px;border:none;background:#2d6cdf;color:#fff;cursor:pointer}\n        .r-list{max-height:320px;overflow:auto;border:1px solid #262626;padding:8px;border-radius:6px}\n        .r-item{padding:8px;border-bottom:1px solid #1f1f1f;cursor:pointer}\n        .r-item:last-child{border-bottom:none}\n        .r-item:hover{background:#232323}\n        .r-details{margin-top:12px}\n        </style>\n        <div class=\"r-wrap\">\n            <h2 style=\"margin:0 0 12px;font-size:22px\">Reports</h2>\n            <div class=\"r-card\">\n                <div class=\"r-controls\" style=\"display:flex;gap:12px;align-items:center;flex-wrap:wrap\">\n                    <div style=\"display:flex;align-items:center;gap:8px\">\n                        <strong style=\"min-width:60px\">Student</strong>\n                        <select id=\"r-course\" class=\"r-input\" style=\"min-width:200px\"><option value=\"\">All Courses</option></select>\n                        <button id=\"r-search-student\" class=\"r-btn\">Generate Student</button>\n                        <button id=\"r-export-student\" class=\"r-btn\" style=\"background:#4caf50;margin-left:6px\">Export Student</button>\n                    </div>\n                    <div style=\"display:flex;align-items:center;gap:8px\">\n                        <strong style=\"min-width:60px\">Faculty</strong>\n                        <select id=\"r-department\" class=\"r-input\" style=\"min-width:200px\"><option value=\"\">All Departments</option></select>\n                        <button id=\"r-search-faculty\" class=\"r-btn\">Generate Faculty</button>\n                        <button id=\"r-export-faculty\" class=\"r-btn\" style=\"background:#4caf50;margin-left:6px\">Export Faculty</button>\n                    </div>\n                </div>\n                <div style=\"display:flex;gap:12px\">\n                    <div style=\"flex:1\">\n                        <div id=\"r-results\" class=\"r-list\">No results yet</div>\n                    </div>\n                    <div style=\"flex:1\">\n                        <div id=\"r-person-details\" class=\"r-details\"></div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    ";
+  var el = rootEl;
+  var deptEl = el.querySelector('#r-department');
+  var courseEl = el.querySelector('#r-course');
+  var searchStudentBtn = el.querySelector('#r-search-student');
+  var searchFacultyBtn = el.querySelector('#r-search-faculty');
+  var exportStudentBtn = el.querySelector('#r-export-student');
+  var exportFacultyBtn = el.querySelector('#r-export-faculty');
+  var resultsEl = el.querySelector('#r-results');
+  var detailsEl = el.querySelector('#r-person-details');
+  var lastRows = [];
+  var selected = null;
+  function apiGet(_x) {
+    return _apiGet.apply(this, arguments);
+  } // CSV export: downloads the currently filtered rows stored in `lastRows` as report_results.csv
+  function _apiGet() {
+    _apiGet = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee(path) {
+      var token, headers, res;
+      return _regenerator().w(function (_context) {
+        while (1) switch (_context.n) {
+          case 0:
+            token = window.localStorage.getItem('academix_token');
+            headers = _objectSpread({
+              'Accept': 'application/json'
+            }, token ? {
+              'Authorization': "Bearer ".concat(token)
+            } : {});
+            _context.n = 1;
+            return fetch(path, {
+              headers: headers
+            });
+          case 1:
+            res = _context.v;
+            if (!(res.status === 401)) {
+              _context.n = 2;
+              break;
+            }
+            window.location.href = '/';
+            return _context.a(2, null);
+          case 2:
+            return _context.a(2, res.json()["catch"](function () {
+              return {};
+            }));
+        }
+      }, _callee);
+    }));
+    return _apiGet.apply(this, arguments);
+  }
+  function doSearch(_x2) {
+    return _doSearch.apply(this, arguments);
+  }
+  function _doSearch() {
+    _doSearch = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee2(type) {
+      var params, course, dept, json, rows, r, id, _t;
+      return _regenerator().w(function (_context2) {
+        while (1) switch (_context2.p = _context2.n) {
+          case 0:
+            params = new URLSearchParams();
+            params.set('type', type);
+            if (type === 'student') {
+              course = courseEl.value;
+              if (course) params.set('course_id', course);
+            } else {
+              dept = deptEl.value;
+              if (dept) params.set('department_id', dept);
+            }
+            resultsEl.innerHTML = 'Loading...';
+            _context2.p = 1;
+            _context2.n = 2;
+            return apiGet('/api/reports/search?' + params.toString());
+          case 2:
+            json = _context2.v;
+            rows = json && json.data || [];
+            lastRows = rows;
+            renderResults(rows, type);
+            // if generate produced exactly one person, auto-select and show details
+            if (rows.length === 1) {
+              r = rows[0];
+              id = type === 'student' ? r.student_id || r.id : r.faculty_id || r.id; // small delay to ensure list rendered
+              setTimeout(function () {
+                return selectPerson(type, id);
+              }, 60);
+            }
+            _context2.n = 4;
+            break;
+          case 3:
+            _context2.p = 3;
+            _t = _context2.v;
+            (0,_notify__WEBPACK_IMPORTED_MODULE_0__["default"])('Filter failed', 'Reports', 'error');
+            resultsEl.innerHTML = 'Failed';
+          case 4:
+            return _context2.a(2);
+        }
+      }, _callee2, null, [[1, 3]]);
+    }));
+    return _doSearch.apply(this, arguments);
+  }
+  function exportResultsForType(desiredType) {
+    if (!lastRows || !lastRows.length) {
+      (0,_notify__WEBPACK_IMPORTED_MODULE_0__["default"])('No rows to export', 'Reports', 'info');
+      return;
+    }
+    var rows = lastRows.filter(function (r) {
+      // determine type of row (student rows will have student_id or course)
+      var isStudent = Boolean(r.student_id || r.course_id || r.academicYear || r.academic_year_id);
+      return desiredType === 'student' ? isStudent : !isStudent;
+    });
+    if (!rows.length) {
+      (0,_notify__WEBPACK_IMPORTED_MODULE_0__["default"])('No rows of selected type to export', 'Reports', 'info');
+      return;
+    }
+    var type = desiredType;
+    // build CSV rows
+    var headers = [];
+    var mapRow = function mapRow(r) {
+      return {};
+    };
+    if (type === 'student') {
+      headers = ['Student ID', 'First Name', 'Last Name', 'Email', 'Department', 'Course', 'Year Level', 'Academic Year'];
+      mapRow = function mapRow(r) {
+        return {
+          'Student ID': r.student_id || r.id || '',
+          'First Name': r.f_name || r.first_name || '',
+          'Last Name': r.l_name || r.last_name || '',
+          'Email': r.email_address || r.email || '',
+          'Department': r.department && (r.department.department_name || r.department.name) || r.department_name || '',
+          'Course': r.course && (r.course.course_name || r.course.name) || r.course_name || '',
+          'Year Level': r.year_level || '',
+          'Academic Year': r.academicYear && r.academicYear.year || ''
+        };
+      };
+    } else {
+      headers = ['Faculty ID', 'First Name', 'Last Name', 'Email', 'Department'];
+      mapRow = function mapRow(r) {
+        return {
+          'Faculty ID': r.faculty_id || r.id || '',
+          'First Name': r.f_name || r.first_name || '',
+          'Last Name': r.l_name || r.last_name || '',
+          'Email': r.email_address || r.email || '',
+          'Department': r.department && (r.department.department_name || r.department.name) || r.department_name || ''
+        };
+      };
+    }
+
+    // build CSV string
+    var escape = function escape(v) {
+      return '"' + String(v === null || v === undefined ? '' : v).replace(/"/g, '""') + '"';
+    };
+    var csvLines = [];
+    csvLines.push(headers.map(function (h) {
+      return escape(h);
+    }).join(','));
+    rows.forEach(function (r) {
+      var mapped = mapRow(r);
+      var line = headers.map(function (h) {
+        return escape(mapped[h]);
+      });
+      csvLines.push(line.join(','));
+    });
+    var csv = csvLines.join('\n');
+    var blob = new Blob([csv], {
+      type: 'text/csv;charset=utf-8;'
+    });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = type === 'student' ? 'student_results.csv' : 'faculty_results.csv';
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(function () {
+      URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+    }, 500);
+    (0,_notify__WEBPACK_IMPORTED_MODULE_0__["default"])('Export started', 'Reports', 'success');
+  }
+  function exportStudent() {
+    exportResultsForType('student');
+  }
+  function exportFaculty() {
+    exportResultsForType('faculty');
+  }
+  function renderResults(rows, type) {
+    if (!rows || !rows.length) {
+      resultsEl.innerHTML = '<div style="color:#aaa;padding:8px">No results</div>';
+      return;
+    }
+    resultsEl.innerHTML = '';
+    rows.forEach(function (r) {
+      var _r$course, _r$department;
+      var name = ((r.f_name || '') + ' ' + (r.l_name || '')).trim() || r.name || 'Unknown';
+      var elItem = document.createElement('div');
+      elItem.className = 'r-item';
+      elItem.textContent = name + (type === 'student' ? ' — ' + (((_r$course = r.course) === null || _r$course === void 0 ? void 0 : _r$course.course_name) || r.course_name || '') : ' — ' + (((_r$department = r.department) === null || _r$department === void 0 ? void 0 : _r$department.department_name) || r.department_name || ''));
+      elItem.dataset.id = type === 'student' ? r.student_id || r.id : r.faculty_id || r.id;
+      elItem.addEventListener('click', function () {
+        return selectPerson(type, elItem.dataset.id);
+      });
+      resultsEl.appendChild(elItem);
+    });
+  }
+  function selectPerson(_x3, _x4) {
+    return _selectPerson.apply(this, arguments);
+  }
+  function _selectPerson() {
+    _selectPerson = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee3(type, id) {
+      var json, row, _t2;
+      return _regenerator().w(function (_context3) {
+        while (1) switch (_context3.p = _context3.n) {
+          case 0:
+            selected = null;
+            detailsEl.innerHTML = 'Loading...';
+            _context3.p = 1;
+            _context3.n = 2;
+            return apiGet('/api/reports/person?type=' + encodeURIComponent(type) + '&id=' + encodeURIComponent(id));
+          case 2:
+            json = _context3.v;
+            row = json && json.data;
+            if (row) {
+              _context3.n = 3;
+              break;
+            }
+            detailsEl.innerHTML = '<div style="color:#ccc">Person not found or archived</div>';
+            return _context3.a(2);
+          case 3:
+            selected = {
+              type: type,
+              row: row
+            };
+            renderDetails(selected);
+            _context3.n = 5;
+            break;
+          case 4:
+            _context3.p = 4;
+            _t2 = _context3.v;
+            (0,_notify__WEBPACK_IMPORTED_MODULE_0__["default"])('Failed to load details', 'Reports', 'error');
+            detailsEl.innerHTML = 'Failed to load';
+          case 5:
+            return _context3.a(2);
+        }
+      }, _callee3, null, [[1, 4]]);
+    }));
+    return _selectPerson.apply(this, arguments);
+  }
+  function renderDetails(sel) {
+    var _r$course2, _r$academicYear;
+    var r = sel.row;
+    if (sel.type === 'faculty') {
+      var _r$department2;
+      detailsEl.innerHTML = "\n                <div style=\"font-weight:700\">".concat((r.f_name || '') + ' ' + (r.l_name || ''), "</div>\n                <div class=\"muted\">").concat(r.email_address || '', "</div>\n                <div style=\"margin-top:8px\">Department: ").concat(((_r$department2 = r.department) === null || _r$department2 === void 0 ? void 0 : _r$department2.department_name) || r.department_name || '', "</div>\n            ");
+      return;
+    }
+    detailsEl.innerHTML = "\n            <div style=\"font-weight:700\">".concat((r.f_name || '') + ' ' + (r.l_name || ''), "</div>\n            <div class=\"muted\">").concat(r.email_address || '', "</div>\n            <div style=\"margin-top:8px\">Course: ").concat(((_r$course2 = r.course) === null || _r$course2 === void 0 ? void 0 : _r$course2.course_name) || r.course_name || '', "</div>\n            <div>Year Level: ").concat(r.year_level || '', "</div>\n            <div>Academic Year: ").concat(((_r$academicYear = r.academicYear) === null || _r$academicYear === void 0 ? void 0 : _r$academicYear.year) || '', "</div>\n        ");
+  }
+  if (searchStudentBtn) searchStudentBtn.addEventListener('click', function () {
+    return doSearch('student');
+  });
+  if (searchFacultyBtn) searchFacultyBtn.addEventListener('click', function () {
+    return doSearch('faculty');
+  });
+  if (exportStudentBtn) exportStudentBtn.addEventListener('click', exportStudent);
+  if (exportFacultyBtn) exportFacultyBtn.addEventListener('click', exportFaculty);
+
+  // load departments and courses
+  function loadOptions() {
+    return _loadOptions.apply(this, arguments);
+  }
+  function _loadOptions() {
+    _loadOptions = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee4() {
+      var deps, courses, dlist, clist, _t3;
+      return _regenerator().w(function (_context4) {
+        while (1) switch (_context4.p = _context4.n) {
+          case 0:
+            _context4.p = 0;
+            _context4.n = 1;
+            return apiGet('/api/settings/departments');
+          case 1:
+            deps = _context4.v;
+            _context4.n = 2;
+            return apiGet('/api/settings/courses');
+          case 2:
+            courses = _context4.v;
+            dlist = deps && Array.isArray(deps) ? deps : deps && deps.data ? deps.data : [];
+            clist = courses && Array.isArray(courses) ? courses : courses && courses.data ? courses.data : [];
+            deptEl.innerHTML = '<option value="">All Departments</option>' + dlist.map(function (d) {
+              return "<option value=\"".concat(d.department_id || d.id, "\">").concat(d.department_name || d.name || '', "</option>");
+            }).join('');
+            courseEl.innerHTML = '<option value="">All Courses</option>' + clist.map(function (c) {
+              return "<option value=\"".concat(c.course_id || c.id, "\" data-dept=\"").concat(c.department_id, "\">").concat(c.course_name || c.name || '', "</option>");
+            }).join('');
+            // filter course list when department changes (affects student view only if you want)
+            deptEl.addEventListener('change', function () {
+              var val = deptEl.value;
+              var opts = Array.from(courseEl.querySelectorAll('option'));
+              courseEl.innerHTML = '';
+              courseEl.appendChild(new Option('All Courses', ''));
+              opts.slice(1).forEach(function (o) {
+                if (!val || String(o.getAttribute('data-dept')) === String(val)) courseEl.appendChild(o.cloneNode(true));
+              });
+            });
+            _context4.n = 4;
+            break;
+          case 3:
+            _context4.p = 3;
+            _t3 = _context4.v;
+            console.warn('Failed to load options', _t3);
+          case 4:
+            return _context4.a(2);
+        }
+      }, _callee4, null, [[0, 3]]);
+    }));
+    return _loadOptions.apply(this, arguments);
+  }
+  loadOptions();
+
+  // CSV export button removed
+}
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (mountReport);
 
 /***/ }),
 
@@ -27841,6 +29169,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   mountSettings: () => (/* binding */ mountSettings)
 /* harmony export */ });
+/* harmony import */ var _notify__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./notify */ "./resources/js/components/notify.js");
 function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
 function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
 function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { _defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
@@ -27872,18 +29201,18 @@ function api(_x) {
   return _api.apply(this, arguments);
 }
 function _api() {
-  _api = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee7(path) {
+  _api = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee10(path) {
     var options,
       token,
       res,
       data,
-      _args7 = arguments;
-    return _regenerator().w(function (_context7) {
-      while (1) switch (_context7.n) {
+      _args10 = arguments;
+    return _regenerator().w(function (_context10) {
+      while (1) switch (_context10.n) {
         case 0:
-          options = _args7.length > 1 && _args7[1] !== undefined ? _args7[1] : {};
+          options = _args10.length > 1 && _args10[1] !== undefined ? _args10[1] : {};
           token = getTokenOrRedirect();
-          _context7.n = 1;
+          _context10.n = 1;
           return fetch(path, _objectSpread({
             headers: _objectSpread({
               'Accept': 'application/json',
@@ -27892,29 +29221,29 @@ function _api() {
             }, options.headers || {})
           }, options));
         case 1:
-          res = _context7.v;
+          res = _context10.v;
           if (!(res.status === 401)) {
-            _context7.n = 2;
+            _context10.n = 2;
             break;
           }
           window.location.href = '/';
-          return _context7.a(2, Promise.reject(new Error('Unauthorized')));
+          return _context10.a(2, Promise.reject(new Error('Unauthorized')));
         case 2:
-          _context7.n = 3;
+          _context10.n = 3;
           return res.json()["catch"](function () {
             return {};
           });
         case 3:
-          data = _context7.v;
+          data = _context10.v;
           if (res.ok) {
-            _context7.n = 4;
+            _context10.n = 4;
             break;
           }
           throw new Error(data.message || 'Request failed');
         case 4:
-          return _context7.a(2, data);
+          return _context10.a(2, data);
       }
-    }, _callee7);
+    }, _callee10);
   }));
   return _api.apply(this, arguments);
 }
@@ -27934,9 +29263,10 @@ function h(tag) {
   });
   return el;
 }
+
 function mountSettings(rootEl) {
   if (!rootEl) throw new Error('mountSettings: root element is required');
-  rootEl.innerHTML = "\n        <style>\n            .st-wrap{padding:18px;color:#fff;font-family:Arial,Helvetica,sans-serif}\n            .st-topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}\n            .st-title{margin:0;font-size:24px;font-weight:700}\n            .st-search{display:flex;gap:8px;align-items:center;margin-bottom:16px}\n            .st-input{padding:8px 12px;border:1px solid #666;border-radius:4px;background:#2b2b2b;color:#fff;font-size:14px}\n            .st-tabs{display:flex;gap:4px;margin-bottom:16px}\n            .st-tab{padding:10px 16px;background:#333;color:#ddd;border:none;border-radius:4px 4px 0 0;cursor:pointer;font-size:14px}\n            .st-tab.active{background:#2d6cdf;color:#fff}\n            .st-tab:hover:not(.active){background:#444}\n            .st-content{background:#2b2b2b;border-radius:8px;padding:20px;min-height:400px}\n            .st-actions{display:flex;gap:8px;align-items:center;margin-bottom:16px}\n            .st-btn{padding:8px 16px;background:#2d6cdf;color:#fff;border:none;border-radius:4px;cursor:pointer;font-size:14px}\n            .st-btn:hover{background:#1e5bb8}\n            .st-btn-outline{background:transparent;border:1px solid #666;color:#ddd}\n            .st-btn-outline:hover{background:#333}\n            .st-table{width:100%;border-collapse:collapse;background:#333;border-radius:8px;overflow:hidden}\n            .st-table th{background:#444;padding:12px;text-align:left;font-weight:600;border-bottom:1px solid #555}\n            .st-table td{padding:12px;border-bottom:1px solid #555}\n            .st-table tr:hover{background:#444}\n            .st-pill{padding:4px 8px;border-radius:12px;background:#555;font-size:12px}\n            .st-small{font-size:12px}\n            .st-error{color:#ffb3b3;font-size:12px;min-height:16px;margin-bottom:12px}\n            .st-modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);display:none;align-items:center;justify-content:center;z-index:2000}\n            .st-modal{width:500px;max-width:95vw;background:#e8e8e8;color:#111;border-radius:8px;padding:24px;box-shadow:0 20px 60px rgba(0,0,0,.5)}\n            .st-modal h3{margin:0 0 16px;font-size:20px;font-weight:600}\n            .st-modal-field{margin-bottom:16px}\n            .st-modal-label{display:block;font-size:13px;margin-bottom:4px;font-weight:500}\n            .st-modal-input{width:100%;padding:8px 12px;border:1px solid #ccc;border-radius:4px;background:#fff;color:#111;font-size:14px}\n            .st-modal-buttons{display:flex;gap:12px;justify-content:center;margin-top:20px}\n            .st-modal-btn{padding:10px 20px;border:none;border-radius:4px;cursor:pointer;font-size:14px;font-weight:500}\n            .st-modal-cancel{background:#666;color:#fff}\n            .st-modal-save{background:#2d6cdf;color:#fff}\n        </style>\n        <div class=\"st-wrap\">\n            <div class=\"st-topbar\">\n                <h2 class=\"st-title\">Settings</h2>\n            </div>\n            <div class=\"st-search\">\n                <input id=\"st-search\" class=\"st-input\" placeholder=\"SEARCH\" style=\"width:200px\" />\n            </div>\n            <div class=\"st-tabs\">\n                <button class=\"st-tab active\" data-tab=\"courses\">Course</button>\n                <button class=\"st-tab\" data-tab=\"departments\">Departments</button>\n                <button class=\"st-tab\" data-tab=\"academic-years\">Academic Years</button>\n            </div>\n            <div class=\"st-content\">\n                <div id=\"st-courses\" class=\"st-tab-content\">\n                    <div class=\"st-actions\">\n                        <button id=\"st-add-course\" class=\"st-btn\">Add Course</button>\n                        <button id=\"st-archived-courses\" class=\"st-btn st-btn-outline\">Show Archived</button>\n                    </div>\n                    <div id=\"st-error-courses\" class=\"st-error\"></div>\n                    <table class=\"st-table\">\n                        <thead>\n                            <tr><th>Course Name</th><th>Department</th><th>Status</th><th>Action</th></tr>\n                        </thead>\n                        <tbody id=\"st-body-courses\"><tr><td colspan=\"4\" class=\"st-small\">Loading\u2026</td></tr></tbody>\n                    </table>\n                </div>\n                <div id=\"st-departments\" class=\"st-tab-content\" style=\"display:none\">\n                    <div class=\"st-actions\">\n                        <button id=\"st-add-department\" class=\"st-btn\">Add Department</button>\n                        <button id=\"st-archived-departments\" class=\"st-btn st-btn-outline\">Show Archived</button>\n                    </div>\n                    <div id=\"st-error-departments\" class=\"st-error\"></div>\n                    <table class=\"st-table\">\n                        <thead>\n                            <tr><th>Department Name</th><th>Status</th><th>Action</th></tr>\n                        </thead>\n                        <tbody id=\"st-body-departments\"><tr><td colspan=\"3\" class=\"st-small\">Loading\u2026</td></tr></tbody>\n                    </table>\n                </div>\n                <div id=\"st-academic-years\" class=\"st-tab-content\" style=\"display:none\">\n                    <div class=\"st-actions\">\n                        <button id=\"st-add-academic-year\" class=\"st-btn\">Add Academic Year</button>\n                        <button id=\"st-archived-academic-years\" class=\"st-btn st-btn-outline\">Show Archived</button>\n                    </div>\n                    <div id=\"st-error-academic-years\" class=\"st-error\"></div>\n                    <table class=\"st-table\">\n                        <thead>\n                            <tr><th>School Year</th><th>Status</th><th>Action</th></tr>\n                        </thead>\n                        <tbody id=\"st-body-academic-years\"><tr><td colspan=\"3\" class=\"st-small\">Loading\u2026</td></tr></tbody>\n                    </table>\n                </div>\n            </div>\n            \n            <!-- Course Modal -->\n            <div id=\"st-modal-course\" class=\"st-modal-overlay\">\n                <div class=\"st-modal\">\n                    <h3 id=\"stm-course-title\">Add Course</h3>\n                    <div class=\"st-modal-field\">\n                        <label class=\"st-modal-label\">Course Name</label>\n                        <input id=\"stm-course-name\" class=\"st-modal-input\" />\n                    </div>\n                    <div class=\"st-modal-field\">\n                        <label class=\"st-modal-label\">Department</label>\n                        <select id=\"stm-course-department\" class=\"st-modal-input\"><option value=\"\">Loading\u2026</option></select>\n                    </div>\n                    <div id=\"stm-course-error\" style=\"color:#b00020;font-size:12px;min-height:16px;margin-top:8px;text-align:center\"></div>\n                    <div class=\"st-modal-buttons\">\n                        <button id=\"stm-course-cancel\" class=\"st-modal-btn st-modal-cancel\">Cancel</button>\n                        <button id=\"stm-course-save\" class=\"st-modal-btn st-modal-save\">Add</button>\n                    </div>\n                </div>\n            </div>\n            \n            <!-- Department Modal -->\n            <div id=\"st-modal-department\" class=\"st-modal-overlay\">\n                <div class=\"st-modal\">\n                    <h3 id=\"stm-department-title\">Add Department</h3>\n                    <div class=\"st-modal-field\">\n                        <label class=\"st-modal-label\">Department Name</label>\n                        <input id=\"stm-department-name\" class=\"st-modal-input\" />\n                    </div>\n                    <div id=\"stm-department-error\" style=\"color:#b00020;font-size:12px;min-height:16px;margin-top:8px;text-align:center\"></div>\n                    <div class=\"st-modal-buttons\">\n                        <button id=\"stm-department-cancel\" class=\"st-modal-btn st-modal-cancel\">Cancel</button>\n                        <button id=\"stm-department-save\" class=\"st-modal-btn st-modal-save\">Add</button>\n                    </div>\n                </div>\n            </div>\n            \n            <!-- Academic Year Modal -->\n            <div id=\"st-modal-academic-year\" class=\"st-modal-overlay\">\n                <div class=\"st-modal\">\n                    <h3 id=\"stm-academic-year-title\">Add Academic Year</h3>\n                    <div class=\"st-modal-field\">\n                        <label class=\"st-modal-label\">School Year</label>\n                        <input id=\"stm-academic-year-name\" class=\"st-modal-input\" placeholder=\"e.g., 2025-2026\" />\n                    </div>\n                    <div id=\"stm-academic-year-error\" style=\"color:#b00020;font-size:12px;min-height:16px;margin-top:8px;text-align:center\"></div>\n                    <div class=\"st-modal-buttons\">\n                        <button id=\"stm-academic-year-cancel\" class=\"st-modal-btn st-modal-cancel\">Cancel</button>\n                        <button id=\"stm-academic-year-save\" class=\"st-modal-btn st-modal-save\">Add</button>\n                    </div>\n                </div>\n            </div>\n        </div>\n    ";
+  rootEl.innerHTML = "\n        <style>\n            .st-wrap{padding:18px;color:#fff;font-family:Arial,Helvetica,sans-serif}\n            .st-topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}\n            .st-title{margin:0;font-size:24px;font-weight:700}\n            .st-search{display:flex;gap:8px;align-items:center;margin-bottom:16px}\n            .st-input{padding:8px 12px;border:1px solid #666;border-radius:4px;background:#2b2b2b;color:#fff;font-size:14px}\n            .st-tabs{display:flex;gap:4px;margin-bottom:16px}\n            .st-tab{padding:10px 16px;background:#333;color:#ddd;border:none;border-radius:4px 4px 0 0;cursor:pointer;font-size:14px}\n            .st-tab.active{background:#2d6cdf;color:#fff}\n            .st-tab:hover:not(.active){background:#444}\n            .st-content{background:#2b2b2b;border-radius:8px;padding:20px;min-height:400px}\n            .st-actions{display:flex;gap:8px;align-items:center;margin-bottom:16px}\n            .st-btn{padding:8px 16px;background:#2d6cdf;color:#fff;border:none;border-radius:4px;cursor:pointer;font-size:14px}\n            .st-btn:hover{background:#1e5bb8}\n            .st-btn-outline{background:transparent;border:1px solid #666;color:#ddd}\n            .st-btn-outline:hover{background:#333}\n            .st-table{width:100%;border-collapse:collapse;border-spacing:0;background:transparent}\n            .st-table thead tr{background:#444}\n            .st-table thead th{padding:12px 14px;text-align:left;font-weight:600;color:#fff}\n            .st-table thead th:first-child{border-radius:8px 0 0 8px}\n            .st-table thead th:last-child{border-radius:0 8px 8px 0}\n            .st-table tbody tr{background:#333}\n            .st-table td{padding:14px 12px;border:none;vertical-align:middle}\n            .st-table tbody tr:first-child td:first-child{border-top-left-radius:8px}\n            .st-table tbody tr:first-child td:last-child{border-top-right-radius:8px}\n            .st-table tbody tr:last-child td:first-child{border-bottom-left-radius:8px}\n            .st-table tbody tr:last-child td:last-child{border-bottom-right-radius:8px}\n            .st-pill{padding:4px 8px;border-radius:12px;background:#555;font-size:12px}\n            .st-small{font-size:12px}\n            .st-error{color:#ffb3b3;font-size:12px;min-height:16px;margin-bottom:12px}\n            .st-modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);display:none;align-items:center;justify-content:center;z-index:2000}\n            .st-modal{width:500px;max-width:95vw;background:#e8e8e8;color:#111;border-radius:8px;padding:24px;box-shadow:0 20px 60px rgba(0,0,0,.5)}\n            .st-modal h3{margin:0 0 16px;font-size:20px;font-weight:600}\n            .st-modal-field{margin-bottom:16px}\n            .st-modal-label{display:block;font-size:13px;margin-bottom:4px;font-weight:500}\n            .st-modal-input{width:100%;padding:8px 12px;border:1px solid #ccc;border-radius:4px;background:#fff;color:#111;font-size:14px}\n            .st-modal-buttons{display:flex;gap:12px;justify-content:center;margin-top:20px}\n            .st-modal-btn{padding:10px 20px;border:none;border-radius:4px;cursor:pointer;font-size:14px;font-weight:500}\n            .st-modal-cancel{background:#666;color:#fff}\n            .st-modal-save{background:#2d6cdf;color:#fff}\n        </style>\n    <div class=\"st-wrap\" style=\"padding-top:32px\">\n            <div class=\"st-topbar\">\n                <h2 class=\"st-title\">Settings</h2>\n            </div>\n            <div class=\"st-search\">\n                <input id=\"st-search\" class=\"st-input\" placeholder=\"SEARCH\" style=\"width:200px\" />\n            </div>\n            <div class=\"st-tabs\">\n                <button class=\"st-tab active\" data-tab=\"courses\">Course</button>\n                <button class=\"st-tab\" data-tab=\"departments\">Departments</button>\n                <button class=\"st-tab\" data-tab=\"academic-years\">Academic Years</button>\n            </div>\n            <div class=\"st-content\">\n                <div id=\"st-courses\" class=\"st-tab-content\">\n                    <div class=\"st-actions\">\n                        <button id=\"st-add-course\" class=\"st-btn\">Add Course</button>\n                        <button id=\"st-archived-courses\" class=\"st-btn st-btn-outline\">Show Archived</button>\n                    </div>\n                    <div id=\"st-error-courses\" class=\"st-error\"></div>\n                    <table class=\"st-table\">\n                        <thead>\n                            <tr>\n                        <th>Course Name</th>\n                        <th>Department</th>\n                        <th>Status</th>\n                        <th>Action</th>\n                            </tr>\n                        </thead>\n                        <tbody id=\"st-body-courses\"><tr><td colspan=\"4\" class=\"st-small\">Loading\u2026</td></tr></tbody>\n                    </table>\n                </div>\n                <div id=\"st-departments\" class=\"st-tab-content\" style=\"display:none\">\n                    <div class=\"st-actions\">\n                        <button id=\"st-add-department\" class=\"st-btn\">Add Department</button>\n                        <button id=\"st-archived-departments\" class=\"st-btn st-btn-outline\">Show Archived</button>\n                    </div>\n                    <div id=\"st-error-departments\" class=\"st-error\"></div>\n                    <table class=\"st-table\">\n                        <thead>\n                            <tr>\n                                <th>Department Name</th>\n                                <th>Status</th>\n                                <th>Action</th>\n                            </tr>\n                        </thead>\n                        <tbody id=\"st-body-departments\"><tr><td colspan=\"3\" class=\"st-small\">Loading\u2026</td></tr></tbody>\n                    </table>\n                </div>\n                <div id=\"st-academic-years\" class=\"st-tab-content\" style=\"display:none\">\n                    <div class=\"st-actions\">\n                        <button id=\"st-add-academic-year\" class=\"st-btn\">Add Academic Year</button>\n                        <button id=\"st-archived-academic-years\" class=\"st-btn st-btn-outline\">Show Archived</button>\n                    </div>\n                    <div id=\"st-error-academic-years\" class=\"st-error\"></div>\n                    <table class=\"st-table\">\n                        <thead>\n                            <tr>\n                                <th>School Year</th>\n                                <th>Status</th>\n                                <th>Action</th>\n                            </tr>\n                        </thead>\n                        <tbody id=\"st-body-academic-years\"><tr><td colspan=\"3\" class=\"st-small\">Loading\u2026</td></tr></tbody>\n                    </table>\n                </div>\n            </div>\n            \n            <!-- Course Modal -->\n            <div id=\"st-modal-course\" class=\"st-modal-overlay\">\n                <div class=\"st-modal\">\n                    <h3 id=\"stm-course-title\">Add Course</h3>\n                    <div class=\"st-modal-field\">\n                        <label class=\"st-modal-label\">Course Name</label>\n                        <input id=\"stm-course-name\" class=\"st-modal-input\" />\n                    </div>\n                    <div class=\"st-modal-field\">\n                        <label class=\"st-modal-label\">Department</label>\n                        <select id=\"stm-course-department\" class=\"st-modal-input\"><option value=\"\">Loading\u2026</option></select>\n                    </div>\n                    <div id=\"stm-course-error\" style=\"color:#b00020;font-size:12px;min-height:16px;margin-top:8px;text-align:center\"></div>\n                    <div class=\"st-modal-buttons\">\n                        <button id=\"stm-course-cancel\" class=\"st-modal-btn st-modal-cancel\">Cancel</button>\n                        <button id=\"stm-course-save\" class=\"st-modal-btn st-modal-save\">Add</button>\n                    </div>\n                </div>\n            </div>\n            \n            <!-- Department Modal -->\n            <div id=\"st-modal-department\" class=\"st-modal-overlay\">\n                <div class=\"st-modal\">\n                    <h3 id=\"stm-department-title\">Add Department</h3>\n                    <div class=\"st-modal-field\">\n                        <label class=\"st-modal-label\">Department Name</label>\n                        <input id=\"stm-department-name\" class=\"st-modal-input\" />\n                    </div>\n                    <div id=\"stm-department-error\" style=\"color:#b00020;font-size:12px;min-height:16px;margin-top:8px;text-align:center\"></div>\n                    <div class=\"st-modal-buttons\">\n                        <button id=\"stm-department-cancel\" class=\"st-modal-btn st-modal-cancel\">Cancel</button>\n                        <button id=\"stm-department-save\" class=\"st-modal-btn st-modal-save\">Add</button>\n                    </div>\n                </div>\n            </div>\n            \n            <!-- Academic Year Modal -->\n            <div id=\"st-modal-academic-year\" class=\"st-modal-overlay\">\n                <div class=\"st-modal\">\n                    <h3 id=\"stm-academic-year-title\">Add Academic Year</h3>\n                    <div class=\"st-modal-field\">\n                        <label class=\"st-modal-label\">School Year</label>\n                        <input id=\"stm-academic-year-name\" class=\"st-modal-input\" placeholder=\"e.g., 2025-2026\" />\n                    </div>\n                    <div id=\"stm-academic-year-error\" style=\"color:#b00020;font-size:12px;min-height:16px;margin-top:8px;text-align:center\"></div>\n                    <div class=\"st-modal-buttons\">\n                        <button id=\"stm-academic-year-cancel\" class=\"st-modal-btn st-modal-cancel\">Cancel</button>\n                        <button id=\"stm-academic-year-save\" class=\"st-modal-btn st-modal-save\">Add</button>\n                    </div>\n                </div>\n            </div>\n        </div>\n    ";
   var currentTab = 'courses';
   var showingArchived = {
     courses: false,
@@ -27991,6 +29321,27 @@ function mountSettings(rootEl) {
   setupModal('course');
   setupModal('department');
   setupModal('academic-year');
+
+  // When the top-level department filter exists, update the top-level course filter to only show courses for that department
+  var topDeptSelect = rootEl.querySelector('#s-department-filter');
+  var topCourseSelect = rootEl.querySelector('#s-course-filter');
+  if (topDeptSelect && topCourseSelect) {
+    topDeptSelect.addEventListener('change', function () {
+      var v = topDeptSelect.value;
+      // refresh top course options
+      refreshCoursesForDepartment(v, '#s-course-filter', true);
+    });
+  }
+
+  // When opening the course modal, the department select is loaded via loadDepartmentsForCourse(); ensure that if the modal's department select changes we reflect that in any other course selects (defensive)
+  var modalCourseDept = rootEl.querySelector('#stm-course-department');
+  if (modalCourseDept) {
+    modalCourseDept.addEventListener('change', function () {
+      var v = modalCourseDept.value;
+      // nothing to do in settings modal itself (course modal only needs dept id), but keep course lists consistent
+      refreshCoursesForDepartment(v, '#s-course-filter', true);
+    });
+  }
   function setupModal(type) {
     var modal = rootEl.querySelector("#st-modal-".concat(type));
     var cancelBtn = rootEl.querySelector("#stm-".concat(type, "-cancel"));
@@ -28013,17 +29364,17 @@ function mountSettings(rootEl) {
     return _openModal.apply(this, arguments);
   }
   function _openModal() {
-    _openModal = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee(type) {
+    _openModal = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee5(type) {
       var init,
         modal,
         title,
         saveBtn,
         inputs,
-        _args = arguments;
-      return _regenerator().w(function (_context) {
-        while (1) switch (_context.n) {
+        _args5 = arguments;
+      return _regenerator().w(function (_context5) {
+        while (1) switch (_context5.n) {
           case 0:
-            init = _args.length > 1 && _args[1] !== undefined ? _args[1] : null;
+            init = _args5.length > 1 && _args5[1] !== undefined ? _args5[1] : null;
             modal = rootEl.querySelector("#st-modal-".concat(type));
             title = rootEl.querySelector("#stm-".concat(type, "-title"));
             saveBtn = rootEl.querySelector("#stm-".concat(type, "-save"));
@@ -28053,17 +29404,17 @@ function mountSettings(rootEl) {
 
             // Load departments for course modal
             if (!(type === 'course')) {
-              _context.n = 1;
+              _context5.n = 1;
               break;
             }
-            _context.n = 1;
+            _context5.n = 1;
             return loadDepartmentsForCourse();
           case 1:
             modal.style.display = 'flex';
           case 2:
-            return _context.a(2);
+            return _context5.a(2);
         }
-      }, _callee);
+      }, _callee5);
     }));
     return _openModal.apply(this, arguments);
   }
@@ -28074,10 +29425,10 @@ function mountSettings(rootEl) {
     return _saveModal.apply(this, arguments);
   }
   function _saveModal() {
-    _saveModal = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee2(type) {
-      var modal, errorEl, payload, endpoint, name, deptId, _name, _name2, _t;
-      return _regenerator().w(function (_context2) {
-        while (1) switch (_context2.p = _context2.n) {
+    _saveModal = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee6(type) {
+      var modal, errorEl, payload, endpoint, name, deptId, _name, _name2, _t6;
+      return _regenerator().w(function (_context6) {
+        while (1) switch (_context6.p = _context6.n) {
           case 0:
             modal = rootEl.querySelector("#st-modal-".concat(type));
             errorEl = rootEl.querySelector("#stm-".concat(type, "-error"));
@@ -28085,197 +29436,244 @@ function mountSettings(rootEl) {
             payload = {};
             endpoint = '';
             if (!(type === 'course')) {
-              _context2.n = 3;
+              _context6.n = 3;
               break;
             }
             name = rootEl.querySelector('#stm-course-name').value.trim();
             deptId = rootEl.querySelector('#stm-course-department').value;
             if (name) {
-              _context2.n = 1;
+              _context6.n = 1;
               break;
             }
             errorEl.textContent = 'Course name is required.';
-            return _context2.a(2);
+            return _context6.a(2);
           case 1:
             if (deptId) {
-              _context2.n = 2;
+              _context6.n = 2;
               break;
             }
             errorEl.textContent = 'Please select a department.';
-            return _context2.a(2);
+            return _context6.a(2);
           case 2:
             payload = {
               course_name: name,
               department_id: Number(deptId)
             };
             endpoint = '/api/settings/courses';
-            _context2.n = 7;
+            _context6.n = 7;
             break;
           case 3:
             if (!(type === 'department')) {
-              _context2.n = 5;
+              _context6.n = 5;
               break;
             }
             _name = rootEl.querySelector('#stm-department-name').value.trim();
             if (_name) {
-              _context2.n = 4;
+              _context6.n = 4;
               break;
             }
             errorEl.textContent = 'Department name is required.';
-            return _context2.a(2);
+            return _context6.a(2);
           case 4:
             payload = {
               department_name: _name
             };
             endpoint = '/api/settings/departments';
-            _context2.n = 7;
+            _context6.n = 7;
             break;
           case 5:
             if (!(type === 'academic-year')) {
-              _context2.n = 7;
+              _context6.n = 7;
               break;
             }
             _name2 = rootEl.querySelector('#stm-academic-year-name').value.trim();
             if (_name2) {
-              _context2.n = 6;
+              _context6.n = 6;
               break;
             }
             errorEl.textContent = 'School year is required.';
-            return _context2.a(2);
+            return _context6.a(2);
           case 6:
             payload = {
               school_year: _name2
             };
             endpoint = '/api/settings/academic-years';
           case 7:
-            _context2.p = 7;
+            _context6.p = 7;
             if (!modal.dataset.editId) {
-              _context2.n = 9;
+              _context6.n = 9;
               break;
             }
-            _context2.n = 8;
+            _context6.n = 8;
             return api("".concat(endpoint, "/").concat(modal.dataset.editId), {
               method: 'PUT',
               body: JSON.stringify(payload)
             });
           case 8:
-            _context2.n = 10;
+            (0,_notify__WEBPACK_IMPORTED_MODULE_0__["default"])('Successfully updated', type === 'course' ? 'Course' : type === 'department' ? 'Department' : 'Academic Year', 'success');
+            _context6.n = 11;
             break;
           case 9:
-            _context2.n = 10;
+            _context6.n = 10;
             return api(endpoint, {
               method: 'POST',
               body: JSON.stringify(payload)
             });
           case 10:
+            (0,_notify__WEBPACK_IMPORTED_MODULE_0__["default"])('Successfully added', type === 'course' ? 'Course' : type === 'department' ? 'Department' : 'Academic Year', 'success');
+          case 11:
             closeModal(type);
             loadCurrentTab();
-            _context2.n = 12;
+            _context6.n = 13;
             break;
-          case 11:
-            _context2.p = 11;
-            _t = _context2.v;
-            errorEl.textContent = _t.message;
           case 12:
-            return _context2.a(2);
+            _context6.p = 12;
+            _t6 = _context6.v;
+            errorEl.textContent = _t6.message;
+          case 13:
+            return _context6.a(2);
         }
-      }, _callee2, null, [[7, 11]]);
+      }, _callee6, null, [[7, 12]]);
     }));
     return _saveModal.apply(this, arguments);
   }
   function loadDepartmentsForCourse() {
     return _loadDepartmentsForCourse.apply(this, arguments);
-  }
+  } // helper to refresh course list based on selected department (used by settings page top filters)
   function _loadDepartmentsForCourse() {
-    _loadDepartmentsForCourse = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee3() {
-      var departments, select, _t2;
-      return _regenerator().w(function (_context3) {
-        while (1) switch (_context3.p = _context3.n) {
+    _loadDepartmentsForCourse = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee7() {
+      var departments, select, _t7;
+      return _regenerator().w(function (_context7) {
+        while (1) switch (_context7.p = _context7.n) {
           case 0:
-            _context3.p = 0;
-            _context3.n = 1;
+            _context7.p = 0;
+            _context7.n = 1;
             return api('/api/settings/departments');
           case 1:
-            departments = _context3.v;
+            departments = _context7.v;
             select = rootEl.querySelector('#stm-course-department');
             select.innerHTML = '<option value="">Select Department</option>' + departments.map(function (d) {
               return "<option value=\"".concat(d.department_id, "\">").concat(d.department_name, "</option>");
             }).join('');
-            _context3.n = 3;
+            _context7.n = 3;
             break;
           case 2:
-            _context3.p = 2;
-            _t2 = _context3.v;
-            console.error('Failed to load departments:', _t2);
+            _context7.p = 2;
+            _t7 = _context7.v;
+            console.error('Failed to load departments:', _t7);
           case 3:
-            return _context3.a(2);
+            return _context7.a(2);
         }
-      }, _callee3, null, [[0, 2]]);
+      }, _callee7, null, [[0, 2]]);
     }));
     return _loadDepartmentsForCourse.apply(this, arguments);
+  }
+  function refreshCoursesForDepartment(_x4, _x5) {
+    return _refreshCoursesForDepartment.apply(this, arguments);
+  }
+  function _refreshCoursesForDepartment() {
+    _refreshCoursesForDepartment = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee8(deptId, targetSelectSelector) {
+      var includeAll,
+        courses,
+        select,
+        courseIdKey,
+        _args8 = arguments,
+        _t8;
+      return _regenerator().w(function (_context8) {
+        while (1) switch (_context8.p = _context8.n) {
+          case 0:
+            includeAll = _args8.length > 2 && _args8[2] !== undefined ? _args8[2] : false;
+            _context8.p = 1;
+            _context8.n = 2;
+            return api('/api/settings/courses');
+          case 2:
+            courses = _context8.v;
+            if (deptId) courses = courses.filter(function (c) {
+              var _ref7, _c$department_id, _c$department$departm;
+              return String((_ref7 = (_c$department_id = c.department_id) !== null && _c$department_id !== void 0 ? _c$department_id : c.department && ((_c$department$departm = c.department.department_id) !== null && _c$department$departm !== void 0 ? _c$department$departm : c.department.id)) !== null && _ref7 !== void 0 ? _ref7 : '') === String(deptId);
+            });
+            select = rootEl.querySelector(targetSelectSelector);
+            if (select) {
+              courseIdKey = courses[0] && ('course_id' in courses[0] ? 'course_id' : 'id') || 'course_id';
+              select.innerHTML = (includeAll ? '<option value="">All</option>' : '<option value="">Select</option>') + courses.map(function (c) {
+                return "<option value=\"".concat(c[courseIdKey], "\">").concat(c.course_name || c[courseIdKey], "</option>");
+              }).join('');
+            }
+            _context8.n = 4;
+            break;
+          case 3:
+            _context8.p = 3;
+            _t8 = _context8.v;
+            console.error('Failed to load courses for dept', _t8);
+          case 4:
+            return _context8.a(2);
+        }
+      }, _callee8, null, [[1, 3]]);
+    }));
+    return _refreshCoursesForDepartment.apply(this, arguments);
   }
   function loadCurrentTab() {
     return _loadCurrentTab.apply(this, arguments);
   }
   function _loadCurrentTab() {
-    _loadCurrentTab = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee4() {
-      var errorEl, params, data, _params, _data, _params2, _data2, _t3;
-      return _regenerator().w(function (_context4) {
-        while (1) switch (_context4.p = _context4.n) {
+    _loadCurrentTab = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee9() {
+      var errorEl, params, data, _params, _data, _params2, _data2, _t9;
+      return _regenerator().w(function (_context9) {
+        while (1) switch (_context9.p = _context9.n) {
           case 0:
             errorEl = rootEl.querySelector("#st-error-".concat(currentTab));
             errorEl.textContent = '';
-            _context4.p = 1;
+            _context9.p = 1;
             if (!(currentTab === 'courses')) {
-              _context4.n = 3;
+              _context9.n = 3;
               break;
             }
             params = new URLSearchParams();
             if (showingArchived.courses) params.set('archived', '1');
-            _context4.n = 2;
+            _context9.n = 2;
             return api("/api/settings/courses?".concat(params.toString()));
           case 2:
-            data = _context4.v;
+            data = _context9.v;
             renderCourses(data);
-            _context4.n = 7;
+            _context9.n = 7;
             break;
           case 3:
             if (!(currentTab === 'departments')) {
-              _context4.n = 5;
+              _context9.n = 5;
               break;
             }
             _params = new URLSearchParams();
             if (showingArchived.departments) _params.set('archived', '1');
-            _context4.n = 4;
+            _context9.n = 4;
             return api("/api/settings/departments?".concat(_params.toString()));
           case 4:
-            _data = _context4.v;
+            _data = _context9.v;
             renderDepartments(_data);
-            _context4.n = 7;
+            _context9.n = 7;
             break;
           case 5:
             if (!(currentTab === 'academic-years')) {
-              _context4.n = 7;
+              _context9.n = 7;
               break;
             }
             _params2 = new URLSearchParams();
             if (showingArchived['academic-years']) _params2.set('archived', '1');
-            _context4.n = 6;
+            _context9.n = 6;
             return api("/api/settings/academic-years?".concat(_params2.toString()));
           case 6:
-            _data2 = _context4.v;
+            _data2 = _context9.v;
             renderAcademicYears(_data2);
           case 7:
-            _context4.n = 9;
+            _context9.n = 9;
             break;
           case 8:
-            _context4.p = 8;
-            _t3 = _context4.v;
-            errorEl.textContent = _t3.message;
+            _context9.p = 8;
+            _t9 = _context9.v;
+            errorEl.textContent = _t9.message;
           case 9:
-            return _context4.a(2);
+            return _context9.a(2);
         }
-      }, _callee4, null, [[1, 8]]);
+      }, _callee9, null, [[1, 8]]);
     }));
     return _loadCurrentTab.apply(this, arguments);
   }
@@ -28291,6 +29689,30 @@ function mountSettings(rootEl) {
     }
     courses.forEach(function (course) {
       var _course$department;
+      var actionChildren = showingArchived.courses ? [h('button', {
+        "class": 'st-btn st-small',
+        style: 'background:#4caf50',
+        'data-action': 'restore',
+        'data-id': course.course_id
+      }, 'Restore'), h('span', {
+        text: ' '
+      }), h('button', {
+        "class": 'st-btn st-small',
+        style: 'background:#d32f2f',
+        'data-action': 'delete',
+        'data-id': course.course_id
+      }, 'Delete')] : [h('button', {
+        "class": 'st-btn st-small',
+        'data-action': 'edit',
+        'data-id': course.course_id
+      }, 'Edit'), h('span', {
+        text: ' '
+      }), h('button', {
+        "class": 'st-btn st-small',
+        style: 'background:#d32f2f',
+        'data-action': 'archive',
+        'data-id': course.course_id
+      }, 'Archive')];
       var tr = h('tr', {}, [h('td', {
         text: course.course_name
       }), h('td', {
@@ -28298,23 +29720,7 @@ function mountSettings(rootEl) {
       }), h('td', {}, [h('span', {
         "class": 'st-pill st-small',
         text: course.archived_at ? 'Archived' : 'Active'
-      })]), h('td', {}, [h('button', {
-        "class": 'st-btn st-small',
-        'data-action': 'edit',
-        'data-id': course.course_id
-      }, 'Edit'), h('span', {
-        text: ' '
-      }), showingArchived.courses ? h('button', {
-        "class": 'st-btn st-small',
-        style: 'background:#4caf50',
-        'data-action': 'restore',
-        'data-id': course.course_id
-      }, 'Restore') : h('button', {
-        "class": 'st-btn st-small',
-        style: 'background:#d32f2f',
-        'data-action': 'archive',
-        'data-id': course.course_id
-      }, 'Archive')])]);
+      })]), h('td', {}, actionChildren)]);
       tbody.appendChild(tr);
     });
     setupTableEvents('courses', courses);
@@ -28330,28 +29736,36 @@ function mountSettings(rootEl) {
       return;
     }
     departments.forEach(function (dept) {
-      var tr = h('tr', {}, [h('td', {
-        text: dept.department_name
-      }), h('td', {}, [h('span', {
-        "class": 'st-pill st-small',
-        text: dept.deleted_at ? 'Archived' : 'Active'
-      })]), h('td', {}, [h('button', {
+      var actionChildren = showingArchived.departments ? [h('button', {
+        "class": 'st-btn st-small',
+        style: 'background:#4caf50',
+        'data-action': 'restore',
+        'data-id': dept.department_id
+      }, 'Restore'), h('span', {
+        text: ' '
+      }), h('button', {
+        "class": 'st-btn st-small',
+        style: 'background:#d32f2f',
+        'data-action': 'delete',
+        'data-id': dept.department_id
+      }, 'Delete')] : [h('button', {
         "class": 'st-btn st-small',
         'data-action': 'edit',
         'data-id': dept.department_id
       }, 'Edit'), h('span', {
         text: ' '
-      }), showingArchived.departments ? h('button', {
-        "class": 'st-btn st-small',
-        style: 'background:#4caf50',
-        'data-action': 'restore',
-        'data-id': dept.department_id
-      }, 'Restore') : h('button', {
+      }), h('button', {
         "class": 'st-btn st-small',
         style: 'background:#d32f2f',
         'data-action': 'archive',
         'data-id': dept.department_id
-      }, 'Archive')])]);
+      }, 'Archive')];
+      var tr = h('tr', {}, [h('td', {
+        text: dept.department_name
+      }), h('td', {}, [h('span', {
+        "class": 'st-pill st-small',
+        text: dept.deleted_at ? 'Archived' : 'Active'
+      })]), h('td', {}, actionChildren)]);
       tbody.appendChild(tr);
     });
     setupTableEvents('departments', departments);
@@ -28367,165 +29781,426 @@ function mountSettings(rootEl) {
       return;
     }
     years.forEach(function (year) {
-      var tr = h('tr', {}, [h('td', {
-        text: year.school_year
-      }), h('td', {}, [h('span', {
-        "class": 'st-pill st-small',
-        text: year.archived_at ? 'Archived' : 'Active'
-      })]), h('td', {}, [h('button', {
+      var actionChildren = showingArchived['academic-years'] ? [h('button', {
+        "class": 'st-btn st-small',
+        style: 'background:#4caf50',
+        'data-action': 'restore',
+        'data-id': year.academic_year_id
+      }, 'Restore'), h('span', {
+        text: ' '
+      }), h('button', {
+        "class": 'st-btn st-small',
+        style: 'background:#d32f2f',
+        'data-action': 'delete',
+        'data-id': year.academic_year_id
+      }, 'Delete')] : [h('button', {
         "class": 'st-btn st-small',
         'data-action': 'edit',
         'data-id': year.academic_year_id
       }, 'Edit'), h('span', {
         text: ' '
-      }), showingArchived['academic-years'] ? h('button', {
-        "class": 'st-btn st-small',
-        style: 'background:#4caf50',
-        'data-action': 'restore',
-        'data-id': year.academic_year_id
-      }, 'Restore') : h('button', {
+      }), h('button', {
         "class": 'st-btn st-small',
         style: 'background:#d32f2f',
         'data-action': 'archive',
         'data-id': year.academic_year_id
-      }, 'Archive')])]);
+      }, 'Archive')];
+      var tr = h('tr', {}, [h('td', {
+        text: year.school_year
+      }), h('td', {}, [h('span', {
+        "class": 'st-pill st-small',
+        text: year.archived_at ? 'Archived' : 'Active'
+      })]), h('td', {}, actionChildren)]);
       tbody.appendChild(tr);
     });
     setupTableEvents('academic-years', years);
   }
+
+  // using shared notify imported at top
+
   function setupTableEvents(type, items) {
     var tbody = rootEl.querySelector("#st-body-".concat(type));
-    tbody.addEventListener('click', function (e) {
-      if (e.target.dataset.action === 'edit') {
-        var id = e.target.dataset.id;
-        var item = items.find(function (i) {
-          return (i["".concat(type.replace('-', '_'), "_id")] || i.id) == id;
-        });
-        if (item) openModal(type.replace('-', '-'), item);
-      } else if (e.target.dataset.action === 'archive') {
-        var _id = e.target.dataset.id;
-        if (confirm('Archive this item?')) {
-          archiveItem(type, _id);
-        }
-      } else if (e.target.dataset.action === 'restore') {
-        var _id2 = e.target.dataset.id;
-        if (confirm('Restore this item?')) {
-          restoreItem(type, _id2);
-        }
-      }
-    });
+    var disableOnce = function disableOnce(btn) {
+      if (!btn) return function () {};
+      btn.disabled = true;
+      btn.style.opacity = '0.6';
+      return function () {
+        btn.disabled = false;
+        btn.style.opacity = '';
+      };
+    };
+    // Single onclick handler so listeners don't stack and clicks register immediately
+    tbody.onclick = /*#__PURE__*/function () {
+      var _ref3 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee4(e) {
+        var btn, action, id, findItemById, item, _short, restore, _restore, _restore2, _short2, counts, count, confirmMsg, friendly, _t4, _t5;
+        return _regenerator().w(function (_context4) {
+          while (1) switch (_context4.p = _context4.n) {
+            case 0:
+              btn = e.target && e.target.closest ? e.target.closest('button') : null;
+              if (btn) {
+                _context4.n = 1;
+                break;
+              }
+              return _context4.a(2);
+            case 1:
+              action = btn.dataset.action;
+              id = btn.dataset.id; // robust item lookup by common id fields
+              findItemById = function findItemById(idVal) {
+                return items.find(function (i) {
+                  var vals = [i.course_id, i.department_id, i.academic_year_id, i.id];
+                  return vals.some(function (v) {
+                    return v != null && String(v) === String(idVal);
+                  });
+                });
+              };
+              if (!(action === 'edit')) {
+                _context4.n = 3;
+                break;
+              }
+              item = findItemById(id);
+              if (item) {
+                _context4.n = 2;
+                break;
+              }
+              return _context4.a(2);
+            case 2:
+              // map plural type to modal short type
+              _short = type === 'courses' ? 'course' : type === 'departments' ? 'department' : type === 'academic-years' ? 'academic-year' : type;
+              openModal(_short, item);
+              _context4.n = 18;
+              break;
+            case 3:
+              if (!(action === 'archive')) {
+                _context4.n = 4;
+                break;
+              }
+              restore = disableOnce(btn);
+              _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee() {
+                var _t;
+                return _regenerator().w(function (_context) {
+                  while (1) switch (_context.p = _context.n) {
+                    case 0:
+                      _context.p = 0;
+                      if (!confirm('Archive this item?')) {
+                        _context.n = 1;
+                        break;
+                      }
+                      _context.n = 1;
+                      return archiveItem(type, id);
+                    case 1:
+                      _context.n = 3;
+                      break;
+                    case 2:
+                      _context.p = 2;
+                      _t = _context.v;
+                    case 3:
+                      ;
+                      restore();
+                    case 4:
+                      return _context.a(2);
+                  }
+                }, _callee, null, [[0, 2]]);
+              }))();
+              _context4.n = 18;
+              break;
+            case 4:
+              if (!(action === 'restore')) {
+                _context4.n = 5;
+                break;
+              }
+              _restore = disableOnce(btn);
+              _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee2() {
+                var _t2;
+                return _regenerator().w(function (_context2) {
+                  while (1) switch (_context2.p = _context2.n) {
+                    case 0:
+                      _context2.p = 0;
+                      if (!confirm('Restore this item?')) {
+                        _context2.n = 1;
+                        break;
+                      }
+                      _context2.n = 1;
+                      return restoreItem(type, id);
+                    case 1:
+                      _context2.n = 3;
+                      break;
+                    case 2:
+                      _context2.p = 2;
+                      _t2 = _context2.v;
+                    case 3:
+                      ;
+                      _restore();
+                    case 4:
+                      return _context2.a(2);
+                  }
+                }, _callee2, null, [[0, 2]]);
+              }))();
+              _context4.n = 18;
+              break;
+            case 5:
+              if (!(action === 'delete')) {
+                _context4.n = 18;
+                break;
+              }
+              _restore2 = disableOnce(btn); // call pre-check to tell how many student profiles reference this item
+              _context4.p = 6;
+              _short2 = type === 'courses' ? 'course' : type === 'departments' ? 'department' : 'academic-year';
+              _context4.n = 7;
+              return api("/api/settings/".concat(type, "/").concat(id, "/related-counts"));
+            case 7:
+              counts = _context4.v;
+              count = counts && counts.related_students ? Number(counts.related_students) : 0;
+              confirmMsg = count > 0 ? "Permanently delete this item? This will affect ".concat(count, " student profile(s). This cannot be undone.") : 'Permanently delete this item? This cannot be undone.';
+              if (confirm(confirmMsg)) {
+                _context4.n = 8;
+                break;
+              }
+              _restore2();
+              return _context4.a(2);
+            case 8:
+              _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee3() {
+                var friendly, _t3;
+                return _regenerator().w(function (_context3) {
+                  while (1) switch (_context3.p = _context3.n) {
+                    case 0:
+                      _context3.p = 0;
+                      if (!(type === 'courses')) {
+                        _context3.n = 2;
+                        break;
+                      }
+                      _context3.n = 1;
+                      return api("/api/settings/courses/".concat(id), {
+                        method: 'DELETE'
+                      });
+                    case 1:
+                      _context3.n = 5;
+                      break;
+                    case 2:
+                      if (!(type === 'departments')) {
+                        _context3.n = 4;
+                        break;
+                      }
+                      _context3.n = 3;
+                      return api("/api/settings/departments/".concat(id), {
+                        method: 'DELETE'
+                      });
+                    case 3:
+                      _context3.n = 5;
+                      break;
+                    case 4:
+                      if (!(type === 'academic-years')) {
+                        _context3.n = 5;
+                        break;
+                      }
+                      _context3.n = 5;
+                      return api("/api/settings/academic-years/".concat(id), {
+                        method: 'DELETE'
+                      });
+                    case 5:
+                      loadCurrentTab();
+                      (0,_notify__WEBPACK_IMPORTED_MODULE_0__["default"])('Successfully deleted', type === 'courses' ? 'Course' : type === 'departments' ? 'Department' : 'Academic Year', 'success');
+                      _context3.n = 7;
+                      break;
+                    case 6:
+                      _context3.p = 6;
+                      _t3 = _context3.v;
+                      friendly = _t3.message && _t3.message.toString().toLowerCase().includes('cannot delete') ? _t3.message : 'Delete failed. There may be related records referencing this item.';
+                      (0,_notify__WEBPACK_IMPORTED_MODULE_0__["default"])(friendly, type === 'courses' ? 'Course' : type === 'departments' ? 'Department' : 'Academic Year', 'error');
+                      rootEl.querySelector("#st-error-".concat(type)).textContent = friendly;
+                    case 7:
+                      _restore2();
+                    case 8:
+                      return _context3.a(2);
+                  }
+                }, _callee3, null, [[0, 6]]);
+              }))();
+              _context4.n = 18;
+              break;
+            case 9:
+              _context4.p = 9;
+              _t4 = _context4.v;
+              if (confirm('Permanently delete this item? This cannot be undone.')) {
+                _context4.n = 10;
+                break;
+              }
+              _restore2();
+              return _context4.a(2);
+            case 10:
+              _context4.p = 10;
+              if (!(type === 'courses')) {
+                _context4.n = 12;
+                break;
+              }
+              _context4.n = 11;
+              return api("/api/settings/courses/".concat(id), {
+                method: 'DELETE'
+              });
+            case 11:
+              _context4.n = 15;
+              break;
+            case 12:
+              if (!(type === 'departments')) {
+                _context4.n = 14;
+                break;
+              }
+              _context4.n = 13;
+              return api("/api/settings/departments/".concat(id), {
+                method: 'DELETE'
+              });
+            case 13:
+              _context4.n = 15;
+              break;
+            case 14:
+              if (!(type === 'academic-years')) {
+                _context4.n = 15;
+                break;
+              }
+              _context4.n = 15;
+              return api("/api/settings/academic-years/".concat(id), {
+                method: 'DELETE'
+              });
+            case 15:
+              loadCurrentTab();
+              (0,_notify__WEBPACK_IMPORTED_MODULE_0__["default"])('Successfully deleted', type === 'courses' ? 'Course' : type === 'departments' ? 'Department' : 'Academic Year', 'success');
+              _context4.n = 17;
+              break;
+            case 16:
+              _context4.p = 16;
+              _t5 = _context4.v;
+              friendly = _t5.message && _t5.message.toString().toLowerCase().includes('cannot delete') ? _t5.message : 'Delete failed. There may be related records referencing this item.';
+              (0,_notify__WEBPACK_IMPORTED_MODULE_0__["default"])(friendly, type === 'courses' ? 'Course' : type === 'departments' ? 'Department' : 'Academic Year', 'error');
+              rootEl.querySelector("#st-error-".concat(type)).textContent = friendly;
+            case 17:
+              _restore2();
+            case 18:
+              return _context4.a(2);
+          }
+        }, _callee4, null, [[10, 16], [6, 9]]);
+      }));
+      return function (_x6) {
+        return _ref3.apply(this, arguments);
+      };
+    }();
   }
-  function archiveItem(_x4, _x5) {
+  function archiveItem(_x7, _x8) {
     return _archiveItem.apply(this, arguments);
   }
   function _archiveItem() {
-    _archiveItem = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee5(type, id) {
-      var _t4;
-      return _regenerator().w(function (_context5) {
-        while (1) switch (_context5.p = _context5.n) {
+    _archiveItem = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee0(type, id) {
+      var _t0;
+      return _regenerator().w(function (_context0) {
+        while (1) switch (_context0.p = _context0.n) {
           case 0:
-            _context5.p = 0;
+            _context0.p = 0;
             if (!(type === 'courses')) {
-              _context5.n = 2;
+              _context0.n = 2;
               break;
             }
-            _context5.n = 1;
+            _context0.n = 1;
             return api("/api/settings/courses/".concat(id, "/archive"), {
               method: 'POST'
             });
           case 1:
-            _context5.n = 5;
+            (0,_notify__WEBPACK_IMPORTED_MODULE_0__["default"])('Successfully archived', 'Course', 'success');
+            _context0.n = 6;
             break;
           case 2:
             if (!(type === 'departments')) {
-              _context5.n = 4;
+              _context0.n = 4;
               break;
             }
-            _context5.n = 3;
+            _context0.n = 3;
             return api("/api/settings/departments/".concat(id, "/archive"), {
               method: 'POST'
             });
           case 3:
-            _context5.n = 5;
+            (0,_notify__WEBPACK_IMPORTED_MODULE_0__["default"])('Successfully archived', 'Department', 'success');
+            _context0.n = 6;
             break;
           case 4:
             if (!(type === 'academic-years')) {
-              _context5.n = 5;
+              _context0.n = 6;
               break;
             }
-            _context5.n = 5;
+            _context0.n = 5;
             return api("/api/settings/academic-years/".concat(id, "/archive"), {
               method: 'POST'
             });
           case 5:
-            loadCurrentTab();
-            _context5.n = 7;
-            break;
+            (0,_notify__WEBPACK_IMPORTED_MODULE_0__["default"])('Successfully archived', 'Academic Year', 'success');
           case 6:
-            _context5.p = 6;
-            _t4 = _context5.v;
-            rootEl.querySelector("#st-error-".concat(type)).textContent = _t4.message;
+            loadCurrentTab();
+            _context0.n = 8;
+            break;
           case 7:
-            return _context5.a(2);
+            _context0.p = 7;
+            _t0 = _context0.v;
+            rootEl.querySelector("#st-error-".concat(type)).textContent = _t0.message;
+          case 8:
+            return _context0.a(2);
         }
-      }, _callee5, null, [[0, 6]]);
+      }, _callee0, null, [[0, 7]]);
     }));
     return _archiveItem.apply(this, arguments);
   }
-  function restoreItem(_x6, _x7) {
+  function restoreItem(_x9, _x0) {
     return _restoreItem.apply(this, arguments);
   } // Initial load
   function _restoreItem() {
-    _restoreItem = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee6(type, id) {
-      var _t5;
-      return _regenerator().w(function (_context6) {
-        while (1) switch (_context6.p = _context6.n) {
+    _restoreItem = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee1(type, id) {
+      var _t1;
+      return _regenerator().w(function (_context1) {
+        while (1) switch (_context1.p = _context1.n) {
           case 0:
-            _context6.p = 0;
+            _context1.p = 0;
             if (!(type === 'courses')) {
-              _context6.n = 2;
+              _context1.n = 2;
               break;
             }
-            _context6.n = 1;
+            _context1.n = 1;
             return api("/api/settings/courses/".concat(id, "/restore"), {
               method: 'POST'
             });
           case 1:
-            _context6.n = 5;
+            (0,_notify__WEBPACK_IMPORTED_MODULE_0__["default"])('Successfully restored', 'Course', 'success');
+            _context1.n = 6;
             break;
           case 2:
             if (!(type === 'departments')) {
-              _context6.n = 4;
+              _context1.n = 4;
               break;
             }
-            _context6.n = 3;
+            _context1.n = 3;
             return api("/api/settings/departments/".concat(id, "/restore"), {
               method: 'POST'
             });
           case 3:
-            _context6.n = 5;
+            (0,_notify__WEBPACK_IMPORTED_MODULE_0__["default"])('Successfully restored', 'Department', 'success');
+            _context1.n = 6;
             break;
           case 4:
             if (!(type === 'academic-years')) {
-              _context6.n = 5;
+              _context1.n = 6;
               break;
             }
-            _context6.n = 5;
+            _context1.n = 5;
             return api("/api/settings/academic-years/".concat(id, "/restore"), {
               method: 'POST'
             });
           case 5:
-            loadCurrentTab();
-            _context6.n = 7;
-            break;
+            (0,_notify__WEBPACK_IMPORTED_MODULE_0__["default"])('Successfully restored', 'Academic Year', 'success');
           case 6:
-            _context6.p = 6;
-            _t5 = _context6.v;
-            rootEl.querySelector("#st-error-".concat(type)).textContent = _t5.message;
+            loadCurrentTab();
+            _context1.n = 8;
+            break;
           case 7:
-            return _context6.a(2);
+            _context1.p = 7;
+            _t1 = _context1.v;
+            rootEl.querySelector("#st-error-".concat(type)).textContent = _t1.message;
+          case 8:
+            return _context1.a(2);
         }
-      }, _callee6, null, [[0, 6]]);
+      }, _callee1, null, [[0, 7]]);
     }));
     return _restoreItem.apply(this, arguments);
   }
@@ -28545,6 +30220,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   mountStudents: () => (/* binding */ mountStudents)
 /* harmony export */ });
+/* harmony import */ var _notify__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./notify */ "./resources/js/components/notify.js");
 function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
 function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
 function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { _defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
@@ -28576,49 +30252,60 @@ function api(_x) {
   return _api.apply(this, arguments);
 }
 function _api() {
-  _api = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee8(path) {
+  _api = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee11(path) {
     var options,
       token,
+      url,
       res,
       data,
-      _args8 = arguments;
-    return _regenerator().w(function (_context8) {
-      while (1) switch (_context8.n) {
+      _args11 = arguments,
+      _t14;
+    return _regenerator().w(function (_context11) {
+      while (1) switch (_context11.p = _context11.n) {
         case 0:
-          options = _args8.length > 1 && _args8[1] !== undefined ? _args8[1] : {};
+          options = _args11.length > 1 && _args11[1] !== undefined ? _args11[1] : {};
           token = getTokenOrRedirect();
-          _context8.n = 1;
-          return fetch(path, _objectSpread({
+          url = path && (path.indexOf('http://') === 0 || path.indexOf('https://') === 0) ? path : window.location.origin + path;
+          _context11.p = 1;
+          _context11.n = 2;
+          return fetch(url, _objectSpread({
             headers: _objectSpread({
               'Accept': 'application/json',
               'Content-Type': 'application/json',
               'Authorization': "Bearer ".concat(token)
             }, options.headers || {})
           }, options));
-        case 1:
-          res = _context8.v;
+        case 2:
+          res = _context11.v;
+          _context11.n = 4;
+          break;
+        case 3:
+          _context11.p = 3;
+          _t14 = _context11.v;
+          throw new Error('Network error: could not reach API. Make sure the backend server is running and reachable.');
+        case 4:
           if (!(res.status === 401)) {
-            _context8.n = 2;
+            _context11.n = 5;
             break;
           }
           window.location.href = '/';
-          return _context8.a(2, Promise.reject(new Error('Unauthorized')));
-        case 2:
-          _context8.n = 3;
+          return _context11.a(2, Promise.reject(new Error('Unauthorized')));
+        case 5:
+          _context11.n = 6;
           return res.json()["catch"](function () {
             return {};
           });
-        case 3:
-          data = _context8.v;
+        case 6:
+          data = _context11.v;
           if (res.ok) {
-            _context8.n = 4;
+            _context11.n = 7;
             break;
           }
           throw new Error(data.message || 'Request failed');
-        case 4:
-          return _context8.a(2, data);
+        case 7:
+          return _context11.a(2, data);
       }
-    }, _callee8);
+    }, _callee11, null, [[1, 3]]);
   }));
   return _api.apply(this, arguments);
 }
@@ -28638,9 +30325,10 @@ function h(tag) {
   });
   return el;
 }
+
 function mountStudents(rootEl) {
   if (!rootEl) throw new Error('mountStudents: root element is required');
-  rootEl.innerHTML = "\n        <style>\n            .s-wrap{padding:16px;color:#eee}\n            .s-actions{display:flex;gap:8px;align-items:center;margin-bottom:12px}\n            .s-input{padding:6px 8px;border:1px solid #666;border-radius:4px;background:#111;color:#eee}\n            .s-btn{padding:6px 10px;background:#2d6cdf;color:#fff;border:none;border-radius:4px;cursor:pointer}\n            .s-table{width:100%;border-collapse:collapse;background:#222}\n            .s-table th,.s-table td{border:1px solid #444;padding:8px;font-size:14px}\n            .s-pill{padding:2px 6px;border-radius:10px;background:#444}\n            .s-small{font-size:12px}\n        </style>\n        <div class=\"s-wrap\">\n            <div class=\"s-actions\">\n                <input id=\"s-q\" class=\"s-input\" placeholder=\"Search name or email\" />\n                <button id=\"s-search\" class=\"s-btn\">Search</button>\n                <button id=\"s-add\" class=\"s-btn\">Add Student</button>\n                <button id=\"s-archived\" class=\"s-btn\" style=\"background:#666\">Show Archived</button>\n            </div>\n            <div id=\"s-error\" class=\"s-small\" style=\"color:#ffb3b3;min-height:16px\"></div>\n            <table class=\"s-table\">\n                <thead>\n                    <tr><th>Student Name</th><th>Department</th><th>Course</th><th>Year</th><th>Status</th><th>Action</th></tr>\n                </thead>\n                <tbody id=\"s-body\"><tr><td colspan=\"6\" class=\"s-small\">Loading\u2026</td></tr></tbody>\n            </table>\n            <div id=\"s-modal\" style=\"position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;align-items:center;justify-content:center;z-index:2000\">\n              <div style=\"width:920px;max-width:96vw;background:#e8e8e8;color:#111;border-radius:8px;padding:20px;box-shadow:0 20px 60px rgba(0,0,0,.5)\">\n                <h3 id=\"f-title\" style=\"margin:0 0 14px\">Add Student</h3>\n                <div style=\"display:grid;grid-template-columns:1fr 1fr;gap:14px 16px;align-items:center\">\n                  <div>\n                    <label style=\"display:block;font-size:12px;margin-bottom:4px\">Student ID</label>\n                    <input id=\"f-student_id\" class=\"s-input\" style=\"width:100%\" placeholder=\"optional\" />\n                  </div>\n                  <div>\n                    <label style=\"display:block;font-size:12px;margin-bottom:4px\">Date of Birth</label>\n                    <input id=\"f-dob\" type=\"date\" class=\"s-input\" style=\"width:100%\" />\n                  </div>\n                  <div>\n                    <label style=\"display:block;font-size:12px;margin-bottom:4px\">First Name</label>\n                    <input id=\"f-f_name\" class=\"s-input\" style=\"width:100%\" />\n                  </div>\n                  <div>\n                    <label style=\"display:block;font-size:12px;margin-bottom:4px\">Sex</label>\n                    <select id=\"f-sex\" class=\"s-input\" style=\"width:100%\">\n                      <option value=\"\">Select</option>\n                      <option>Male</option>\n                      <option>Female</option>\n                    </select>\n                  </div>\n                  <div>\n                    <label style=\"display:block;font-size:12px;margin-bottom:4px\">Middle Name</label>\n                    <input id=\"f-m_name\" class=\"s-input\" style=\"width:100%\" />\n                  </div>\n                  <div>\n                    <label style=\"display:block;font-size:12px;margin-bottom:4px\">Phone Number</label>\n                    <input id=\"f-phone\" class=\"s-input\" style=\"width:100%\" />\n                  </div>\n                  <div>\n                    <label style=\"display:block;font-size:12px;margin-bottom:4px\">Last Name</label>\n                    <input id=\"f-l_name\" class=\"s-input\" style=\"width:100%\" />\n                  </div>\n                  <div>\n                    <label style=\"display:block;font-size:12px;margin-bottom:4px\">Email Address</label>\n                    <input id=\"f-email\" type=\"email\" class=\"s-input\" style=\"width:100%\" />\n                  </div>\n                  <div>\n                    <label style=\"display:block;font-size:12px;margin-bottom:4px\">Suffix</label>\n                    <input id=\"f-suffix\" class=\"s-input\" style=\"width:100%\" />\n                  </div>\n                  <div>\n                    <label style=\"display:block;font-size:12px;margin-bottom:4px\">Address</label>\n                    <input id=\"f-address\" class=\"s-input\" style=\"width:100%\" />\n                  </div>\n                  <div>\n                    <label style=\"display:block;font-size:12px;margin-bottom:4px\">Department</label>\n                    <select id=\"f-department\" class=\"s-input\" style=\"width:100%\"><option value=\"\">Loading\u2026</option></select>\n                  </div>\n                  <div>\n                    <label style=\"display:block;font-size:12px;margin-bottom:4px\">Status</label>\n                    <select id=\"f-status\" class=\"s-input\" style=\"width:100%\">\n                      <option value=\"active\">Active</option>\n                      <option value=\"inactive\">Inactive</option>\n                    </select>\n                  </div>\n                  <div>\n                    <label style=\"display:block;font-size:12px;margin-bottom:4px\">Course</label>\n                    <select id=\"f-course\" class=\"s-input\" style=\"width:100%\"><option value=\"\">Loading\u2026</option></select>\n                  </div>\n                  <div>\n                    <label style=\"display:block;font-size:12px;margin-bottom:4px\">Academic Year</label>\n                    <select id=\"f-ay\" class=\"s-input\" style=\"width:100%\"><option value=\"\">Loading\u2026</option></select>\n                  </div>\n                  <div>\n                    <label style=\"display:block;font-size:12px;margin-bottom:4px\">Year Level</label>\n                    <input id=\"f-year\" class=\"s-input\" style=\"width:100%\" placeholder=\"e.g., 1st, 2nd, 3rd\" />\n                  </div>\n                </div>\n                <div id=\"f-error\" style=\"color:#b00020;font-size:12px;min-height:16px;margin-top:8px;text-align:center\"></div>\n                <div style=\"display:flex;gap:12px;justify-content:center;margin-top:10px\">\n                  <button id=\"f-cancel\" class=\"s-btn\" style=\"background:#666\">Cancel</button>\n                  <button id=\"f-save\" class=\"s-btn\">Add</button>\n                </div>\n              </div>\n            </div>\n        </div>\n    ";
+  rootEl.innerHTML = "\n        <style>\n            .s-wrap{padding:32px 20px;color:#eee}\n            .s-actions{display:flex;gap:8px;align-items:center;margin-bottom:12px}\n            /* Make inputs visually thinner like the Figma \"type bar\" while keeping comfortable horizontal padding */\n            /* Slightly larger fonts for projector/readability */\n            .s-input{padding:14px 16px;border:1px solid #666;border-radius:6px;background:#111;color:#eee;font-size:18px;height:48px;box-sizing:border-box}\n            /* Modal typography tuned for projector readability */\n            #s-modal .s-input{font-size:20px;height:56px;padding:14px 16px}\n            .s-form-label{display:block;font-size:18px;margin-bottom:14px;color:inherit;font-weight:600}\n            .s-btn{padding:8px 12px;background:#2d6cdf;color:#fff;border:none;border-radius:4px;cursor:pointer}\n            /* rows are transparent now; each cell gets its own boxed container */\n            .s-table{width:100%;border-collapse:collapse;border-spacing:0;background:transparent}\n            .s-table thead tr{background:#333}\n            .s-table thead th{padding:12px 14px;font-size:14px;text-align:left;color:#fff;font-weight:700}\n            .s-table thead th:first-child{border-radius:8px 0 0 8px}\n            .s-table thead th:last-child{border-radius:0 8px 8px 0}\n            /* connected row boxes */\n            .s-table tbody tr{background:#2b2b2b}\n            .s-table td{padding:14px 12px;font-size:14px;border:none;vertical-align:middle}\n            .s-table tbody tr:first-child td:first-child{border-top-left-radius:8px}\n            .s-table tbody tr:first-child td:last-child{border-top-right-radius:8px}\n            .s-table tbody tr:last-child td:first-child{border-bottom-left-radius:8px}\n            .s-table tbody tr:last-child td:last-child{border-bottom-right-radius:8px}\n            .s-pill{padding:4px 8px;border-radius:12px;background:#444}\n            .s-small{font-size:12px}\n        </style>\n        <div class=\"s-wrap\">\n            <div class=\"s-actions\">\n                <input id=\"s-q\" class=\"s-input\" placeholder=\"Search Name\" />\n                <select id=\"s-department-filter\" class=\"s-input\" style=\"width:220px\"><option value=\"\">All Departments</option></select>\n                <select id=\"s-course-filter\" class=\"s-input\" style=\"width:180px\"><option value=\"\">All Courses</option></select>\n                <button id=\"s-search\" class=\"s-btn\">Search</button>\n                <button id=\"s-add\" class=\"s-btn\">Add Student</button>\n                <button id=\"s-archived\" class=\"s-btn\" style=\"background:#666\">Show Archived</button>\n            </div>\n            <div id=\"s-error\" class=\"s-small\" style=\"color:#ffb3b3;min-height:16px\"></div>\n            <table class=\"s-table\">\n                <thead>\n                    <tr>\n                        <th>Student Name</th>\n                        <th>Department</th>\n                        <th>Course</th>\n                        <th>Year Level</th>\n                        <th>Status</th>\n                        <th>Action</th>\n                    </tr>\n                </thead>\n                <tbody id=\"s-body\"><tr><td colspan=\"6\" class=\"s-small\">Loading\u2026</td></tr></tbody>\n            </table>\n            <div id=\"s-modal\" style=\"position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;align-items:center;justify-content:center;z-index:2000\">\n                            <div style=\"width:920px;max-width:96vw;background:#e8e8e8;color:#111;border-radius:8px;padding:24px;box-shadow:0 20px 60px rgba(0,0,0,.5)\">\n                                <h3 id=\"f-title\" style=\"margin:0 0 16px;font-size:26px;font-weight:800\">Add Student</h3>\n                                <!-- increase vertical spacing between rows to match Figma -->\n                                <div style=\"display:grid;grid-template-columns:1fr 1fr;gap:30px 24px;align-items:start\">\n                                                        <div>\n                                                            <label class=\"s-form-label\">Student ID</label>\n                                                            <input id=\"f-student_id\" class=\"s-input\" style=\"width:100%\" />\n                                                        </div>\n                                    <div>\n                                        <label class=\"s-form-label\">Date of Birth</label>\n                                        <input id=\"f-dob\" type=\"date\" class=\"s-input\" style=\"width:100%\" />\n                                    </div>\n                                    <div>\n                                        <label class=\"s-form-label\">First Name</label>\n                                        <input id=\"f-f_name\" class=\"s-input\" style=\"width:100%\" />\n                                    </div>\n                                    <div>\n                                        <label class=\"s-form-label\">Sex</label>\n                                        <select id=\"f-sex\" class=\"s-input\" style=\"width:100%\">\n                                            <option value=\"\">Select</option>\n                                            <option>Male</option>\n                                            <option>Female</option>\n                                        </select>\n                                    </div>\n                                    <div>\n                                        <label class=\"s-form-label\">Middle Name</label>\n                                        <input id=\"f-m_name\" class=\"s-input\" style=\"width:100%\" />\n                                    </div>\n                                                        <div>\n                                                            <label class=\"s-form-label\">Phone Number</label>\n                                                            <input id=\"f-phone\" class=\"s-input\" style=\"width:100%\" maxlength=\"11\" inputmode=\"numeric\" pattern=\"d*\" />\n                                                        </div>\n                                    <div>\n                                        <label class=\"s-form-label\">Last Name</label>\n                                        <input id=\"f-l_name\" class=\"s-input\" style=\"width:100%\" />\n                                    </div>\n                                    <div>\n                                        <label class=\"s-form-label\">Email Address</label>\n                                        <input id=\"f-email\" type=\"email\" class=\"s-input\" style=\"width:100%\" />\n                                    </div>\n                                                        <div>\n                                                            <label class=\"s-form-label\">Suffix <span style=\"font-weight:400;font-size:11px;color:#666\">(optional)</span></label>\n                                                            <input id=\"f-suffix\" class=\"s-input\" style=\"width:100%\" placeholder=\"optional\" />\n                                                        </div>\n                                    <div>\n                                        <label class=\"s-form-label\">Address</label>\n                                        <input id=\"f-address\" class=\"s-input\" style=\"width:100%\" />\n                                    </div>\n                                    <div>\n                                        <label class=\"s-form-label\">Department</label>\n                                        <select id=\"f-department\" class=\"s-input\" style=\"width:100%\"><option value=\"\">Loading\u2026</option></select>\n                                    </div>\n                                    <div>\n                                        <label class=\"s-form-label\">Status</label>\n                                        <select id=\"f-status\" class=\"s-input\" style=\"width:100%\">\n                                            <option value=\"active\">Active</option>\n                                            <option value=\"inactive\">Inactive</option>\n                                        </select>\n                                    </div>\n                                    <div>\n                                        <label class=\"s-form-label\">Course</label>\n                                        <select id=\"f-course\" class=\"s-input\" style=\"width:100%\"><option value=\"\">Loading\u2026</option></select>\n                                    </div>\n                                    <div>\n                                        <label class=\"s-form-label\">Academic Year</label>\n                                        <select id=\"f-ay\" class=\"s-input\" style=\"width:100%\"><option value=\"\">Loading\u2026</option></select>\n                                    </div>\n                                    <div>\n                                        <label class=\"s-form-label\">Year Level</label>\n                                        <input id=\"f-year\" class=\"s-input\" style=\"width:100%\" placeholder=\"e.g., 1st, 2nd, 3rd\" />\n                                    </div>\n                                </div>\n                                <div id=\"f-error\" style=\"color:#b00020;font-size:14px;min-height:18px;margin-top:12px;text-align:center\"></div>\n                                <div style=\"display:flex;gap:18px;justify-content:center;margin-top:18px\">\n                                    <button id=\"f-cancel\" class=\"s-btn\" style=\"background:#666;padding:12px 18px;font-size:16px\">Cancel</button>\n                                    <button id=\"f-save\" class=\"s-btn\" style=\"padding:12px 18px;font-size:16px\">Add</button>\n                                </div>\n                            </div>\n            </div>\n        </div>\n    ";
   var errorBox = rootEl.querySelector('#s-error');
   var qEl = rootEl.querySelector('#s-q');
   var archivedBtn = rootEl.querySelector('#s-archived');
@@ -28658,6 +30346,24 @@ function mountStudents(rootEl) {
     load();
   });
 
+  // Live search (debounced) and filters
+  var qInput = rootEl.querySelector('#s-q');
+  var deptFilter = rootEl.querySelector('#s-department-filter');
+  var courseFilter = rootEl.querySelector('#s-course-filter');
+  var searchTimer = null;
+  qInput.addEventListener('input', function () {
+    clearTimeout(searchTimer);
+    searchTimer = setTimeout(function () {
+      return load();
+    }, 300);
+  });
+  deptFilter.addEventListener('change', function () {
+    return load();
+  });
+  courseFilter.addEventListener('change', function () {
+    return load();
+  });
+
   // Modal helpers
   var modal = rootEl.querySelector('#s-modal');
   var qs = function qs(id) {
@@ -28671,15 +30377,26 @@ function mountStudents(rootEl) {
     return _openModal.apply(this, arguments);
   }
   function _openModal() {
-    _openModal = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee() {
+    _openModal = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee6() {
       var init,
-        _args = arguments;
-      return _regenerator().w(function (_context) {
-        while (1) switch (_context.n) {
+        _init$department$depa,
+        _init$department,
+        _init$department2,
+        _init$course,
+        _init$course2,
+        _init$academic_year,
+        ensureOption,
+        courseVal,
+        _init$course$course_i,
+        ayVal,
+        _init$academic_year$a,
+        _args6 = arguments;
+      return _regenerator().w(function (_context6) {
+        while (1) switch (_context6.n) {
           case 0:
-            init = _args.length > 0 && _args[0] !== undefined ? _args[0] : null;
+            init = _args6.length > 0 && _args6[0] !== undefined ? _args6[0] : null;
             errorBox.textContent = '';
-            _context.n = 1;
+            _context6.n = 1;
             return ensureOptions();
           case 1:
             modal.style.display = 'flex';
@@ -28705,19 +30422,50 @@ function mountStudents(rootEl) {
               qs('#f-phone').value = init.phone_number || '';
               qs('#f-email').value = init.email_address || '';
               qs('#f-address').value = init.address || '';
-              qs('#f-department').value = init.department_id != null ? String(init.department_id) : '';
+
+              // Helper: ensure the select has an option for a value; if not, append a safe option label
+              ensureOption = function ensureOption(sel, val, labelCandidate) {
+                var el = qs(sel);
+                if (!val) {
+                  el.value = '';
+                  return;
+                }
+                var found = Array.from(el.options).some(function (o) {
+                  return String(o.value) === String(val);
+                });
+                if (!found) {
+                  var opt = document.createElement('option');
+                  opt.value = String(val);
+                  opt.text = String(labelCandidate || val);
+                  el.appendChild(opt);
+                }
+                el.value = String(val);
+              };
+              ensureOption('#f-department', init.department_id != null ? String(init.department_id) : init.department && (init.department.department_id != null || init.department.id != null) ? String((_init$department$depa = init.department.department_id) !== null && _init$department$depa !== void 0 ? _init$department$depa : init.department.id) : '', ((_init$department = init.department) === null || _init$department === void 0 ? void 0 : _init$department.department_name) || init.department_name || ((_init$department2 = init.department) === null || _init$department2 === void 0 ? void 0 : _init$department2.name) || 'Unknown');
               qs('#f-status').value = init.status || 'active';
-              qs('#f-course').value = init.course_id != null ? String(init.course_id) : '';
-              qs('#f-ay').value = init.academic_year_id != null ? String(init.academic_year_id) : '';
+              courseVal = '';
+              if (init.course_id != null) {
+                courseVal = String(init.course_id);
+              } else if (init.course && (init.course.course_id != null || init.course.id != null)) {
+                courseVal = String((_init$course$course_i = init.course.course_id) !== null && _init$course$course_i !== void 0 ? _init$course$course_i : init.course.id);
+              }
+              ensureOption('#f-course', courseVal, ((_init$course = init.course) === null || _init$course === void 0 ? void 0 : _init$course.course_name) || init.course_name || ((_init$course2 = init.course) === null || _init$course2 === void 0 ? void 0 : _init$course2.name) || 'Unknown');
+              ayVal = '';
+              if (init.academic_year_id != null) {
+                ayVal = String(init.academic_year_id);
+              } else if (init.academic_year && (init.academic_year.academic_year_id != null || init.academic_year.id != null)) {
+                ayVal = String((_init$academic_year$a = init.academic_year.academic_year_id) !== null && _init$academic_year$a !== void 0 ? _init$academic_year$a : init.academic_year.id);
+              }
+              ensureOption('#f-ay', ayVal, ((_init$academic_year = init.academic_year) === null || _init$academic_year === void 0 ? void 0 : _init$academic_year.school_year) || init.school_year || init.academic_year || 'Unknown');
               qs('#f-year').value = init.year_level || '';
               modal.dataset.editId = init.student_id;
             } else {
               delete modal.dataset.editId;
             }
           case 2:
-            return _context.a(2);
+            return _context6.a(2);
         }
-      }, _callee);
+      }, _callee6);
     }));
     return _openModal.apply(this, arguments);
   }
@@ -28728,13 +30476,15 @@ function mountStudents(rootEl) {
     return _saveModal.apply(this, arguments);
   } // Options caches
   function _saveModal() {
-    _saveModal = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee2() {
-      var err, payload, _t;
-      return _regenerator().w(function (_context2) {
-        while (1) switch (_context2.p = _context2.n) {
+    _saveModal = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee7() {
+      var err, phoneVal, payload, dobVal, dobRe, dobDate, year, _t6;
+      return _regenerator().w(function (_context7) {
+        while (1) switch (_context7.p = _context7.n) {
           case 0:
             err = qs('#f-error');
             err.textContent = '';
+            phoneVal = qs('#f-phone').value || '';
+            phoneVal = phoneVal.replace(/[^0-9]/g, '');
             payload = {
               f_name: qs('#f-f_name').value.trim(),
               m_name: qs('#f-m_name').value.trim() || null,
@@ -28742,7 +30492,7 @@ function mountStudents(rootEl) {
               suffix: qs('#f-suffix').value.trim() || null,
               date_of_birth: qs('#f-dob').value || null,
               sex: qs('#f-sex').value || null,
-              phone_number: qs('#f-phone').value || null,
+              phone_number: phoneVal || null,
               email_address: qs('#f-email').value || null,
               address: qs('#f-address').value || null,
               status: qs('#f-status').value || 'active',
@@ -28751,91 +30501,134 @@ function mountStudents(rootEl) {
               academic_year_id: Number(qs('#f-ay').value),
               year_level: qs('#f-year').value.trim() || '1st'
             };
+            if (!(phoneVal && phoneVal.length !== 11)) {
+              _context7.n = 1;
+              break;
+            }
+            qs('#f-error').textContent = 'Phone number must be 11 digits.';
+            return _context7.a(2);
+          case 1:
+            // Validate date_of_birth format (YYYY-MM-DD) and reasonable range
+            dobVal = qs('#f-dob').value || '';
+            if (!dobVal) {
+              _context7.n = 4;
+              break;
+            }
+            dobRe = /^\d{4}-\d{2}-\d{2}$/;
+            if (dobRe.test(dobVal)) {
+              _context7.n = 2;
+              break;
+            }
+            qs('#f-error').textContent = 'Date of birth must be in YYYY-MM-DD format.';
+            return _context7.a(2);
+          case 2:
+            dobDate = new Date(dobVal);
+            if (!Number.isNaN(dobDate.getTime())) {
+              _context7.n = 3;
+              break;
+            }
+            qs('#f-error').textContent = 'Invalid date of birth.';
+            return _context7.a(2);
+          case 3:
+            // Prevent bogus years (e.g., 11111)
+            year = dobDate.getUTCFullYear();
+            if (!(year < 1900 || year > new Date().getFullYear() - 10)) {
+              _context7.n = 4;
+              break;
+            }
+            qs('#f-error').textContent = 'Date of birth looks unrealistic.';
+            return _context7.a(2);
+          case 4:
             if (!(!payload.f_name || !payload.l_name)) {
-              _context2.n = 1;
+              _context7.n = 5;
               break;
             }
             err.textContent = 'First and Last name are required.';
-            return _context2.a(2);
-          case 1:
+            return _context7.a(2);
+          case 5:
             if (!(!payload.department_id || !payload.course_id || !payload.academic_year_id)) {
-              _context2.n = 2;
+              _context7.n = 6;
               break;
             }
             err.textContent = 'Please select Department, Course and Academic Year.';
-            return _context2.a(2);
-          case 2:
-            _context2.p = 2;
+            return _context7.a(2);
+          case 6:
+            _context7.p = 6;
             if (!modal.dataset.editId) {
-              _context2.n = 4;
+              _context7.n = 8;
               break;
             }
-            _context2.n = 3;
+            _context7.n = 7;
             return api("/api/students/".concat(modal.dataset.editId), {
               method: 'PUT',
               body: JSON.stringify(payload)
             });
-          case 3:
-            _context2.n = 5;
+          case 7:
+            (0,_notify__WEBPACK_IMPORTED_MODULE_0__["default"])('Successfully updated', 'Student', 'success');
+            _context7.n = 10;
             break;
-          case 4:
-            _context2.n = 5;
+          case 8:
+            _context7.n = 9;
             return api('/api/students', {
               method: 'POST',
               body: JSON.stringify(payload)
             });
-          case 5:
+          case 9:
+            (0,_notify__WEBPACK_IMPORTED_MODULE_0__["default"])('Successfully added', 'Student', 'success');
+          case 10:
             closeModal();
-            _context2.n = 6;
+            _context7.n = 11;
             return load();
-          case 6:
-            _context2.n = 8;
+          case 11:
+            _context7.n = 13;
             break;
-          case 7:
-            _context2.p = 7;
-            _t = _context2.v;
-            errorBox.textContent = _t.message;
-          case 8:
-            return _context2.a(2);
+          case 12:
+            _context7.p = 12;
+            _t6 = _context7.v;
+            errorBox.textContent = _t6.message;
+          case 13:
+            return _context7.a(2);
         }
-      }, _callee2, null, [[2, 7]]);
+      }, _callee7, null, [[6, 12]]);
     }));
     return _saveModal.apply(this, arguments);
   }
   var optionsLoaded = false;
+  // keep a master copy of courses so we can filter them by department without refetching
+  var allCourses = [];
   function ensureOptions() {
     return _ensureOptions.apply(this, arguments);
   }
   function _ensureOptions() {
-    _ensureOptions = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee3() {
-      var departments, courses, years, cs, it, depId, bscs, bsit, y, fill, _t2, _t3, _t4, _t5, _t6, _t7;
-      return _regenerator().w(function (_context3) {
-        while (1) switch (_context3.p = _context3.n) {
+    _ensureOptions = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee8() {
+      var departments, courses, years, cs, it, depId, bscs, bsit, y, fill, deptIdKey, courseIdKey, topDept, topCourse, filterCoursesFor, modalDeptEl, currentModalDept, modalCourses, currentTopDept, topCourses, _t7, _t8, _t9, _t0, _t1, _t10;
+      return _regenerator().w(function (_context8) {
+        while (1) switch (_context8.p = _context8.n) {
           case 0:
             if (!optionsLoaded) {
-              _context3.n = 1;
+              _context8.n = 1;
               break;
             }
-            return _context3.a(2);
+            return _context8.a(2);
           case 1:
             departments = [], courses = [], years = [];
-            _context3.p = 2;
-            _context3.n = 3;
+            _context8.p = 2;
+            _context8.n = 3;
             return api('/api/settings/departments');
           case 3:
-            departments = _context3.v;
-            _context3.n = 5;
+            departments = _context8.v;
+            _context8.n = 5;
             break;
           case 4:
-            _context3.p = 4;
-            _t2 = _context3.v;
+            _context8.p = 4;
+            _t7 = _context8.v;
           case 5:
             if (!(!Array.isArray(departments) || departments.length === 0)) {
-              _context3.n = 10;
+              _context8.n = 10;
               break;
             }
-            _context3.p = 6;
-            _context3.n = 7;
+            _context8.p = 6;
+            _context8.n = 7;
             return api('/api/settings/departments', {
               method: 'POST',
               body: JSON.stringify({
@@ -28843,8 +30636,8 @@ function mountStudents(rootEl) {
               })
             });
           case 7:
-            cs = _context3.v;
-            _context3.n = 8;
+            cs = _context8.v;
+            _context8.n = 8;
             return api('/api/settings/departments', {
               method: 'POST',
               body: JSON.stringify({
@@ -28852,37 +30645,37 @@ function mountStudents(rootEl) {
               })
             });
           case 8:
-            it = _context3.v;
+            it = _context8.v;
             departments = [cs, it].filter(Boolean);
-            _context3.n = 10;
+            _context8.n = 10;
             break;
           case 9:
-            _context3.p = 9;
-            _t3 = _context3.v;
+            _context8.p = 9;
+            _t8 = _context8.v;
             departments = [];
           case 10:
-            _context3.p = 10;
-            _context3.n = 11;
+            _context8.p = 10;
+            _context8.n = 11;
             return api('/api/settings/courses');
           case 11:
-            courses = _context3.v;
-            _context3.n = 13;
+            courses = _context8.v;
+            _context8.n = 13;
             break;
           case 12:
-            _context3.p = 12;
-            _t4 = _context3.v;
+            _context8.p = 12;
+            _t9 = _context8.v;
           case 13:
             if (!(!Array.isArray(courses) || courses.length === 0)) {
-              _context3.n = 18;
+              _context8.n = 18;
               break;
             }
             depId = departments[0] && (departments[0].department_id || departments[0].id) || null;
             if (!depId) {
-              _context3.n = 18;
+              _context8.n = 18;
               break;
             }
-            _context3.p = 14;
-            _context3.n = 15;
+            _context8.p = 14;
+            _context8.n = 15;
             return api('/api/settings/courses', {
               method: 'POST',
               body: JSON.stringify({
@@ -28891,8 +30684,8 @@ function mountStudents(rootEl) {
               })
             });
           case 15:
-            bscs = _context3.v;
-            _context3.n = 16;
+            bscs = _context8.v;
+            _context8.n = 16;
             return api('/api/settings/courses', {
               method: 'POST',
               body: JSON.stringify({
@@ -28901,32 +30694,32 @@ function mountStudents(rootEl) {
               })
             });
           case 16:
-            bsit = _context3.v;
+            bsit = _context8.v;
             courses = [bscs, bsit].filter(Boolean);
-            _context3.n = 18;
+            _context8.n = 18;
             break;
           case 17:
-            _context3.p = 17;
-            _t5 = _context3.v;
+            _context8.p = 17;
+            _t0 = _context8.v;
             courses = [];
           case 18:
-            _context3.p = 18;
-            _context3.n = 19;
+            _context8.p = 18;
+            _context8.n = 19;
             return api('/api/settings/academic-years');
           case 19:
-            years = _context3.v;
-            _context3.n = 21;
+            years = _context8.v;
+            _context8.n = 21;
             break;
           case 20:
-            _context3.p = 20;
-            _t6 = _context3.v;
+            _context8.p = 20;
+            _t1 = _context8.v;
           case 21:
             if (!(!Array.isArray(years) || years.length === 0)) {
-              _context3.n = 25;
+              _context8.n = 25;
               break;
             }
-            _context3.p = 22;
-            _context3.n = 23;
+            _context8.p = 22;
+            _context8.n = 23;
             return api('/api/settings/academic-years', {
               method: 'POST',
               body: JSON.stringify({
@@ -28934,29 +30727,71 @@ function mountStudents(rootEl) {
               })
             });
           case 23:
-            y = _context3.v;
+            y = _context8.v;
             years = [y];
-            _context3.n = 25;
+            _context8.n = 25;
             break;
           case 24:
-            _context3.p = 24;
-            _t7 = _context3.v;
+            _context8.p = 24;
+            _t10 = _context8.v;
             years = [];
           case 25:
-            fill = function fill(sel, rows, id, label) {
-              var el = qs(sel);
-              el.innerHTML = '<option value="">Select</option>' + rows.map(function (r) {
+            fill = function fill(el, rows, id, label, includeAllLabel) {
+              el.innerHTML = (includeAllLabel ? '<option value="">All</option>' : '<option value="">Select</option>') + rows.map(function (r) {
                 return "<option value=\"".concat(r[id], "\">").concat(r[label] || r[id], "</option>");
               }).join('');
             };
-            fill('#f-department', departments, departments[0] && ('department_id' in departments[0] ? 'department_id' : 'id') || 'department_id', 'department_name');
-            fill('#f-course', courses, courses[0] && ('course_id' in courses[0] ? 'course_id' : 'id') || 'course_id', 'course_name');
-            fill('#f-ay', years, years[0] && ('academic_year_id' in years[0] ? 'academic_year_id' : 'id') || 'academic_year_id', 'school_year');
+            deptIdKey = departments[0] && ('department_id' in departments[0] ? 'department_id' : 'id') || 'department_id';
+            courseIdKey = courses[0] && ('course_id' in courses[0] ? 'course_id' : 'id') || 'course_id';
+            fill(qs('#f-department'), departments, deptIdKey, 'department_name', false);
+            // populate top filters
+            topDept = rootEl.querySelector('#s-department-filter');
+            topCourse = rootEl.querySelector('#s-course-filter');
+            fill(topDept, departments, deptIdKey, 'department_name', true);
+
+            // store master list and provide filter helpers so course lists show only courses belonging to the selected department
+            allCourses = Array.isArray(courses) ? courses : [];
+            filterCoursesFor = function filterCoursesFor(deptId) {
+              return (allCourses || []).filter(function (c) {
+                var _ref6, _c$department_id, _c$department$departm;
+                var cDept = (_ref6 = (_c$department_id = c.department_id) !== null && _c$department_id !== void 0 ? _c$department_id : c.department && ((_c$department$departm = c.department.department_id) !== null && _c$department$departm !== void 0 ? _c$department$departm : c.department.id)) !== null && _ref6 !== void 0 ? _ref6 : null;
+                if (!deptId) return true;
+                return String(cDept) === String(deptId);
+              });
+            }; // populate modal and top course selects filtered by current department selection (if any)
+            modalDeptEl = qs('#f-department');
+            currentModalDept = modalDeptEl ? modalDeptEl.value : '';
+            modalCourses = filterCoursesFor(currentModalDept);
+            fill(qs('#f-course'), modalCourses, courseIdKey, 'course_name', false);
+            currentTopDept = topDept ? topDept.value : '';
+            topCourses = filterCoursesFor(currentTopDept);
+            fill(topCourse, topCourses, courseIdKey, 'course_name', true);
+
+            // when department changes in the modal, filter course options to only those in the dept
+            if (modalDeptEl) {
+              modalDeptEl.addEventListener('change', function () {
+                var v = modalDeptEl.value;
+                var list = filterCoursesFor(v);
+                fill(qs('#f-course'), list, courseIdKey, 'course_name', false);
+              });
+            }
+
+            // when the top-level department filter changes, also filter the top-level course filter
+            if (topDept) {
+              topDept.addEventListener('change', function () {
+                var v = topDept.value;
+                var list = filterCoursesFor(v);
+                fill(topCourse, list, courseIdKey, 'course_name', true);
+                // existing behavior also triggers load; keep that
+                load();
+              });
+            }
+            fill(qs('#f-ay'), years, years[0] && ('academic_year_id' in years[0] ? 'academic_year_id' : 'id') || 'academic_year_id', 'school_year', false);
             optionsLoaded = true;
           case 26:
-            return _context3.a(2);
+            return _context8.a(2);
         }
-      }, _callee3, null, [[22, 24], [18, 20], [14, 17], [10, 12], [6, 9], [2, 4]]);
+      }, _callee8, null, [[22, 24], [18, 20], [14, 17], [10, 12], [6, 9], [2, 4]]);
     }));
     return _ensureOptions.apply(this, arguments);
   }
@@ -28964,39 +30799,59 @@ function mountStudents(rootEl) {
     return _load.apply(this, arguments);
   }
   function _load() {
-    _load = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee4() {
+    _load = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee9() {
       var page,
         params,
         qVal,
         data,
-        _args4 = arguments,
-        _t8;
-      return _regenerator().w(function (_context4) {
-        while (1) switch (_context4.p = _context4.n) {
+        rows,
+        qLower,
+        deptVal,
+        courseVal,
+        _args9 = arguments,
+        _t11;
+      return _regenerator().w(function (_context9) {
+        while (1) switch (_context9.p = _context9.n) {
           case 0:
-            page = _args4.length > 0 && _args4[0] !== undefined ? _args4[0] : 1;
+            page = _args9.length > 0 && _args9[0] !== undefined ? _args9[0] : 1;
             errorBox.textContent = '';
             params = new URLSearchParams();
             qVal = qEl.value.trim();
             if (qVal) params.set('q', qVal);
             params.set('page', String(page));
             if (showingArchived) params.set('archived', '1');
-            _context4.p = 1;
-            _context4.n = 2;
+            _context9.p = 1;
+            _context9.n = 2;
             return api("/api/students?".concat(params.toString()));
           case 2:
-            data = _context4.v;
-            renderRows(data.data || []);
-            _context4.n = 4;
+            data = _context9.v;
+            rows = data.data || []; // client-side filtering by query, department and course for better matching
+            qLower = qVal.toLowerCase();
+            deptVal = deptFilter.value;
+            courseVal = courseFilter.value;
+            if (qLower || deptVal || courseVal) {
+              rows = rows.filter(function (stu) {
+                var _stu$department2, _stu$course2, _stu$department$depar, _stu$course$course_id;
+                var deptName = (((_stu$department2 = stu.department) === null || _stu$department2 === void 0 ? void 0 : _stu$department2.department_name) || stu.department_name || '').toString().toLowerCase();
+                var courseName = (((_stu$course2 = stu.course) === null || _stu$course2 === void 0 ? void 0 : _stu$course2.course_name) || stu.course_name || '').toString().toLowerCase();
+                var fullName = "".concat(stu.f_name || '', " ").concat(stu.l_name || '').toLowerCase();
+                var matchesQ = !qLower || fullName.includes(qLower) || deptName.includes(qLower) || courseName.includes(qLower) || (stu.email_address || '').toLowerCase().includes(qLower);
+                var matchesDept = !deptVal || String(stu.department && ((_stu$department$depar = stu.department.department_id) !== null && _stu$department$depar !== void 0 ? _stu$department$depar : stu.department.id) || stu.department_id || '') === String(deptVal);
+                var matchesCourse = !courseVal || String(stu.course && ((_stu$course$course_id = stu.course.course_id) !== null && _stu$course$course_id !== void 0 ? _stu$course$course_id : stu.course.id) || stu.course_id || '') === String(courseVal);
+                return matchesQ && matchesDept && matchesCourse;
+              });
+            }
+            renderRows(rows || []);
+            _context9.n = 4;
             break;
           case 3:
-            _context4.p = 3;
-            _t8 = _context4.v;
-            errorBox.textContent = _t8.message;
+            _context9.p = 3;
+            _t11 = _context9.v;
+            errorBox.textContent = _t11.message;
           case 4:
-            return _context4.a(2);
+            return _context9.a(2);
         }
-      }, _callee4, null, [[1, 3]]);
+      }, _callee9, null, [[1, 3]]);
     }));
     return _load.apply(this, arguments);
   }
@@ -29012,6 +30867,30 @@ function mountStudents(rootEl) {
     }
     rows.forEach(function (stu) {
       var _stu$department, _stu$course, _stu$academic_year;
+      var actionChildren = showingArchived ? [h('button', {
+        "class": 's-btn s-small',
+        style: 'background:#4caf50',
+        'data-action': 'restore',
+        'data-id': stu.student_id
+      }, 'Restore'), h('span', {
+        text: ' '
+      }), h('button', {
+        "class": 's-btn s-small',
+        style: 'background:#d32f2f',
+        'data-action': 'delete',
+        'data-id': stu.student_id
+      }, 'Delete')] : [h('button', {
+        "class": 's-btn s-small',
+        'data-action': 'edit',
+        'data-id': stu.student_id
+      }, 'Edit'), h('span', {
+        text: ' '
+      }), h('button', {
+        "class": 's-btn s-small',
+        style: 'background:#d32f2f',
+        'data-action': 'archive',
+        'data-id': stu.student_id
+      }, 'Archive')];
       var tr = h('tr', {}, [h('td', {
         text: "".concat(stu.f_name || '', " ").concat(stu.l_name || '').trim()
       }), h('td', {
@@ -29019,52 +30898,192 @@ function mountStudents(rootEl) {
       }), h('td', {
         text: ((_stu$course = stu.course) === null || _stu$course === void 0 ? void 0 : _stu$course.course_name) || stu.course_name || stu.course_id || ''
       }), h('td', {
-        text: ((_stu$academic_year = stu.academic_year) === null || _stu$academic_year === void 0 ? void 0 : _stu$academic_year.school_year) || stu.academic_year || stu.academic_year_id || ''
+        text: stu.year_level || ((_stu$academic_year = stu.academic_year) === null || _stu$academic_year === void 0 ? void 0 : _stu$academic_year.school_year) || stu.academic_year || stu.academic_year_id || ''
       }), h('td', {}, [h('span', {
         "class": 's-pill s-small',
         text: stu.archived_at ? 'Archived' : 'Active'
-      })]), h('td', {}, [h('button', {
-        "class": 's-btn s-small',
-        'data-action': 'edit',
-        'data-id': stu.student_id
-      }, 'Edit'), h('span', {
-        text: ' '
-      }), showingArchived ? h('button', {
-        "class": 's-btn s-small',
-        style: 'background:#4caf50',
-        'data-action': 'restore',
-        'data-id': stu.student_id
-      }, 'Restore') : h('button', {
-        "class": 's-btn s-small',
-        style: 'background:#d32f2f',
-        'data-action': 'delete',
-        'data-id': stu.student_id
-      }, 'Delete')])]);
+      })]), h('td', {}, actionChildren)]);
       tbody.appendChild(tr);
     });
 
-    // Add event listeners for Edit/Delete/Restore buttons
-    tbody.addEventListener('click', function (e) {
-      if (e.target.dataset.action === 'edit') {
-        var studentId = e.target.dataset.id;
-        var student = rows.find(function (s) {
-          return s.student_id == studentId;
+    // helper to disable a button until async work completes
+    var disableOnce = function disableOnce(btn) {
+      if (!btn) return function () {};
+      btn.disabled = true;
+      btn.style.opacity = '0.6';
+      return function () {
+        btn.disabled = false;
+        btn.style.opacity = '';
+      };
+    };
+
+    // Single onclick handler so listeners don't stack and every click registers immediately
+    tbody.onclick = function (e) {
+      var btn = e.target && e.target.closest ? e.target.closest('button') : null;
+      if (!btn) return;
+      var action = btn.dataset.action;
+      var id = btn.dataset.id;
+      var findStudent = function findStudent(idVal) {
+        return rows.find(function (s) {
+          return String(s.student_id) === String(idVal);
         });
+      };
+      if (action === 'edit') {
+        var student = findStudent(id);
         if (student) openModal(student);
-      } else if (e.target.dataset.action === 'delete') {
-        var _studentId = e.target.dataset.id;
-        var _student = rows.find(function (s) {
-          return s.student_id == _studentId;
-        });
-        if (_student) onArchive(_student);
-      } else if (e.target.dataset.action === 'restore') {
-        var _studentId2 = e.target.dataset.id;
-        var _student2 = rows.find(function (s) {
-          return s.student_id == _studentId2;
-        });
-        if (_student2) onRestore(_student2);
+      } else if (action === 'archive') {
+        var _student = findStudent(id);
+        if (!_student) return;
+        var restore = disableOnce(btn);
+        _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee() {
+          var _t;
+          return _regenerator().w(function (_context) {
+            while (1) switch (_context.p = _context.n) {
+              case 0:
+                _context.p = 0;
+                _context.n = 1;
+                return onArchive(_student);
+              case 1:
+                _context.n = 2;
+                return load();
+              case 2:
+                (0,_notify__WEBPACK_IMPORTED_MODULE_0__["default"])('Successfully archived', 'Student', 'success');
+                _context.n = 4;
+                break;
+              case 3:
+                _context.p = 3;
+                _t = _context.v;
+                errorBox.textContent = _t.message;
+              case 4:
+                _context.p = 4;
+                restore();
+                return _context.f(4);
+              case 5:
+                return _context.a(2);
+            }
+          }, _callee, null, [[0, 3, 4, 5]]);
+        }))();
+      } else if (action === 'restore') {
+        var _student2 = findStudent(id);
+        if (!_student2) return;
+        var _restore = disableOnce(btn);
+        _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee2() {
+          var _t2;
+          return _regenerator().w(function (_context2) {
+            while (1) switch (_context2.p = _context2.n) {
+              case 0:
+                _context2.p = 0;
+                _context2.n = 1;
+                return onRestore(_student2);
+              case 1:
+                _context2.n = 2;
+                return load();
+              case 2:
+                (0,_notify__WEBPACK_IMPORTED_MODULE_0__["default"])('Successfully restored', 'Student', 'success');
+                _context2.n = 4;
+                break;
+              case 3:
+                _context2.p = 3;
+                _t2 = _context2.v;
+                errorBox.textContent = _t2.message;
+              case 4:
+                _context2.p = 4;
+                _restore();
+                return _context2.f(4);
+              case 5:
+                return _context2.a(2);
+            }
+          }, _callee2, null, [[0, 3, 4, 5]]);
+        }))();
+      } else if (action === 'delete') {
+        var _student3 = findStudent(id);
+        if (!_student3) return;
+        if (!confirm('Permanently delete this student? This cannot be undone.')) return;
+        var _restore2 = disableOnce(btn);
+        _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee3() {
+          var _t3;
+          return _regenerator().w(function (_context3) {
+            while (1) switch (_context3.p = _context3.n) {
+              case 0:
+                _context3.p = 0;
+                _context3.n = 1;
+                return api("/api/students/".concat(id), {
+                  method: 'DELETE'
+                });
+              case 1:
+                _context3.n = 2;
+                return load();
+              case 2:
+                (0,_notify__WEBPACK_IMPORTED_MODULE_0__["default"])('Successfully deleted', 'Student', 'success');
+                _context3.n = 4;
+                break;
+              case 3:
+                _context3.p = 3;
+                _t3 = _context3.v;
+                errorBox.textContent = _t3.message;
+              case 4:
+                _restore2();
+              case 5:
+                return _context3.a(2);
+            }
+          }, _callee3, null, [[0, 3]]);
+        }))();
       }
-    });
+    };
+    function awaitOnArchive(_x2, _x3) {
+      return _awaitOnArchive.apply(this, arguments);
+    }
+    function _awaitOnArchive() {
+      _awaitOnArchive = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee4(student, restore) {
+        var _t4;
+        return _regenerator().w(function (_context4) {
+          while (1) switch (_context4.p = _context4.n) {
+            case 0:
+              _context4.p = 0;
+              _context4.n = 1;
+              return onArchive(student);
+            case 1:
+              _context4.n = 3;
+              break;
+            case 2:
+              _context4.p = 2;
+              _t4 = _context4.v;
+            case 3:
+              restore();
+            case 4:
+              return _context4.a(2);
+          }
+        }, _callee4, null, [[0, 2]]);
+      }));
+      return _awaitOnArchive.apply(this, arguments);
+    }
+    function awaitOnRestore(_x4, _x5) {
+      return _awaitOnRestore.apply(this, arguments);
+    }
+    function _awaitOnRestore() {
+      _awaitOnRestore = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee5(student, restore) {
+        var _t5;
+        return _regenerator().w(function (_context5) {
+          while (1) switch (_context5.p = _context5.n) {
+            case 0:
+              _context5.p = 0;
+              _context5.n = 1;
+              return onRestore(student);
+            case 1:
+              _context5.n = 3;
+              break;
+            case 2:
+              _context5.p = 2;
+              _t5 = _context5.v;
+            case 3:
+              restore();
+            case 4:
+              return _context5.a(2);
+          }
+        }, _callee5, null, [[0, 2]]);
+      }));
+      return _awaitOnRestore.apply(this, arguments);
+    }
   }
   function promptStudent() {
     var init = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
@@ -29086,97 +31105,99 @@ function mountStudents(rootEl) {
       academic_year_id: Number(ay)
     };
   }
-  function onEdit(_x2) {
+  function onEdit(_x6) {
     return _onEdit.apply(this, arguments);
   }
   function _onEdit() {
-    _onEdit = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee5(stu) {
-      return _regenerator().w(function (_context5) {
-        while (1) switch (_context5.n) {
+    _onEdit = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee0(stu) {
+      return _regenerator().w(function (_context0) {
+        while (1) switch (_context0.n) {
           case 0:
             openModal(stu);
           case 1:
-            return _context5.a(2);
+            return _context0.a(2);
         }
-      }, _callee5);
+      }, _callee0);
     }));
     return _onEdit.apply(this, arguments);
   }
-  function onArchive(_x3) {
+  function onArchive(_x7) {
     return _onArchive.apply(this, arguments);
   }
   function _onArchive() {
-    _onArchive = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee6(stu) {
-      var _t9;
-      return _regenerator().w(function (_context6) {
-        while (1) switch (_context6.p = _context6.n) {
+    _onArchive = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee1(stu) {
+      var _t12;
+      return _regenerator().w(function (_context1) {
+        while (1) switch (_context1.p = _context1.n) {
           case 0:
             if (confirm('Archive this student?')) {
-              _context6.n = 1;
+              _context1.n = 1;
               break;
             }
-            return _context6.a(2);
+            return _context1.a(2);
           case 1:
-            _context6.p = 1;
-            _context6.n = 2;
+            _context1.p = 1;
+            _context1.n = 2;
             return api("/api/students/".concat(stu.student_id, "/archive"), {
               method: 'POST'
             });
           case 2:
-            _context6.n = 3;
+            _context1.n = 3;
             return load();
           case 3:
-            _context6.n = 5;
+            _context1.n = 5;
             break;
           case 4:
-            _context6.p = 4;
-            _t9 = _context6.v;
-            errorBox.textContent = _t9.message;
+            _context1.p = 4;
+            _t12 = _context1.v;
+            errorBox.textContent = _t12.message;
           case 5:
-            return _context6.a(2);
+            return _context1.a(2);
         }
-      }, _callee6, null, [[1, 4]]);
+      }, _callee1, null, [[1, 4]]);
     }));
     return _onArchive.apply(this, arguments);
   }
-  function onRestore(_x4) {
+  function onRestore(_x8) {
     return _onRestore.apply(this, arguments);
-  }
+  } // Ensure filter dropdowns are populated before the first load
   function _onRestore() {
-    _onRestore = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee7(stu) {
-      var _t0;
-      return _regenerator().w(function (_context7) {
-        while (1) switch (_context7.p = _context7.n) {
+    _onRestore = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee10(stu) {
+      var _t13;
+      return _regenerator().w(function (_context10) {
+        while (1) switch (_context10.p = _context10.n) {
           case 0:
             if (confirm('Restore this student?')) {
-              _context7.n = 1;
+              _context10.n = 1;
               break;
             }
-            return _context7.a(2);
+            return _context10.a(2);
           case 1:
-            _context7.p = 1;
-            _context7.n = 2;
+            _context10.p = 1;
+            _context10.n = 2;
             return api("/api/students/".concat(stu.student_id, "/restore"), {
               method: 'POST'
             });
           case 2:
-            _context7.n = 3;
+            _context10.n = 3;
             return load();
           case 3:
-            _context7.n = 5;
+            _context10.n = 5;
             break;
           case 4:
-            _context7.p = 4;
-            _t0 = _context7.v;
-            errorBox.textContent = _t0.message;
+            _context10.p = 4;
+            _t13 = _context10.v;
+            errorBox.textContent = _t13.message;
           case 5:
-            return _context7.a(2);
+            return _context10.a(2);
         }
-      }, _callee7, null, [[1, 4]]);
+      }, _callee10, null, [[1, 4]]);
     }));
     return _onRestore.apply(this, arguments);
   }
-  load();
+  ensureOptions().then(function () {
+    return load();
+  });
 }
 
 /***/ }),

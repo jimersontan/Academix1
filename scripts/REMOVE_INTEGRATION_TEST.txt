@@ -1,0 +1,1 @@
+The integration test script scripts/integration_test_archive.php was used for a one-off test and can be removed. It is currently present at scripts/integration_test_archive.php. If you want it removed from the repo, delete that file. I will remove it now.
