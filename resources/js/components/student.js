@@ -47,32 +47,34 @@ export function mountStudents(rootEl) {
 
     rootEl.innerHTML = `
         <style>
-            .f-wrap{padding:18px;color:#fff;font-family:Arial,Helvetica,sans-serif}
-            .f-topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
-            .f-title{margin:0;font-size:24px;font-weight:700}
+            .f-wrap{padding:18px;color:var(--ink);font-family:Inter,Segoe UI,Arial,Helvetica,sans-serif}
+            .f-topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+            .f-title{margin:0;font-size:20px;font-weight:800;letter-spacing:.2px}
             .f-actions{display:flex;gap:8px;align-items:center}
-            .f-input{padding:8px 12px;border:1px solid #666;border-radius:4px;background:#2b2b2b;color:#fff;font-size:14px}
-            .f-btn{padding:8px 16px;background:#2d6cdf;color:#fff;border:none;border-radius:4px;cursor:pointer;font-size:14px}
-            .f-btn:hover{background:#1e5bb8}
-            .f-btn-outline{background:transparent;border:1px solid #666;color:#ddd}
-            .f-btn-outline:hover{background:#333}
-            .f-table{width:100%;border-collapse:collapse;background:#2b2b2b;border-radius:8px;overflow:hidden}
-            .f-table th{background:#333;padding:12px;text-align:left;font-weight:600;border-bottom:1px solid #444}
-            .f-table td{padding:12px;border-bottom:1px solid #444}
-            .f-table tr:hover{background:#333}
-            .f-pill{padding:4px 8px;border-radius:12px;background:#444;font-size:12px}
+            .f-input{padding:8px 12px;border:1px solid var(--border);border-radius:10px;background:var(--surface);color:var(--ink);font-size:14px}
+            .f-btn{padding:8px 14px;background:var(--primary);color:#0b1020;border:none;border-radius:10px;cursor:pointer;font-size:14px;font-weight:700}
+            .f-btn:hover{filter:brightness(1.05)}
+            .f-btn-outline{background:transparent;border:1px solid var(--border);color:var(--ink)}
+            .f-btn-outline:hover{background:rgba(148,163,184,.08)}
+            .f-card{background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.02));border:1px solid var(--border);border-radius:14px;box-shadow:var(--shadow);overflow:hidden}
+            .f-tablebar{display:flex;justify-content:flex-end;gap:8px;padding:10px 12px;background:rgba(255,255,255,.02);border-bottom:1px solid var(--border)}
+            .f-table{width:100%;border-collapse:collapse;background:transparent}
+            .f-table th{background:transparent;padding:12px;text-align:left;font-weight:700;border-bottom:1px solid var(--border);color:var(--muted);font-size:12px;letter-spacing:.3px;text-transform:uppercase}
+            .f-table td{padding:12px;border-bottom:1px solid var(--border)}
+            .f-table tr:hover{background:rgba(255,255,255,.02)}
+            .f-pill{padding:4px 8px;border-radius:12px;background:#1f2937;border:1px solid #283241;font-size:12px;color:#cbd5e1}
             .f-small{font-size:12px}
             .f-modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);display:none;align-items:center;justify-content:center;z-index:2000}
-            .f-modal{width:900px;max-width:95vw;background:#e8e8e8;color:#111;border-radius:8px;padding:24px;box-shadow:0 20px 60px rgba(0,0,0,.5)}
-            .f-modal h3{margin:0 0 16px;font-size:20px;font-weight:600}
-            .f-modal-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px 20px;align-items:start}
+            .f-modal{width:960px;max-width:96vw;background:#f9fafb;color:#0f172a;border-radius:12px;padding:28px;box-shadow:0 24px 72px rgba(0,0,0,.55)}
+            .f-modal h3{margin:0 0 18px;font-size:22px;font-weight:700;color:#0b1340}
+            .f-modal-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px 24px;align-items:start}
             .f-modal-field{margin-bottom:12px}
-            .f-modal-label{display:block;font-size:13px;margin-bottom:4px;font-weight:500}
-            .f-modal-input{width:100%;padding:8px 12px;border:1px solid #ccc;border-radius:4px;background:#fff;color:#111;font-size:14px}
-            .f-modal-buttons{display:flex;gap:12px;justify-content:center;margin-top:20px}
+            .f-modal-label{display:block;font-size:13.5px;margin-bottom:6px;font-weight:600;color:#0b1340}
+            .f-modal-input{width:100%;padding:10px 12px;border:1px solid #cbd5e1;border-radius:6px;background:#fff;color:#0f172a;font-size:14px}
+            .f-modal-buttons{display:flex;gap:12px;justify-content:flex-end;margin-top:22px}
             .f-modal-btn{padding:10px 20px;border:none;border-radius:4px;cursor:pointer;font-size:14px;font-weight:500}
-            .f-modal-cancel{background:#666;color:#fff}
-            .f-modal-save{background:#2d6cdf;color:#fff}
+            .f-modal-cancel{background:#64748b;color:#fff}
+            .f-modal-save{background:#2563eb;color:#fff}
         </style>
         <div class="f-wrap">
             <div class="f-topbar">
@@ -81,16 +83,26 @@ export function mountStudents(rootEl) {
                     <input id="s-q" class="f-input" placeholder="Search name or email" style="width:200px" />
                     <button id="s-search" class="f-btn">Search</button>
                     <button id="s-add" class="f-btn">Add Student</button>
-                    <button id="s-archived" class="f-btn f-btn-outline">Archived</button>
                 </div>
             </div>
             <div id="s-error" class="f-small" style="color:#ffb3b3;min-height:16px;margin-bottom:12px"></div>
-            <table class="f-table">
+            <div class="f-card">
+              <div class="f-tablebar">
+                <select id="s-filter-department" class="f-input" style="width:200px">
+                  <option value="">All Departments</option>
+                </select>
+                <select id="s-filter-course" class="f-input" style="width:200px">
+                  <option value="">All Courses</option>
+                </select>
+                <button id="s-archived" class="f-btn f-btn-outline">Archived</button>
+              </div>
+              <table class="f-table">
                 <thead>
                     <tr><th>Name</th><th>Department</th><th>Course</th><th>Year</th><th>Status</th><th>Action</th></tr>
                 </thead>
                 <tbody id="s-body"><tr><td colspan="6" class="f-small">Loading…</td></tr></tbody>
-            </table>
+              </table>
+            </div>
             <div id="s-modal" class="f-modal-overlay">
               <div class="f-modal">
                 <h3 id="sm-title">Add Student</h3>
@@ -123,10 +135,18 @@ export function mountStudents(rootEl) {
     const errorBox = rootEl.querySelector('#s-error');
     const qEl = rootEl.querySelector('#s-q');
     const archivedBtn = rootEl.querySelector('#s-archived');
+    const filterCourseEl = rootEl.querySelector('#s-filter-course');
+    const filterDepartmentEl = rootEl.querySelector('#s-filter-department');
     let showingArchived = false;
+    // caches for filters
+    let departmentsCache = [];
+    let coursesCache = [];
 
     rootEl.querySelector('#s-search').addEventListener('click', () => load());
     qEl.addEventListener('keypress', e => { if (e.key === 'Enter') load(); });
+    // Real-time search as you type
+    qEl.addEventListener('input', () => load());
+    
     rootEl.querySelector('#s-add').addEventListener('click', () => openModal());
     archivedBtn.addEventListener('click', () => {
         showingArchived = !showingArchived;
@@ -134,7 +154,11 @@ export function mountStudents(rootEl) {
         archivedBtn.style.background = showingArchived ? '#2d6cdf' : 'transparent';
         load();
     });
-
+    
+    // Filter dropdowns in tablebar
+    filterCourseEl.addEventListener('change', () => load());
+    filterDepartmentEl.addEventListener('change', () => { repopulateCourseFilter(); load(); });
+    
     const modal = rootEl.querySelector('#s-modal');
     const qs = (id) => modal.querySelector(id);
     qs('#sm-cancel').addEventListener('click', () => closeModal());
@@ -197,11 +221,29 @@ export function mountStudents(rootEl) {
         if (!payload.f_name || !payload.l_name) { err.textContent = 'First and Last name are required.'; return; }
         if (!payload.department_id || !payload.course_id || !payload.academic_year_id) { err.textContent = 'Please select Department, Course, and Academic Year.'; return; }
         try {
-            if (modal.dataset.editId) {
+            const isEdit = Boolean(modal.dataset.editId);
+            if (isEdit) {
                 await api(`/api/students/${modal.dataset.editId}`, { method: 'PUT', body: JSON.stringify(payload) });
             } else {
                 await api('/api/students', { method: 'POST', body: JSON.stringify(payload) });
             }
+            // Dispatch global event for dashboard counters and notifications
+            // Update local persistent counters for robustness
+            try {
+                const s = JSON.parse(window.localStorage.getItem('academix_stats')||'{}');
+                const curr = { students: Number(s.students)||0, faculty: Number(s.faculty)||0 };
+                if (!isEdit) curr.students = Math.max(0, curr.students + 1);
+                window.localStorage.setItem('academix_stats', JSON.stringify(curr));
+            } catch(_) {}
+            window.dispatchEvent(new CustomEvent('academix:entity', {
+                detail: {
+                    entity: 'student',
+                    action: isEdit ? 'updated' : 'created',
+                    delta: isEdit ? 0 : 1,
+                    details: `${payload.f_name} ${payload.l_name}`.trim()
+                }
+            }));
+            window.dispatchEvent(new CustomEvent('academix:stats:refresh'));
             closeModal();
             await load();
         } catch (e) { errorBox.textContent = e.message; }
@@ -212,24 +254,36 @@ export function mountStudents(rootEl) {
         if (optionsLoaded) return;
         let departments = [], courses = [], years = [];
         try { departments = await api('/api/settings/departments'); } catch (_) {}
-        if (!Array.isArray(departments) || departments.length === 0) {
-            try {
-                const cs = await api('/api/settings/departments', { method: 'POST', body: JSON.stringify({ department_name: 'Computer Science' }) });
-                const it = await api('/api/settings/departments', { method: 'POST', body: JSON.stringify({ department_name: 'Information Technology' }) });
-                departments = [cs, it].filter(Boolean);
-            } catch (_) { departments = []; }
-        }
         try { courses = await api('/api/settings/courses'); } catch (_) {}
         try { years = await api('/api/settings/academic-years'); } catch (_) {}
+
+        departmentsCache = Array.isArray(departments) ? departments : [];
+        coursesCache = Array.isArray(courses) ? courses : [];
 
         const fill = (sel, rows, id, label) => {
             const el = qs(sel);
             el.innerHTML = '<option value="">Select</option>' + rows.map(r => `<option value="${r[id]}">${r[label]}</option>`).join('');
         };
-        if (departments.length) fill('#sm-department', departments, 'department_id', 'department_name');
-        if (courses.length) fill('#sm-course', courses, 'course_id', 'course_name');
-        if (years.length) fill('#sm-ay', years, 'academic_year_id', 'school_year');
+        if (departmentsCache.length) fill('#sm-department', departmentsCache, 'department_id', 'department_name');
+        if (coursesCache.length) fill('#sm-course', coursesCache, 'course_id', 'course_name');
+        if (Array.isArray(years) && years.length) fill('#sm-ay', years, 'academic_year_id', 'school_year');
+        
+        // Populate filter dropdowns in tablebar
+        if (departmentsCache.length) {
+            filterDepartmentEl.innerHTML = '<option value="">All Departments</option>' + 
+              departmentsCache.map(d => `<option value="${d.department_id}">${d.department_name}</option>`).join('');
+        }
+        repopulateCourseFilter();
+        
         optionsLoaded = true;
+    }
+
+    function repopulateCourseFilter() {
+        const selectedDept = filterDepartmentEl.value ? Number(filterDepartmentEl.value) : null;
+        const list = selectedDept
+            ? coursesCache.filter(c => Number(c.department_id) === selectedDept)
+            : coursesCache;
+        filterCourseEl.innerHTML = '<option value="">All Courses</option>' + list.map(c => `<option value="${c.course_id}">${c.course_name}</option>`).join('');
     }
 
     async function load(page = 1) {
@@ -237,14 +291,24 @@ export function mountStudents(rootEl) {
         const params = new URLSearchParams();
         const qVal = qEl.value.trim();
         if (qVal) params.set('q', qVal);
+        
+        // Add filter parameters from tablebar
+        const courseId = filterCourseEl.value;
+        const deptId = filterDepartmentEl.value;
+        if (courseId) params.set('course_id', courseId);
+        if (deptId) params.set('department_id', deptId);
+        
         params.set('page', String(page));
         if (showingArchived) params.set('archived', '1');
         try {
+            window.dispatchEvent(new CustomEvent('academix:notify', { detail: { entity:'student', action:'fetch:start', details: params.toString() } }));
             const data = await api(`/api/students?${params.toString()}`);
             currentRows = data.data || [];
             renderRows(currentRows);
+            window.dispatchEvent(new CustomEvent('academix:notify', { detail: { entity:'student', action:'fetch:end', details: `rows=${currentRows.length}` } }));
         } catch (e) {
             errorBox.textContent = e.message;
+            window.dispatchEvent(new CustomEvent('academix:notify', { detail: { entity:'student', action:'fetch:error', details: e.message } }));
         }
     }
 
@@ -290,6 +354,16 @@ export function mountStudents(rootEl) {
         if (!confirm(`Archive ${stu.f_name} ${stu.l_name}?`)) return;
         try {
             await api(`/api/students/${stu.student_id}/archive`, { method: 'POST' });
+            try {
+                const s = JSON.parse(window.localStorage.getItem('academix_stats')||'{}');
+                const curr = { students: Number(s.students)||0, faculty: Number(s.faculty)||0 };
+                curr.students = Math.max(0, curr.students - 1);
+                window.localStorage.setItem('academix_stats', JSON.stringify(curr));
+            } catch(_) {}
+            window.dispatchEvent(new CustomEvent('academix:entity', {
+                detail: { entity: 'student', action: 'archived', delta: -1, details: `${stu.f_name || ''} ${stu.l_name || ''}`.trim() }
+            }));
+            window.dispatchEvent(new CustomEvent('academix:stats:refresh'));
             await load();
         } catch (e) { errorBox.textContent = e.message; }
     }
@@ -298,9 +372,22 @@ export function mountStudents(rootEl) {
         if (!confirm(`Restore ${stu.f_name} ${stu.l_name}?`)) return;
         try {
             await api(`/api/students/${stu.student_id}/restore`, { method: 'POST' });
+            try {
+                const s = JSON.parse(window.localStorage.getItem('academix_stats')||'{}');
+                const curr = { students: Number(s.students)||0, faculty: Number(s.faculty)||0 };
+                curr.students = Math.max(0, curr.students + 1);
+                window.localStorage.setItem('academix_stats', JSON.stringify(curr));
+            } catch(_) {}
+            window.dispatchEvent(new CustomEvent('academix:entity', {
+                detail: { entity: 'student', action: 'restored', delta: +1, details: `${stu.f_name || ''} ${stu.l_name || ''}`.trim() }
+            }));
+            window.dispatchEvent(new CustomEvent('academix:stats:refresh'));
             await load();
         } catch (e) { errorBox.textContent = e.message; }
     }
 
-    load();
+    (async function init(){
+        await ensureOptions();
+        await load();
+    })();
 }

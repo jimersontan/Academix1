@@ -54,26 +54,26 @@ export function mountSettings(rootEl) {
     // Full UI template (kept same structure / classes as your original)
     rootEl.innerHTML = `
         <style>
-            .st-wrap{padding:18px;color:#fff;font-family:Arial,Helvetica,sans-serif}
-            .st-topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
-            .st-title{margin:0;font-size:24px;font-weight:700}
-            .st-search{display:flex;gap:8px;align-items:center;margin-bottom:16px}
-            .st-input{padding:8px 12px;border:1px solid #666;border-radius:4px;background:#2b2b2b;color:#fff;font-size:14px}
-            .st-tabs{display:flex;gap:4px;margin-bottom:16px}
-            .st-tab{padding:10px 16px;background:#333;color:#ddd;border:none;border-radius:4px 4px 0 0;cursor:pointer;font-size:14px}
-            .st-tab.active{background:#2d6cdf;color:#fff}
-            .st-tab:hover:not(.active){background:#444}
-            .st-content{background:#2b2b2b;border-radius:8px;padding:20px;min-height:400px}
-            .st-actions{display:flex;gap:8px;align-items:center;margin-bottom:16px}
-            .st-btn{padding:8px 16px;background:#2d6cdf;color:#fff;border:none;border-radius:4px;cursor:pointer;font-size:14px}
-            .st-btn:hover{background:#1e5bb8}
-            .st-btn-outline{background:transparent;border:1px solid #666;color:#ddd}
-            .st-btn-outline:hover{background:#333}
-            .st-table{width:100%;border-collapse:collapse;background:#333;border-radius:8px;overflow:hidden}
-            .st-table th{background:#444;padding:12px;text-align:left;font-weight:600;border-bottom:1px solid #555}
-            .st-table td{padding:12px;border-bottom:1px solid #555}
-            .st-table tr:hover{background:#444}
-            .st-pill{padding:4px 8px;border-radius:12px;background:#555;font-size:12px}
+            .st-wrap{padding:18px;color:var(--ink);font-family:Inter,Segoe UI,Arial,Helvetica,sans-serif}
+            .st-topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+            .st-title{margin:0;font-size:20px;font-weight:800;letter-spacing:.2px}
+            .st-search{display:flex;gap:8px;align-items:center;margin-bottom:12px}
+            .st-input{padding:8px 12px;border:1px solid var(--border);border-radius:10px;background:var(--surface);color:var(--ink);font-size:14px}
+            .st-tabs{display:flex;gap:4px;margin-bottom:12px}
+            .st-tab{padding:8px 14px;background:rgba(255,255,255,.02);color:var(--ink);border:1px solid var(--border);border-bottom:none;border-radius:10px 10px 0 0;cursor:pointer;font-size:14px}
+            .st-tab.active{background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));color:var(--ink)}
+            .st-tab:hover:not(.active){filter:brightness(1.05)}
+            .st-content{background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.02));border:1px solid var(--border);border-radius:14px;padding:16px;min-height:400px;box-shadow:var(--shadow)}
+            .st-actions{display:flex;gap:8px;align-items:center;margin-bottom:12px}
+            .st-btn{padding:8px 14px;background:var(--primary);color:#0b1020;border:none;border-radius:10px;cursor:pointer;font-size:14px;font-weight:700}
+            .st-btn:hover{filter:brightness(1.05)}
+            .st-btn-outline{background:transparent;border:1px solid var(--border);color:var(--ink)}
+            .st-btn-outline:hover{background:rgba(148,163,184,.08)}
+            .st-table{width:100%;border-collapse:collapse;background:transparent;border-radius:14px;overflow:hidden}
+            .st-table th{background:transparent;padding:12px;text-align:left;font-weight:700;border-bottom:1px solid var(--border);color:var(--muted);font-size:12px;letter-spacing:.3px;text-transform:uppercase}
+            .st-table td{padding:12px;border-bottom:1px solid var(--border)}
+            .st-table tr:hover{background:rgba(255,255,255,.02)}
+            .st-pill{padding:4px 8px;border-radius:12px;background:#1f2937;border:1px solid #283241;font-size:12px;color:#cbd5e1}
             .st-small{font-size:12px}
             .st-error{color:#ffb3b3;font-size:12px;min-height:16px;margin-bottom:12px}
             .st-modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);display:none;align-items:center;justify-content:center;z-index:2000}
@@ -198,12 +198,22 @@ export function mountSettings(rootEl) {
     // State
     let currentTab = 'courses';
     let showingArchived = { courses: false, departments: false, 'academic-years': false };
+    let allData = { courses: [], departments: [], 'academic-years': [] };
+    const searchEl = rootEl.querySelector('#st-search');
 
     // Tab switching
     rootEl.querySelectorAll('.st-tab').forEach(tab => {
         tab.addEventListener('click', () => {
             switchTab(tab.dataset.tab);
         });
+    });
+    
+    // Search functionality
+    searchEl.addEventListener('input', () => {
+        filterAndRender();
+    });
+    searchEl.addEventListener('keypress', e => {
+        if (e.key === 'Enter') filterAndRender();
     });
 
     function switchTab(tabName) {
@@ -356,20 +366,54 @@ export function mountSettings(rootEl) {
                 const params = new URLSearchParams();
                 if (showingArchived.courses) params.set('archived', '1');
                 const data = await api(`/api/settings/courses?${params.toString()}`);
-                renderCourses(Array.isArray(data) ? data : []);
+                allData.courses = Array.isArray(data) ? data : [];
+                filterAndRender();
             } else if (currentTab === 'departments') {
                 const params = new URLSearchParams();
                 if (showingArchived.departments) params.set('archived', '1');
                 const data = await api(`/api/settings/departments?${params.toString()}`);
-                renderDepartments(Array.isArray(data) ? data : []);
+                allData.departments = Array.isArray(data) ? data : [];
+                filterAndRender();
             } else if (currentTab === 'academic-years') {
                 const params = new URLSearchParams();
                 if (showingArchived['academic-years']) params.set('archived', '1');
                 const data = await api(`/api/settings/academic-years?${params.toString()}`);
-                renderAcademicYears(Array.isArray(data) ? data : []);
+                allData['academic-years'] = Array.isArray(data) ? data : [];
+                filterAndRender();
             }
         } catch (e) {
             errorEl.textContent = e.message;
+        }
+    }
+    
+    function filterAndRender() {
+        const searchTerm = searchEl.value.trim().toLowerCase();
+        
+        if (currentTab === 'courses') {
+            let filtered = allData.courses;
+            if (searchTerm) {
+                filtered = filtered.filter(c => 
+                    (c.course_name || '').toLowerCase().includes(searchTerm) ||
+                    (c.department?.department_name || '').toLowerCase().includes(searchTerm)
+                );
+            }
+            renderCourses(filtered);
+        } else if (currentTab === 'departments') {
+            let filtered = allData.departments;
+            if (searchTerm) {
+                filtered = filtered.filter(d => 
+                    (d.department_name || '').toLowerCase().includes(searchTerm)
+                );
+            }
+            renderDepartments(filtered);
+        } else if (currentTab === 'academic-years') {
+            let filtered = allData['academic-years'];
+            if (searchTerm) {
+                filtered = filtered.filter(y => 
+                    (y.school_year || '').toLowerCase().includes(searchTerm)
+                );
+            }
+            renderAcademicYears(filtered);
         }
     }
 

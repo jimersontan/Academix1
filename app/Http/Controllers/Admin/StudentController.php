@@ -12,10 +12,10 @@ class StudentController extends Controller
     {
         $query = StudentProfile::query();
         if ($request->filled('department_id')) {
-            $query->where('department_id', $request->integer('department_id'));
+            $query->where('department_id', (int) $request->input('department_id'));
         }
         if ($request->filled('course_id')) {
-            $query->where('course_id', $request->integer('course_id'));
+            $query->where('course_id', (int) $request->input('course_id'));
         }
         if ($request->filled('q')) {
             $q = $request->get('q');

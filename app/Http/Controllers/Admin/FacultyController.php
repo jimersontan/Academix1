@@ -12,7 +12,7 @@ class FacultyController extends Controller
     {
         $query = FacultyProfile::query();
         if ($request->filled('department_id')) {
-            $query->where('department_id', $request->integer('department_id'));
+            $query->where('department_id', (int) $request->input('department_id'));
         }
         if ($request->filled('q')) {
             $q = $request->get('q');

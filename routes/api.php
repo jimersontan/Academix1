@@ -60,6 +60,14 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/settings/academic-years/{id}/restore', [\App\Http\Controllers\Admin\SettingsController::class, 'restoreAcademicYear']);
 
     // reports
-    Route::get('/reports/students', [\App\Http\Controllers\Api\ReportController::class, 'studentsByCourse']);
-    Route::get('/reports/faculty', [\App\Http\Controllers\Api\ReportController::class, 'facultyByDepartment']);
+    Route::get('/reports/students', [\App\Http\Controllers\Admin\ReportController::class, 'getStudents']);
+    Route::get('/reports/faculty', [\App\Http\Controllers\Admin\ReportController::class, 'getFaculty']);
+    Route::get('/reports/courses', [\App\Http\Controllers\Admin\ReportController::class, 'getCourses']);
+    Route::get('/reports/departments', [\App\Http\Controllers\Admin\ReportController::class, 'getDepartments']);
+
+    // profile
+    Route::get('/me', [\App\Http\Controllers\Admin\ProfileController::class, 'show']);
+    Route::put('/me', [\App\Http\Controllers\Admin\ProfileController::class, 'update']);
+    Route::post('/me/password', [\App\Http\Controllers\Admin\ProfileController::class, 'changePassword']);
+    Route::post('/me/avatar', [\App\Http\Controllers\Admin\ProfileController::class, 'uploadAvatar']);
 });
