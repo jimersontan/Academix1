@@ -90,12 +90,12 @@ export function mountFaculty(rootEl) {
                 </select>
                 <button id="f-archived" class="f-btn f-btn-outline">Archived</button>
               </div>
-              <table class="f-table">
-                <thead>
-                    <tr><th>Name</th><th>Department</th><th>Position</th><th>Status</th><th>Action</th></tr>
-                </thead>
-                <tbody id="f-body"><tr><td colspan="5" class="f-small">Loading…</td></tr></tbody>
-              </table>
+                            <table class="f-table">
+                                <thead>
+                                        <tr><th style="width:48px">#</th><th>Name</th><th>Department</th><th>Position</th><th>Status</th><th>Action</th></tr>
+                                </thead>
+                                <tbody id="f-body"><tr><td colspan="6" class="f-small">Loading…</td></tr></tbody>
+                            </table>
             </div>
             <div id="f-modal" class="f-modal-overlay">
               <div class="f-modal">
@@ -202,7 +202,10 @@ export function mountFaculty(rootEl) {
         ['#fm-faculty_id','#fm-f_name','#fm-m_name','#fm-l_name','#fm-suffix','#fm-dob','#fm-sex','#fm-phone','#fm-email','#fm-address','#fm-position','#fm-department']
           .forEach(sel=>{ const el=qs(sel); if(el.tagName==='SELECT'){ el.value=''; } else { el.value=''; }});
         if (init) {
-            if (init.faculty_id) qs('#fm-faculty_id').value = init.faculty_id;
+            // show display id when editing; dataset.editId remains the primary key
+            if (init.display_id) qs('#fm-faculty_id').value = init.display_id;
+            else if (init.faculty_id) qs('#fm-faculty_id').value = init.faculty_id;
+            qs('#fm-faculty_id').readOnly = true;
             qs('#fm-f_name').value = init.f_name || '';
             qs('#fm-m_name').value = init.m_name || '';
             qs('#fm-l_name').value = init.l_name || '';
@@ -217,6 +220,14 @@ export function mountFaculty(rootEl) {
             modal.dataset.editId = init.faculty_id;
         } else {
             delete modal.dataset.editId;
+            // Pre-fill next faculty display id when adding
+            try {
+                const fmNext = await (async function(){ try { const res = await api('/api/faculty/next-id'); return res && res.next_id ? String(res.next_id) : String(2510001); } catch(e){ return String(2510001); } })();
+                const fEl = qs('#fm-faculty_id');
+                fEl.value = fmNext;
+                fEl.readOnly = true;
+                fEl.placeholder = '(auto-generated)';
+            } catch(_) {}
         }
     }
 
@@ -224,14 +235,19 @@ export function mountFaculty(rootEl) {
 
     async function saveModal(){
         const err = qs('#fm-error'); err.textContent = '';
-        const payload = {
+            // sanitize phone number: only digits and must be exactly 11 digits
+            const rawPhone = qs('#fm-phone').value.trim() || '';
+            const digits = rawPhone.replace(/\D/g, '');
+            if (digits.length !== 11) { err.textContent = 'Phone number is required and must be exactly 11 digits.'; return; }
+
+            const payload = {
             f_name: qs('#fm-f_name').value.trim(),
             m_name: qs('#fm-m_name').value.trim() || null,
             l_name: qs('#fm-l_name').value.trim(),
             suffix: qs('#fm-suffix').value.trim() || null,
             date_of_birth: qs('#fm-dob').value || null,
             sex: qs('#fm-sex').value || null,
-            phone_number: qs('#fm-phone').value || null,
+            phone_number: digits || null,
             email_address: qs('#fm-email').value || null,
             address: qs('#fm-address').value || null,
             position: qs('#fm-position').value.trim() || null,
@@ -315,39 +331,54 @@ export function mountFaculty(rootEl) {
         const tbody = rootEl.querySelector('#f-body');
         tbody.innerHTML = '';
         if (!rows.length) { tbody.appendChild(h('tr',{},[h('td',{colspan:5,text:'No faculty found'})])); return; }
-        rows.forEach(fac => {
-            const tr = h('tr',{},[
+        rows.forEach((fac, idx) => {
+            const number = idx + 1;
+            const cells = [
+                h('td',{text: String(number)}),
                 h('td',{text:`${fac.f_name || ''} ${fac.l_name || ''}`.trim()}),
                 h('td',{text: fac.department?.department_name || fac.department_name || fac.department_id || ''}),
                 h('td',{text: fac.position || ''}),
-                h('td',{},[h('span',{class:'f-pill f-small',text: fac.deleted_at ? 'Archived' : 'Active'})]),
-                h('td',{},[
-                    h('button',{class:'f-btn f-small','data-action':'edit','data-id':fac.faculty_id},'Edit'),
-                    h('span',{text:' ' }),
-                    showingArchived 
-                        ? h('button',{class:'f-btn f-small',style:'background:#4caf50','data-action':'restore','data-id':fac.faculty_id},'Restore')
-                        : h('button',{class:'f-btn f-small',style:'background:#d32f2f','data-action':'delete','data-id':fac.faculty_id},'Delete')
-                ])
-            ]);
+                h('td',{},[h('span',{class:'f-pill f-small',text: fac.deleted_at ? 'Archived' : 'Active'})])
+            ];
+            // Actions
+            const actions = [];
+            if (!showingArchived) {
+                actions.push(h('button',{class:'f-btn f-small','data-action':'edit','data-id':fac.faculty_id},'Edit'));
+                actions.push(h('span',{text:' '}));
+                actions.push(h('button',{class:'f-btn f-small',style:'background:#d32f2f','data-action':'delete','data-id':fac.faculty_id},'Archive'));
+            } else {
+                // In archived view: remove Edit, show Restore and permanent Delete
+                actions.push(h('button',{class:'f-btn f-small',style:'background:#4caf50','data-action':'restore','data-id':fac.faculty_id},'Restore'));
+                actions.push(h('span',{text:' '}));
+                actions.push(h('button',{class:'f-btn f-small',style:'background:#c62828','data-action':'permanent-delete','data-id':fac.faculty_id},'Delete'));
+            }
+            cells.push(h('td',{}, actions));
+            const tr = h('tr',{}, cells);
             tbody.appendChild(tr);
         });
         
-        // Add event listeners for Edit/Delete/Restore buttons
+        // Add event listeners for Edit/Delete/Restore/Permanent-Delete buttons
         tbody.addEventListener('click', (e) => {
-            if (e.target.dataset.action === 'edit') {
-                const facultyId = e.target.dataset.id;
-                const faculty = rows.find(f => f.faculty_id == facultyId);
-                if (faculty) openModal(faculty);
-            } else if (e.target.dataset.action === 'delete') {
-                const facultyId = e.target.dataset.id;
-                const faculty = rows.find(f => f.faculty_id == facultyId);
-                if (faculty) onArchive(faculty);
-            } else if (e.target.dataset.action === 'restore') {
-                const facultyId = e.target.dataset.id;
-                const faculty = rows.find(f => f.faculty_id == facultyId);
-                if (faculty) onRestore(faculty);
-            }
+            const action = e.target.dataset.action;
+            const id = e.target.dataset.id;
+            if (!action || !id) return;
+            const faculty = rows.find(f => f.faculty_id == id);
+            if (!faculty) return;
+            if (action === 'edit') { openModal(faculty); }
+            else if (action === 'delete') { onArchive(faculty); }
+            else if (action === 'restore') { onRestore(faculty); }
+            else if (action === 'permanent-delete') { onPermanentDelete(faculty); }
         });
+
+        async function onPermanentDelete(fac) {
+            if (!confirm('Permanently delete this faculty member? This cannot be undone.')) return;
+            try {
+                await api(`/api/faculty/${fac.faculty_id}/delete`, { method:'POST' });
+                window.dispatchEvent(new CustomEvent('academix:entity', { detail: { entity:'faculty', action:'deleted', delta:0, details:`${fac.f_name || ''} ${fac.l_name || ''}`.trim() } }));
+                window.dispatchEvent(new CustomEvent('academix:stats:refresh'));
+                await load();
+            } catch(e){ errorBox.textContent = e.message; }
+        }
     }
 
     async function onArchive(fac) {

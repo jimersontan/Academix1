@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\StudentProfile;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 class StudentController extends Controller
 {
@@ -44,7 +46,7 @@ class StudentController extends Controller
             // Be lenient on formats provided by various browsers/inputs
             'date_of_birth' => 'nullable|string',
             'sex' => 'nullable|string',
-            'phone_number' => 'nullable|string',
+            'phone_number' => 'required|digits:11',
             'email_address' => 'nullable|string',
             'address' => 'nullable|string',
             'status' => 'nullable|string',
@@ -54,6 +56,21 @@ class StudentController extends Controller
             'year_level' => 'nullable|string'
         ]);
         if (empty($data['year_level'])) { $data['year_level'] = '1st'; }
+        // Generate and assign a stored display_id atomically where supported
+        $data['display_id'] = DB::transaction(function () {
+            $base = 2310000;
+            // Only try reading display_id if the column exists (migration may not have run yet)
+            if (Schema::hasColumn('student_profile', 'display_id')) {
+                $maxDisplay = DB::table('student_profile')->lockForUpdate()->max('display_id');
+                if ($maxDisplay && (int)$maxDisplay > 0) return (int)$maxDisplay + 1;
+            }
+            // Fallback to existing primary keys
+            $maxPk = DB::table('student_profile')->max('student_id');
+            $maxPk = $maxPk ? (int)$maxPk : 0;
+            if ($maxPk >= $base) return $maxPk + 1;
+            return $base + $maxPk + 1;
+        });
+
         $student = StudentProfile::create($data);
         return response()->json($student, 201);
     }
@@ -68,7 +85,7 @@ class StudentController extends Controller
             'suffix' => 'sometimes|nullable|string',
             'date_of_birth' => 'sometimes|nullable|string',
             'sex' => 'sometimes|nullable|string',
-            'phone_number' => 'sometimes|nullable|string',
+            'phone_number' => 'sometimes|required|digits:11',
             'email_address' => 'sometimes|nullable|string',
             'address' => 'sometimes|nullable|string',
             'status' => 'sometimes|nullable|string',
@@ -80,6 +97,26 @@ class StudentController extends Controller
         if (array_key_exists('year_level', $data) && empty($data['year_level'])) { $data['year_level'] = '1st'; }
         $student->update($data);
         return response()->json($student);
+    }
+
+    /**
+     * Return the next available display student id (2310000 + max(pk) + 1)
+     */
+    public function nextId()
+    {
+        $baseOffset = 2310000;
+        // If the new column isn't present yet, avoid querying it (prevents SQL errors)
+        $next = DB::transaction(function () use ($baseOffset) {
+            if (Schema::hasColumn('student_profile', 'display_id')) {
+                $maxDisplay = DB::table('student_profile')->lockForUpdate()->max('display_id');
+                if ($maxDisplay && (int)$maxDisplay > 0) return (int)$maxDisplay + 1;
+            }
+            $maxPk = DB::table('student_profile')->max('student_id');
+            $maxPk = $maxPk ? (int) $maxPk : 0;
+            if ($maxPk >= $baseOffset) return $maxPk + 1;
+            return $baseOffset + $maxPk + 1;
+        });
+        return response()->json(['next_id' => $next]);
     }
 
     public function archive(int $id)
@@ -96,6 +133,19 @@ class StudentController extends Controller
         $student->archived_at = null;
         $student->save();
         return response()->json(['ok'=>true]);
+    }
+
+    /**
+     * Permanently delete a student record (irreversible)
+     */
+    public function destroy(int $id)
+    {
+        $student = StudentProfile::find($id);
+        if (!$student) {
+            return response()->json(['ok' => false, 'message' => 'Student not found'], 404);
+        }
+        $student->delete();
+        return response()->json(['ok' => true]);
     }
 }
 

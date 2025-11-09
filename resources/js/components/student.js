@@ -96,12 +96,12 @@ export function mountStudents(rootEl) {
                 </select>
                 <button id="s-archived" class="f-btn f-btn-outline">Archived</button>
               </div>
-              <table class="f-table">
-                <thead>
-                    <tr><th>Name</th><th>Department</th><th>Course</th><th>Year</th><th>Status</th><th>Action</th></tr>
-                </thead>
-                <tbody id="s-body"><tr><td colspan="6" class="f-small">Loading…</td></tr></tbody>
-              </table>
+                            <table class="f-table">
+                                <thead>
+                                        <tr><th style="width:48px">#</th><th>Name</th><th>Department</th><th>Course</th><th>Year</th><th>Status</th><th>Action</th></tr>
+                                </thead>
+                                <tbody id="s-body"><tr><td colspan="7" class="f-small">Loading…</td></tr></tbody>
+                            </table>
             </div>
             <div id="s-modal" class="f-modal-overlay">
               <div class="f-modal">
@@ -165,6 +165,13 @@ export function mountStudents(rootEl) {
     qs('#sm-save').addEventListener('click', saveModal);
 
     let currentRows = [];
+    async function getNextStudentId() {
+        try {
+            const res = await api('/api/students/next-id');
+            if (res && res.next_id) return String(res.next_id);
+        } catch (e) {}
+        return String(2310001);
+    }
 
     async function openModal(init = null) {
         errorBox.textContent = '';
@@ -179,7 +186,9 @@ export function mountStudents(rootEl) {
         ].forEach(sel => { const el = qs(sel); el.value = ''; });
 
         if (init) {
-            qs('#sm-student_id').value = init.student_id || '';
+            // show display id when editing, keep dataset.editId as primary key
+            qs('#sm-student_id').value = init.display_id || init.student_id || '';
+            qs('#sm-student_id').readOnly = true;
             qs('#sm-f_name').value = init.f_name || '';
             qs('#sm-m_name').value = init.m_name || '';
             qs('#sm-l_name').value = init.l_name || '';
@@ -196,6 +205,14 @@ export function mountStudents(rootEl) {
             modal.dataset.editId = init.student_id;
         } else {
             delete modal.dataset.editId;
+            // Pre-fill next student display id when adding a new student
+            try {
+                const nextId = await getNextStudentId();
+                const idEl = qs('#sm-student_id');
+                idEl.value = nextId;
+                idEl.readOnly = true;
+                idEl.placeholder = '(auto-generated)';
+            } catch(_) { /* ignore */ }
         }
     }
 
@@ -203,6 +220,11 @@ export function mountStudents(rootEl) {
 
     async function saveModal() {
         const err = qs('#sm-error'); err.textContent = '';
+        // sanitize phone number: only digits and must be exactly 11 digits
+        const rawPhone = qs('#sm-phone').value.trim() || '';
+        const digits = rawPhone.replace(/\D/g, '');
+        if (digits.length !== 11) { err.textContent = 'Phone number is required and must be exactly 11 digits.'; return; }
+
         const payload = {
             f_name: qs('#sm-f_name').value.trim(),
             m_name: qs('#sm-m_name').value.trim() || null,
@@ -210,7 +232,7 @@ export function mountStudents(rootEl) {
             suffix: qs('#sm-suffix').value.trim() || null,
             date_of_birth: qs('#sm-dob').value || null,
             sex: qs('#sm-sex').value || null,
-            phone_number: qs('#sm-phone').value || null,
+            phone_number: digits || null,
             email_address: qs('#sm-email').value || null,
             address: qs('#sm-address').value || null,
             department_id: Number(qs('#sm-department').value),
@@ -319,21 +341,29 @@ export function mountStudents(rootEl) {
             tbody.appendChild(h('tr', {}, [h('td', { colspan: 6, text: 'No students found' })]));
             return;
         }
-        rows.forEach(stu => {
-            const tr = h('tr', {}, [
+        rows.forEach((stu, idx) => {
+            const number = idx + 1;
+            const cells = [
+                h('td', { text: String(number) }),
                 h('td', { text: `${stu.f_name || ''} ${stu.l_name || ''}`.trim() }),
                 h('td', { text: stu.department?.department_name || stu.department_name || '' }),
                 h('td', { text: stu.course?.course_name || stu.course_name || '' }),
                 h('td', { text: stu.academic_year?.school_year || '' }),
-                h('td', {}, [h('span', { class: 'f-pill f-small', text: stu.archived_at ? 'Archived' : 'Active' })]),
-                h('td', {}, [
-                    h('button', { class: 'f-btn f-small', 'data-action': 'edit', 'data-id': stu.student_id }, 'Edit'),
-                    h('span', { text: ' ' }),
-                    showingArchived
-                        ? h('button', { class: 'f-btn f-small', style: 'background:#4caf50', 'data-action': 'restore', 'data-id': stu.student_id }, 'Restore')
-                        : h('button', { class: 'f-btn f-small', style: 'background:#d32f2f', 'data-action': 'delete', 'data-id': stu.student_id }, 'Archive')
-                ])
-            ]);
+                h('td', {}, [h('span', { class: 'f-pill f-small', text: stu.archived_at ? 'Archived' : 'Active' })])
+            ];
+            const actions = [];
+            if (!showingArchived) {
+                actions.push(h('button', { class: 'f-btn f-small', 'data-action': 'edit', 'data-id': stu.student_id }, 'Edit'));
+                actions.push(h('span', { text: ' ' }));
+                actions.push(h('button', { class: 'f-btn f-small', style: 'background:#d32f2f', 'data-action': 'delete', 'data-id': stu.student_id }, 'Archive'));
+            } else {
+                // Archived view: show Restore and permanent Delete (no Edit)
+                actions.push(h('button', { class: 'f-btn f-small', style: 'background:#4caf50', 'data-action': 'restore', 'data-id': stu.student_id }, 'Restore'));
+                actions.push(h('span', { text: ' ' }));
+                actions.push(h('button', { class: 'f-btn f-small', style: 'background:#c62828', 'data-action': 'permanent-delete', 'data-id': stu.student_id }, 'Delete'));
+            }
+            cells.push(h('td', {}, actions));
+            const tr = h('tr', {}, cells);
             tbody.appendChild(tr);
         });
 
@@ -346,7 +376,24 @@ export function mountStudents(rootEl) {
             if (action === 'edit') { openModal(student); }
             else if (action === 'delete') { onArchive(student); }
             else if (action === 'restore') { onRestore(student); }
+            else if (action === 'permanent-delete') { onPermanentDelete(student); }
         };
+
+        async function onPermanentDelete(stu) {
+            if (!confirm(`Permanently delete ${stu.f_name} ${stu.l_name}? This cannot be undone.`)) return;
+            try {
+                await api(`/api/students/${stu.student_id}/delete`, { method: 'POST' });
+                try {
+                    const s = JSON.parse(window.localStorage.getItem('academix_stats')||'{}');
+                    const curr = { students: Number(s.students)||0, faculty: Number(s.faculty)||0 };
+                    curr.students = Math.max(0, curr.students - 1);
+                    window.localStorage.setItem('academix_stats', JSON.stringify(curr));
+                } catch(_) {}
+                window.dispatchEvent(new CustomEvent('academix:entity', { detail: { entity:'student', action:'deleted', delta:0, details:`${stu.f_name || ''} ${stu.l_name || ''}`.trim() } }));
+                window.dispatchEvent(new CustomEvent('academix:stats:refresh'));
+                await load();
+            } catch (e) { errorBox.textContent = e.message; }
+        }
     }
 
     // ARCHIVE uses POST to /archive, not DELETE

@@ -106,10 +106,28 @@ export function mountDashboard(rootEl) {
               <div class="stat" id="stat-courses">0</div>
             </div>
           </section>
+          <section class="list" style="margin-top:18px">
+            <h4 style="margin:0 0 10px">Charts</h4>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start">
+                  <div style="background:transparent;padding:8px;border-radius:8px">
+                    <h4 style="margin:0 0 8px;font-size:13px;color:var(--muted)">Students per Course</h4>
+                    <div style="height:220px;width:100%">
+                      <canvas id="students-chart" style="width:100%;height:100%"></canvas>
+                    </div>
+                  </div>
+                  <div style="background:transparent;padding:8px;border-radius:8px">
+                    <h4 style="margin:0 0 8px;font-size:13px;color:var(--muted)">Faculty per Department</h4>
+                    <div style="height:220px;width:100%;display:flex;align-items:center;justify-content:center">
+                      <canvas id="faculty-chart" style="width:100%;height:100%;max-width:320px;max-height:220px"></canvas>
+                    </div>
+                  </div>
+            </div>
+          </section>
           <section class="list">
             <h4 style="margin:0 0 10px">Departments</h4>
             <div id="departments">Loading...</div>
           </section>
+          <!-- duplicated charts section removed -->
         </main>
       </div>
     `;
@@ -184,6 +202,7 @@ export function mountDashboard(rootEl) {
           rootEl.querySelector('#departments').innerHTML = html;
         }
         try { window.localStorage.setItem('academix_stats', JSON.stringify({ students:s, faculty:f })); } catch(e) {}
+        try { drawCharts(data); } catch(e) {}
       }catch(e){ /* silent */ }
     }
 
@@ -216,7 +235,69 @@ export function mountDashboard(rootEl) {
         const html = dept.map(d=>`<div style="padding:6px 0;border-top:1px solid #3a3a3a">${d.department_name || 'N/A'} — ${d.total}</div>`).join('') || 'No data';
         rootEl.querySelector('#departments').innerHTML = html;
         try { window.localStorage.setItem('academix_stats', JSON.stringify({ students:s, faculty:f })); } catch(e) {}
+        try { drawCharts(data); } catch(e) {}
     });
+
+    // Simple canvas charts (no external deps)
+    function drawCharts(data) {
+      // Students per course - horizontal bars
+      const sdata = data.students_per_course || [];
+      const sc = document.getElementById('students-chart');
+      if (sc && sc.getContext) {
+        const ctx = sc.getContext('2d');
+        sc.width = sc.clientWidth * devicePixelRatio;
+        sc.height = sc.clientHeight * devicePixelRatio;
+        ctx.clearRect(0,0,sc.width, sc.height);
+        const padding = 20 * devicePixelRatio;
+        const labelWidth = 140 * devicePixelRatio;
+        const chartW = sc.width - padding*2 - labelWidth;
+        const maxVal = sdata.reduce((m, x) => Math.max(m, Number(x.total||0)), 1);
+        const barH = Math.max(18 * devicePixelRatio, (sc.height - padding*2) / Math.max(1, sdata.length) - 8);
+        sdata.forEach((row, i) => {
+          const y = padding + i * (barH + 8);
+          const val = Number(row.total || 0);
+          ctx.fillStyle = '#cbd5e1';
+          ctx.font = `${12 * devicePixelRatio}px Inter, sans-serif`;
+          ctx.textBaseline = 'middle';
+          ctx.fillText(row.course_name || `Course ${i+1}`, padding, y + barH/2 + 4);
+          ctx.strokeStyle = '#ffffff66';
+          ctx.lineWidth = 2 * devicePixelRatio;
+          ctx.strokeRect(padding + labelWidth, y, chartW, barH);
+          if (val > 0) {
+            const hue = (i * 137.50776405003785) % 360;
+            ctx.fillStyle = `hsl(${hue}deg 70% 50%)`;
+            const w = Math.round((val / maxVal) * chartW);
+            ctx.fillRect(padding + labelWidth, y, w, barH);
+          }
+        });
+      }
+
+      // Faculty per department - pie
+      const fdata = data.faculty_per_department || [];
+      const fc = document.getElementById('faculty-chart');
+      if (fc && fc.getContext) {
+        const ctx = fc.getContext('2d');
+        fc.width = fc.clientWidth * devicePixelRatio;
+        fc.height = fc.clientHeight * devicePixelRatio;
+        ctx.clearRect(0,0,fc.width, fc.height);
+        const cx = fc.width/2;
+        const cy = fc.height/2;
+        const radius = Math.min(fc.width, fc.height) * 0.35;
+        const total = fdata.reduce((s,x)=>s + Number(x.total||0), 0) || 1;
+        let angle = -Math.PI/2;
+        fdata.forEach((d,i)=>{
+          const slice = (Number(d.total||0) / total) * Math.PI*2;
+          const hue = (i * 137.5) % 360;
+          ctx.beginPath();
+          ctx.moveTo(cx, cy);
+          ctx.fillStyle = `hsl(${hue}deg 68% 52%)`;
+          ctx.arc(cx, cy, radius, angle, angle + slice);
+          ctx.closePath();
+          ctx.fill();
+          angle += slice;
+        });
+      }
+    }
 
 
     // Navigate to Students inside the same dashboard shell

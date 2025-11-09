@@ -26,17 +26,21 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // faculty
     Route::get('/faculty', [\App\Http\Controllers\Admin\FacultyController::class, 'index']);
+    Route::get('/faculty/next-id', [\App\Http\Controllers\Admin\FacultyController::class, 'nextId']);
     Route::post('/faculty', [\App\Http\Controllers\Admin\FacultyController::class, 'store']);
     Route::put('/faculty/{id}', [\App\Http\Controllers\Admin\FacultyController::class, 'update']);
     Route::post('/faculty/{id}/archive', [\App\Http\Controllers\Admin\FacultyController::class, 'archive']);
     Route::post('/faculty/{id}/restore', [\App\Http\Controllers\Admin\FacultyController::class, 'restore']);
+    Route::post('/faculty/{id}/delete', [\App\Http\Controllers\Admin\FacultyController::class, 'destroy']);
 
     // students
     Route::get('/students', [\App\Http\Controllers\Admin\StudentController::class, 'index']);
+    Route::get('/students/next-id', [\App\Http\Controllers\Admin\StudentController::class, 'nextId']);
     Route::post('/students', [\App\Http\Controllers\Admin\StudentController::class, 'store']);
     Route::put('/students/{id}', [\App\Http\Controllers\Admin\StudentController::class, 'update']);
     Route::post('/students/{id}/archive', [\App\Http\Controllers\Admin\StudentController::class, 'archive']);
     Route::post('/students/{id}/restore', [\App\Http\Controllers\Admin\StudentController::class, 'restore']);
+    Route::post('/students/{id}/delete', [\App\Http\Controllers\Admin\StudentController::class, 'destroy']);
 
     // settings - courses
     Route::get('/settings/courses', [\App\Http\Controllers\Admin\SettingsController::class, 'listCourses']);
