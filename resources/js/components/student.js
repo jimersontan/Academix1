@@ -112,7 +112,7 @@ export function mountStudents(rootEl) {
                   <div class="f-modal-field"><label class="f-modal-label">First Name</label><input id="sm-f_name" class="f-modal-input" /></div>
                   <div class="f-modal-field"><label class="f-modal-label">Sex</label><select id="sm-sex" class="f-modal-input"><option value="">Select</option><option>Male</option><option>Female</option></select></div>
                   <div class="f-modal-field"><label class="f-modal-label">Middle Name</label><input id="sm-m_name" class="f-modal-input" /></div>
-                  <div class="f-modal-field"><label class="f-modal-label">Phone Number</label><input id="sm-phone" class="f-modal-input" /></div>
+                  <div class="f-modal-field"><label class="f-modal-label">Phone Number</label><input id="sm-phone" class="f-modal-input" maxlength="11" inputmode="numeric" placeholder="11 digits" /></div>
                   <div class="f-modal-field"><label class="f-modal-label">Last Name</label><input id="sm-l_name" class="f-modal-input" /></div>
                   <div class="f-modal-field"><label class="f-modal-label">Email Address</label><input id="sm-email" type="email" class="f-modal-input" /></div>
                   <div class="f-modal-field"><label class="f-modal-label">Suffix</label><input id="sm-suffix" class="f-modal-input" /></div>
@@ -164,6 +164,28 @@ export function mountStudents(rootEl) {
     qs('#sm-cancel').addEventListener('click', () => closeModal());
     qs('#sm-save').addEventListener('click', saveModal);
 
+    // ensure phone input only accepts digits and max 11 characters
+    try {
+        const phoneEl = qs('#sm-phone');
+        if (phoneEl) {
+            phoneEl.addEventListener('input', (e) => {
+                const cleaned = phoneEl.value.replace(/\D/g, '').slice(0, 11);
+                if (phoneEl.value !== cleaned) phoneEl.value = cleaned;
+            });
+        }
+    } catch (e) { /* ignore if modal not present */ }
+
+    // ensure phone input only accepts digits and max 11 characters
+    try {
+        const phoneEl = qs('#sm-phone');
+        if (phoneEl) {
+            phoneEl.addEventListener('input', (e) => {
+                const cleaned = phoneEl.value.replace(/\D/g, '').slice(0, 11);
+                if (phoneEl.value !== cleaned) phoneEl.value = cleaned;
+            });
+        }
+    } catch (e) { /* ignore if modal not present */ }
+
     let currentRows = [];
     async function getNextStudentId() {
         try {
@@ -199,6 +221,8 @@ export function mountStudents(rootEl) {
             qs('#sm-email').value = init.email_address || '';
             qs('#sm-address').value = init.address || '';
             qs('#sm-department').value = (init.department_id != null ? String(init.department_id) : '');
+            // ensure course list matches department before setting the selected course
+            try { qs('#sm-department').dispatchEvent(new Event('change')); } catch(e) {}
             qs('#sm-course').value = (init.course_id != null ? String(init.course_id) : '');
             qs('#sm-ay').value = (init.academic_year_id != null ? String(init.academic_year_id) : '');
             qs('#sm-year').value = init.year_level || '';
@@ -297,6 +321,23 @@ export function mountStudents(rootEl) {
         }
         repopulateCourseFilter();
         
+        // Hook modal department -> course dependency so the Course select only shows
+        // courses that belong to the selected department in the Add/Edit modal.
+        try {
+            const modalDept = qs('#sm-department');
+            const modalCourse = qs('#sm-course');
+            const repopulateModalCourse = () => {
+                const sel = modalDept.value ? Number(modalDept.value) : null;
+                const list = sel ? coursesCache.filter(c => Number(c.department_id) === sel) : coursesCache;
+                modalCourse.innerHTML = '<option value="">Select</option>' + list.map(c => `<option value="${c.course_id}">${c.course_name}</option>`).join('');
+            };
+            modalDept.addEventListener('change', repopulateModalCourse);
+            // initialize modal course options according to current department value
+            repopulateModalCourse();
+        } catch (e) {
+            // ignore if modal elements not present
+        }
+
         optionsLoaded = true;
     }
 
@@ -349,7 +390,7 @@ export function mountStudents(rootEl) {
                 h('td', { text: stu.department?.department_name || stu.department_name || '' }),
                 h('td', { text: stu.course?.course_name || stu.course_name || '' }),
                 h('td', { text: stu.academic_year?.school_year || '' }),
-                h('td', {}, [h('span', { class: 'f-pill f-small', text: stu.archived_at ? 'Archived' : 'Active' })])
+                h('td', {}, [h('span', { class: 'f-pill f-small', text: (stu.status && String(stu.status).toLowerCase() !== 'active') ? (String(stu.status).charAt(0).toUpperCase() + String(stu.status).slice(1)) : (stu.archived_at ? 'Archived' : 'Active') })])
             ];
             const actions = [];
             if (!showingArchived) {

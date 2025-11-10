@@ -106,7 +106,7 @@ function _fetchJson() {
 }
 function mountDashboard(rootEl) {
   if (!rootEl) throw new Error('mountDashboard: root element is required');
-  rootEl.innerHTML = "\n      <style>\n        :root{\n          --bg:#0c1222;          /* deep slate */\n          --panel:#111827;       /* sidebar/panel */\n          --surface:#0f172a;     /* main content base */\n          --card:#1f2937;        /* card surface */\n          --card-ink:#e5e7eb;    /* text on card */\n          --ink:#e6edf3;         /* base text */\n          --muted:#94a3b8;       /* muted text */\n          --primary:#60a5fa;     /* accents */\n          --border:rgba(148,163,184,.18);\n          --shadow:0 10px 30px rgba(2,6,23,.35);\n        }\n        body{background:var(--bg);color:var(--ink);font-family:Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, Helvetica, sans-serif}\n        .shell{min-height:100vh;display:grid;grid-template-columns:260px 1fr;background:linear-gradient(180deg, rgba(96,165,250,.06), transparent 200px)}\n        .sidebar{background:var(--panel);padding:18px;border-right:1px solid var(--border)}\n        .brand{display:flex;align-items:center;gap:12px;margin-bottom:22px}\n        .brand img{width:40px;height:40px;border-radius:8px}\n        .brand .name{font-weight:700;letter-spacing:.2px}\n        .brand .sub{font-size:12px;color:var(--muted)}\n        .menu a{display:block;color:var(--ink);opacity:.85;text-decoration:none;padding:10px 8px;border-radius:8px}\n        .menu a:hover{background:rgba(148,163,184,.08);opacity:1}\n        .content{padding:22px}\n        .topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}\n        .topbar h2{margin:0;font-size:20px;letter-spacing:.2px}\n        .cards{display:grid;grid-template-columns:repeat(auto-fit, minmax(220px,1fr));gap:16px}\n        .card{background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.02));border:1px solid var(--border);border-radius:14px;padding:16px;box-shadow:var(--shadow)}\n        .card h4{margin:0 0 10px;font-weight:700;color:var(--muted);font-size:12px;letter-spacing:.3px;text-transform:uppercase}\n        .stat{font-size:28px;font-weight:800;color:var(--card-ink)}\n        .list{margin-top:18px;background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.02));border:1px solid var(--border);border-radius:14px;padding:16px;box-shadow:var(--shadow)}\n        .list h4{margin:0 0 10px;font-size:14px;color:var(--muted);letter-spacing:.3px;text-transform:uppercase}\n        .dept-item{padding:10px 0;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}\n        .dept-name{color:var(--ink)}\n        .dept-total{color:var(--primary);font-weight:700}\n        .btn{background:var(--primary);color:#0b1020;border:none;padding:8px 12px;border-radius:8px;cursor:pointer}\n        @media (max-width: 900px){ .shell{grid-template-columns:1fr} .sidebar{position:sticky;top:0;z-index:10} }\n      </style>\n      <div class=\"shell\">\n        <aside class=\"sidebar\">\n          <div class=\"brand\">\n            <img src=\"https://cdn.vectorstock.com/i/500p/25/20/books-stack-logo-template-vector-27212520.jpg\" alt=\"logo\" />\n            <div>\n              <div class=\"name\">Academix</div>\n              <div class=\"sub\">Student Management Portal</div>\n            </div>\n          </div>\n          <nav class=\"menu\">\n            <a href=\"dashboard\">Dashboard</a>\n            <a href=\"#\" id=\"menu-students\">Students</a>\n            <a href=\"#\" id=\"menu-faculty\">Faculty</a>\n            <a href=\"#\" id=\"menu-report\">Report</a>\n            <a href=\"#\" id=\"menu-settings\">Settings</a>\n            <a href=\"#\" id=\"menu-profile\">My Profile</a>\n          </nav>\n        </aside>\n        <main class=\"content\" id=\"main\">\n          <div class=\"topbar\">\n            <h2 id=\"page-title\" style=\"margin:0\">Dashboard</h2>\n          </div>\n          <section class=\"cards\">\n            <div class=\"card\">\n              <h4>Total Students</h4>\n              <div class=\"stat\" id=\"stat-students\">0</div>\n            </div>\n            <div class=\"card\">\n              <h4>Total Faculty</h4>\n              <div class=\"stat\" id=\"stat-faculty\">0</div>\n            </div>\n            <div class=\"card\">\n              <h4>Courses Offered</h4>\n              <div class=\"stat\" id=\"stat-courses\">0</div>\n            </div>\n          </section>\n          <section class=\"list\" style=\"margin-top:18px\">\n            <h4 style=\"margin:0 0 10px\">Charts</h4>\n            <div style=\"display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start\">\n                  <div style=\"background:transparent;padding:8px;border-radius:8px\">\n                    <h4 style=\"margin:0 0 8px;font-size:13px;color:var(--muted)\">Students per Course</h4>\n                    <div style=\"height:220px;width:100%\">\n                      <canvas id=\"students-chart\" style=\"width:100%;height:100%\"></canvas>\n                    </div>\n                  </div>\n                  <div style=\"background:transparent;padding:8px;border-radius:8px\">\n                    <h4 style=\"margin:0 0 8px;font-size:13px;color:var(--muted)\">Faculty per Department</h4>\n                    <div style=\"height:220px;width:100%;display:flex;align-items:center;justify-content:center\">\n                      <canvas id=\"faculty-chart\" style=\"width:100%;height:100%;max-width:320px;max-height:220px\"></canvas>\n                    </div>\n                  </div>\n            </div>\n          </section>\n          <section class=\"list\">\n            <h4 style=\"margin:0 0 10px\">Departments</h4>\n            <div id=\"departments\">Loading...</div>\n          </section>\n          <!-- duplicated charts section removed -->\n        </main>\n      </div>\n    ";
+  rootEl.innerHTML = "\n      <style>\n        :root{\n          --bg:#0c1222;          /* deep slate */\n          --panel:#111827;       /* sidebar/panel */\n          --surface:#0f172a;     /* main content base */\n          --card:#1f2937;        /* card surface */\n          --card-ink:#e5e7eb;    /* text on card */\n          --ink:#e6edf3;         /* base text */\n          --muted:#94a3b8;       /* muted text */\n          --primary:#60a5fa;     /* accents */\n          --border:rgba(148,163,184,.18);\n          --shadow:0 10px 30px rgba(2,6,23,.35);\n        }\n        body{background:var(--bg);color:var(--ink);font-family:Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, Helvetica, sans-serif}\n        .shell{min-height:100vh;display:grid;grid-template-columns:260px 1fr;background:linear-gradient(180deg, rgba(96,165,250,.06), transparent 200px)}\n        .sidebar{background:var(--panel);padding:18px;border-right:1px solid var(--border)}\n        .brand{display:flex;align-items:center;gap:12px;margin-bottom:22px}\n        .brand img{width:40px;height:40px;border-radius:8px}\n        .brand .name{font-weight:700;letter-spacing:.2px}\n        .brand .sub{font-size:12px;color:var(--muted)}\n        .menu a{display:block;color:var(--ink);opacity:.85;text-decoration:none;padding:10px 8px;border-radius:8px}\n        .menu a:hover{background:rgba(148,163,184,.08);opacity:1}\n        .content{padding:22px}\n        .topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}\n        .topbar h2{margin:0;font-size:20px;letter-spacing:.2px}\n        .cards{display:grid;grid-template-columns:repeat(auto-fit, minmax(220px,1fr));gap:16px}\n        .card{background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.02));border:1px solid var(--border);border-radius:14px;padding:16px;box-shadow:var(--shadow)}\n        .card h4{margin:0 0 10px;font-weight:700;color:var(--muted);font-size:12px;letter-spacing:.3px;text-transform:uppercase}\n        .stat{font-size:28px;font-weight:800;color:var(--card-ink)}\n        .list{margin-top:18px;background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.02));border:1px solid var(--border);border-radius:14px;padding:16px;box-shadow:var(--shadow)}\n        .list h4{margin:0 0 10px;font-size:14px;color:var(--muted);letter-spacing:.3px;text-transform:uppercase}\n        .dept-item{padding:10px 0;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}\n        .dept-name{color:var(--ink)}\n        .dept-total{color:var(--primary);font-weight:700}\n        .btn{background:var(--primary);color:#0b1020;border:none;padding:8px 12px;border-radius:8px;cursor:pointer}\n        @media (max-width: 900px){ .shell{grid-template-columns:1fr} .sidebar{position:sticky;top:0;z-index:10} }\n      </style>\n      <div class=\"shell\">\n        <aside class=\"sidebar\">\n          <div class=\"brand\">\n            <img src=\"https://cdn.vectorstock.com/i/500p/25/20/books-stack-logo-template-vector-27212520.jpg\" alt=\"logo\" />\n            <div>\n              <div class=\"name\">Academix</div>\n              <div class=\"sub\">Student Management Portal</div>\n            </div>\n          </div>\n          <nav class=\"menu\">\n            <a href=\"dashboard\">Dashboard</a>\n            <a href=\"#\" id=\"menu-students\">Students</a>\n            <a href=\"#\" id=\"menu-faculty\">Faculty</a>\n            <a href=\"#\" id=\"menu-report\">Report</a>\n            <a href=\"#\" id=\"menu-settings\">Settings</a>\n            <a href=\"#\" id=\"menu-profile\">My Profile</a>\n          </nav>\n        </aside>\n        <main class=\"content\" id=\"main\">\n          <div class=\"topbar\">\n            <h2 id=\"page-title\" style=\"margin:0\">Dashboard</h2>\n          </div>\n          <section class=\"cards\">\n            <div class=\"card\">\n              <h4>Total Students</h4>\n              <div class=\"stat\" id=\"stat-students\">0</div>\n            </div>\n            <div class=\"card\">\n              <h4>Total Faculty</h4>\n              <div class=\"stat\" id=\"stat-faculty\">0</div>\n            </div>\n            <div class=\"card\">\n              <h4>Courses Offered</h4>\n              <div class=\"stat\" id=\"stat-courses\">0</div>\n            </div>\n          </section>\n          <section class=\"list\" style=\"margin-top:18px\">\n            <h4 style=\"margin:0 0 10px\">Charts</h4>\n            <div style=\"display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start\">\n                  <div style=\"background:transparent;padding:8px;border-radius:8px\">\n                    <h4 style=\"margin:0 0 8px;font-size:13px;color:var(--muted)\">Students per Course</h4>\n                    <div style=\"height:220px;width:100%\">\n                      <canvas id=\"students-chart\" style=\"width:100%;height:100%\"></canvas>\n                    </div>\n                  </div>\n                  <div style=\"background:transparent;padding:8px;border-radius:8px\">\n                    <h4 style=\"margin:0 0 8px;font-size:13px;color:var(--muted)\">Faculty per Department</h4>\n                    <div style=\"height:220px;width:100%;display:flex;align-items:center;justify-content:center\">\n                      <canvas id=\"faculty-chart\" style=\"width:100%;height:100%;max-width:320px;max-height:220px\"></canvas>\n                    </div>\n                  </div>\n            </div>\n          </section>\n          <section class=\"list\">\n            <h4 style=\"margin:0 0 10px\">Top Departments</h4>\n            <div id=\"departments\">Loading...</div>\n          </section>\n          <!-- duplicated charts section removed -->\n        </main>\n      </div>\n    ";
   var main = rootEl.querySelector('#main');
   var pageTitle = rootEl.querySelector('#page-title');
   function setTitle(t) {
@@ -177,13 +177,32 @@ function mountDashboard(rootEl) {
     setCounters(curr);
   }
 
+  // Helper: make short acronym from a department/program name
+  function makeAcronym(txt) {
+    if (!txt) return '';
+    // Keep 'Program' so names like 'Nursing Program' become 'NP'
+    var stop = new Set(['department', 'of', 'the', 'and', '&', 'staff']);
+    var words = txt.split(/\s+/).filter(function (w) {
+      return w.trim().length > 0;
+    });
+    var meaningful = words.filter(function (w) {
+      return !stop.has(w.toLowerCase());
+    });
+    var source = meaningful.length ? meaningful : words;
+    var letters = source.map(function (w) {
+      return w[0] ? w[0].toUpperCase() : '';
+    }).join('');
+    if (letters.length > 3) letters = letters.slice(0, 3);
+    return letters;
+  }
+
   // Refetch authoritative stats from backend
   function refreshStats() {
     return _refreshStats.apply(this, arguments);
   } // Listen for app-wide entity mutations
   function _refreshStats() {
     _refreshStats = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee() {
-      var _data$total_students2, _data$total_faculty2, _data$total_courses2, data, s, f, c, dept, html, _t;
+      var _data$total_students2, _data$total_faculty2, _data$total_courses2, data, s, f, c, dept, top, html, _t;
       return _regenerator().w(function (_context) {
         while (1) switch (_context.p = _context.n) {
           case 0:
@@ -208,8 +227,15 @@ function mountDashboard(rootEl) {
             if (rootEl.querySelector('#stat-courses')) rootEl.querySelector('#stat-courses').textContent = c;
             dept = data.faculty_per_department || [];
             if (rootEl.querySelector('#departments')) {
-              html = dept.map(function (d) {
-                return "<div style=\"padding:6px 0;border-top:1px solid #3a3a3a\">".concat(d.department_name || 'N/A', " \u2014 ").concat(d.total, "</div>");
+              // show only top 5 departments by total (descending)
+              top = (Array.isArray(dept) ? dept.slice() : []).sort(function (a, b) {
+                return Number(b.total || 0) - Number(a.total || 0);
+              }).slice(0, 5);
+              html = top.map(function (d) {
+                var name = d.department_name || 'N/A';
+                var _short3 = makeAcronym(name);
+                var label = _short3 ? "".concat(name, " (").concat(_short3, ")") : name;
+                return "<div style=\"padding:6px 0;border-top:1px solid #3a3a3a\">".concat(label, " \u2014 ").concat(d.total, "</div>");
               }).join('') || 'No data';
               rootEl.querySelector('#departments').innerHTML = html;
             }
@@ -267,8 +293,15 @@ function mountDashboard(rootEl) {
     rootEl.querySelector('#stat-faculty').textContent = f;
     rootEl.querySelector('#stat-courses').textContent = c;
     var dept = data.faculty_per_department || [];
-    var html = dept.map(function (d) {
-      return "<div style=\"padding:6px 0;border-top:1px solid #3a3a3a\">".concat(d.department_name || 'N/A', " \u2014 ").concat(d.total, "</div>");
+    // show only top 5 departments by total (descending)
+    var top = (Array.isArray(dept) ? dept.slice() : []).sort(function (a, b) {
+      return Number(b.total || 0) - Number(a.total || 0);
+    }).slice(0, 5);
+    var html = top.map(function (d) {
+      var name = d.department_name || 'N/A';
+      var _short = makeAcronym(name);
+      var label = _short ? "".concat(name, " (").concat(_short, ")") : name;
+      return "<div style=\"padding:6px 0;border-top:1px solid #3a3a3a\">".concat(label, " \u2014 ").concat(d.total, "</div>");
     }).join('') || 'No data';
     rootEl.querySelector('#departments').innerHTML = html;
     try {
@@ -311,15 +344,22 @@ function mountDashboard(rootEl) {
         ctx.strokeRect(padding + labelWidth, y, chartW, barH);
         if (val > 0) {
           var hue = i * 137.50776405003785 % 360;
-          ctx.fillStyle = "hsl(".concat(hue, "deg 70% 50%)");
+          // Darken bars and apply 70% opacity so they appear less washed-out on dark background
+          // Use hsla with explicit commas for broader canvas compatibility
+          var barSat = 66;
+          var barLight = 40;
+          ctx.fillStyle = "hsla(".concat(hue, ", ").concat(barSat, "%, ").concat(barLight, "%, 0.7)");
           var w = Math.round(val / maxVal * chartW);
           ctx.fillRect(padding + labelWidth, y, w, barH);
         }
       });
     }
 
-    // Faculty per department - pie
-    var fdata = data.faculty_per_department || [];
+    // Faculty per department - pie (filter out departments with zero count, use different palette,
+    // label only sufficiently large slices inside, render small legend for the rest)
+    var fdata = (data.faculty_per_department || []).filter(function (d) {
+      return Number(d.total || 0) > 0;
+    });
     var fc = document.getElementById('faculty-chart');
     if (fc && fc.getContext) {
       var _ctx = fc.getContext('2d');
@@ -328,22 +368,208 @@ function mountDashboard(rootEl) {
       _ctx.clearRect(0, 0, fc.width, fc.height);
       var cx = fc.width / 2;
       var cy = fc.height / 2;
-      var radius = Math.min(fc.width, fc.height) * 0.35;
+      // Increase radius so the pie fills the available circle area more fully
+      var radius = Math.min(fc.width, fc.height) * 0.48;
       var total = fdata.reduce(function (s, x) {
         return s + Number(x.total || 0);
       }, 0) || 1;
-      var angle = -Math.PI / 2;
-      fdata.forEach(function (d, i) {
-        var slice = Number(d.total || 0) / total * Math.PI * 2;
-        var hue = i * 137.5 % 360;
-        _ctx.beginPath();
-        _ctx.moveTo(cx, cy);
-        _ctx.fillStyle = "hsl(".concat(hue, "deg 68% 52%)");
-        _ctx.arc(cx, cy, radius, angle, angle + slice);
-        _ctx.closePath();
-        _ctx.fill();
-        angle += slice;
-      });
+      if (fdata.length === 0) {
+        // draw empty state
+        _ctx.font = "".concat(12 * devicePixelRatio, "px Inter, sans-serif");
+        _ctx.fillStyle = '#94a3b8';
+        _ctx.textAlign = 'center';
+        _ctx.textBaseline = 'middle';
+        _ctx.fillText('No faculty data', cx, cy);
+      } else {
+        var angle = -Math.PI / 2;
+        var hueOffset = 80; // offset so pie colors don't match bar hues
+        var legend = [];
+        var MIN_LABEL_ANGLE = 0.28; // ~16 degrees — threshold to draw inside-label
+
+        fdata.forEach(function (d, i) {
+          var count = Number(d.total || 0);
+          var slice = count / total * Math.PI * 2;
+          var hue = (hueOffset + i * 137.5) % 360;
+          var sat = 68;
+          var light = 52;
+
+          // draw slice with 70% opacity (hsla) so slices aren't too light on dark bg
+          _ctx.beginPath();
+          _ctx.moveTo(cx, cy);
+          _ctx.fillStyle = "hsla(".concat(hue, ", ").concat(sat, "%, ").concat(light, "%, 0.7)");
+          _ctx.arc(cx, cy, radius, angle, angle + slice);
+          _ctx.closePath();
+          _ctx.fill();
+
+          // label handling: if slice big enough, draw inside; else add to legend
+          var mid = angle + slice / 2;
+          if (slice >= MIN_LABEL_ANGLE) {
+            // position labels a bit closer to center so they remain inside larger slices
+            var lx = cx + Math.cos(mid) * radius * 0.5;
+            var ly = cy + Math.sin(mid) * radius * 0.5;
+
+            // Try to fit the department/program name inside the slice.
+            // Compute an approximate available width based on arc length at 60% radius.
+            var fullLabel = (d.department_name || '').toString();
+            // produce a short inside-circle label: prefer acronym for long names or when containing 'Program'
+            var _makeAcronym = function _makeAcronym(txt) {
+              if (!txt) return '';
+              // keep 'program' because we want acronyms like 'NP' (Nursing Program)
+              var stop = new Set(['department', 'of', 'the', 'and', '&', 'staff']);
+              var words = txt.split(/\s+/).filter(function (w) {
+                return w.trim().length > 0;
+              });
+              var meaningful = words.filter(function (w) {
+                return !stop.has(w.toLowerCase());
+              });
+              var source = meaningful.length ? meaningful : words;
+              var letters = source.map(function (w) {
+                return w[0] ? w[0].toUpperCase() : '';
+              }).join('');
+              // limit to 3 letters for compactness
+              if (letters.length > 3) letters = letters.slice(0, 3);
+              return letters;
+            };
+            var label = fullLabel;
+            // If the name contains 'program' or is fairly long, use acronym for inside label
+            if (/program/i.test(fullLabel) || fullLabel.length > 14) {
+              var ac = _makeAcronym(fullLabel);
+              if (ac) label = ac;
+            }
+            var approxArcLen = Math.max(10, slice * radius * 0.6);
+            var _padding = 6 * devicePixelRatio;
+            var availableWidth = approxArcLen - _padding;
+
+            // Helper: draw wrapped/fitted text centered at (lx,ly)
+            var drawFittedText = function drawFittedText(text) {
+              // Start with a comfortable font size and step down until it fits or hits min
+              var fontSize = 12 * devicePixelRatio;
+              var minFont = 8 * devicePixelRatio;
+              _ctx.textAlign = 'center';
+              _ctx.textBaseline = 'middle';
+              var textColor = light < 65 ? '#ffffff' : '#0b1020';
+              _ctx.fillStyle = textColor;
+
+              // Try single-line first
+              while (fontSize >= minFont) {
+                _ctx.font = "".concat(fontSize, "px Inter, sans-serif");
+                var w = _ctx.measureText(text).width;
+                if (w <= availableWidth) {
+                  _ctx.fillText(text, lx, ly);
+                  return;
+                }
+                fontSize -= 1 * devicePixelRatio;
+              }
+
+              // If single-line didn't fit, try two-line wrap by splitting on spaces
+              var words = text.split(/\s+/);
+              if (words.length === 1) {
+                // fallback: ellipsize to fit
+                var ell = text;
+                while (_ctx.measureText(ell + "\u2026").width > availableWidth && ell.length > 3) {
+                  ell = ell.slice(0, -1);
+                }
+                _ctx.fillText(ell + "\u2026", lx, ly);
+                return;
+              }
+
+              // Attempt two lines
+              var line1 = words[0];
+              var line2 = words.slice(1).join(' ');
+              // balance by moving words from line2 to line1 if needed
+              for (var _i = 1; _i < words.length; _i++) {
+                var candidate = words.slice(0, _i + 1).join(' ');
+                _ctx.font = "".concat(Math.max(minFont, fontSize), "px Inter, sans-serif");
+                if (_ctx.measureText(candidate).width <= availableWidth) {
+                  line1 = candidate;
+                  line2 = words.slice(_i + 1).join(' ');
+                } else {
+                  break;
+                }
+              }
+
+              // reduce font until both lines fit
+              fontSize = Math.max(minFont, fontSize);
+              while (fontSize >= minFont) {
+                _ctx.font = "".concat(fontSize, "px Inter, sans-serif");
+                var w1 = _ctx.measureText(line1).width;
+                var w2 = _ctx.measureText(line2).width;
+                if (w1 <= availableWidth && w2 <= availableWidth) break;
+                fontSize -= 1 * devicePixelRatio;
+              }
+
+              // If still too wide, ellipsize the second line
+              _ctx.font = "".concat(Math.max(minFont, fontSize), "px Inter, sans-serif");
+              if (_ctx.measureText(line2).width > availableWidth) {
+                var ell2 = line2;
+                while (_ctx.measureText(ell2 + "\u2026").width > availableWidth && ell2.length > 3) {
+                  ell2 = ell2.slice(0, -1);
+                }
+                line2 = ell2 + "\u2026";
+              }
+
+              // draw two lines centered vertically
+              var lineHeight = (fontSize + 2) * 1.1;
+              _ctx.textAlign = 'center';
+              _ctx.fillText(line1, lx, ly - lineHeight / 2);
+              _ctx.fillText(line2, lx, ly + lineHeight / 2);
+            };
+            try {
+              drawFittedText(label);
+            } catch (e) {
+              // fallback: short label
+              var _short2 = label.length > 20 ? label.slice(0, 17) + "\u2026" : label;
+              _ctx.font = "".concat(10 * devicePixelRatio, "px Inter, sans-serif");
+              _ctx.fillStyle = light < 65 ? '#ffffff' : '#0b1020';
+              _ctx.fillText(_short2, lx, ly);
+            }
+          } else {
+            // add legend entry
+            legend.push({
+              name: d.department_name || '',
+              total: count,
+              hue: hue
+            });
+          }
+          angle += slice;
+        });
+
+        // render legend for small slices. Prefer to the right if there's horizontal space,
+        // otherwise render below the pie.
+        if (legend.length > 0) {
+          var fontSize = Math.max(10 * devicePixelRatio, 10);
+          _ctx.font = "".concat(fontSize, "px Inter, sans-serif");
+          _ctx.textAlign = 'left';
+          _ctx.textBaseline = 'top';
+          var dotSize = 8 * devicePixelRatio;
+          var _padding2 = 6 * devicePixelRatio;
+          var canPlaceRight = fc.width > fc.height * 1.15; // enough width to place legend to the right
+          if (canPlaceRight) {
+            var startX = cx + radius + 8 * devicePixelRatio;
+            var y = Math.max(8 * devicePixelRatio, cy - radius);
+            legend.forEach(function (lg) {
+              _ctx.fillStyle = "hsl(".concat(lg.hue, "deg 68% 52%)");
+              _ctx.fillRect(startX, y, dotSize, dotSize);
+              _ctx.fillStyle = '#e6edf3';
+              var label = lg.name.length > 24 ? lg.name.slice(0, 21) + "\u2026" : lg.name;
+              _ctx.fillText("".concat(label, " (").concat(lg.total, ")"), startX + dotSize + _padding2, y);
+              y += dotSize + _padding2;
+            });
+          } else {
+            var startY = cy + radius + 8 * devicePixelRatio;
+            var _startX = Math.max(8 * devicePixelRatio, cx - radius);
+            var _y = startY;
+            legend.forEach(function (lg) {
+              _ctx.fillStyle = "hsl(".concat(lg.hue, "deg 68% 52%)");
+              _ctx.fillRect(_startX, _y, dotSize, dotSize);
+              _ctx.fillStyle = '#e6edf3';
+              var label = lg.name.length > 24 ? lg.name.slice(0, 21) + "\u2026" : lg.name;
+              _ctx.fillText("".concat(label, " (").concat(lg.total, ")"), _startX + dotSize + _padding2, _y);
+              _y += dotSize + _padding2;
+            });
+          }
+        }
+      }
     }
   }
 
@@ -538,7 +764,7 @@ function h(tag) {
 }
 function mountFaculty(rootEl) {
   if (!rootEl) throw new Error('mountFaculty: root element is required');
-  rootEl.innerHTML = "\n        <style>\n            .f-wrap{padding:18px;color:var(--ink);font-family:Inter,Segoe UI,Arial,Helvetica,sans-serif}\n            .f-topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}\n            .f-title{margin:0;font-size:20px;font-weight:800;letter-spacing:.2px}\n            .f-actions{display:flex;gap:8px;align-items:center}\n            .f-input{padding:8px 12px;border:1px solid var(--border);border-radius:10px;background:var(--surface);color:var(--ink);font-size:14px}\n            .f-btn{padding:8px 14px;background:var(--primary);color:#0b1020;border:none;border-radius:10px;cursor:pointer;font-size:14px;font-weight:700}\n            .f-btn:hover{filter:brightness(1.05)}\n            .f-btn-outline{background:transparent;border:1px solid var(--border);color:var(--ink)}\n            .f-btn-outline:hover{background:rgba(148,163,184,.08)}\n            .f-card{background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.02));border:1px solid var(--border);border-radius:14px;box-shadow:var(--shadow);overflow:hidden}\n            .f-tablebar{display:flex;justify-content:flex-end;gap:8px;padding:10px 12px;background:rgba(255,255,255,.02);border-bottom:1px solid var(--border)}\n            .f-table{width:100%;border-collapse:collapse;background:transparent}\n            .f-table th{background:transparent;padding:12px;text-align:left;font-weight:700;border-bottom:1px solid var(--border);color:var(--muted);font-size:12px;letter-spacing:.3px;text-transform:uppercase}\n            .f-table td{padding:12px;border-bottom:1px solid var(--border)}\n            .f-table tr:hover{background:rgba(255,255,255,.02)}\n            .f-pill{padding:4px 8px;border-radius:12px;background:#1f2937;border:1px solid #283241;font-size:12px;color:#cbd5e1}\n            .f-small{font-size:12px}\n            .f-modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);display:none;align-items:center;justify-content:center;z-index:2000}\n            .f-modal{width:960px;max-width:96vw;background:#f9fafb;color:#0f172a;border-radius:12px;padding:28px;box-shadow:0 24px 72px rgba(0,0,0,.55)}\n            .f-modal h3{margin:0 0 18px;font-size:22px;font-weight:700;color:#0b1340}\n            .f-modal-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px 24px;align-items:start}\n            .f-modal-field{margin-bottom:12px}\n            .f-modal-label{display:block;font-size:13.5px;margin-bottom:6px;font-weight:600;color:#0b1340}\n            .f-modal-input{width:100%;padding:10px 12px;border:1px solid #cbd5e1;border-radius:6px;background:#fff;color:#0f172a;font-size:14px}\n            .f-modal-buttons{display:flex;gap:12px;justify-content:flex-end;margin-top:22px}\n            .f-modal-btn{padding:10px 20px;border:none;border-radius:4px;cursor:pointer;font-size:14px;font-weight:500}\n            .f-modal-cancel{background:#64748b;color:#fff}\n            .f-modal-save{background:#2563eb;color:#fff}\n        </style>\n        <div class=\"f-wrap\">\n            <div class=\"f-topbar\">\n                <h2 class=\"f-title\">Faculty</h2>\n                <div class=\"f-actions\">\n                    <input id=\"f-q\" class=\"f-input\" placeholder=\"Search name or email\" style=\"width:200px\" />\n                    <button id=\"f-search\" class=\"f-btn\">Search</button>\n                    <button id=\"f-add\" class=\"f-btn\">Add Faculty</button>\n                    <button id=\"f-archived\" class=\"f-btn f-btn-outline\">Archived</button>\n                </div>\n            </div>\n            <div id=\"f-error\" class=\"f-small\" style=\"color:#ffb3b3;min-height:16px;margin-bottom:12px\"></div>\n            <div class=\"f-card\">\n              <div class=\"f-tablebar\">\n                <select id=\"f-filter-department\" class=\"f-input\" style=\"width:200px\">\n                  <option value=\"\">All Departments</option>\n                </select>\n                <button id=\"f-archived\" class=\"f-btn f-btn-outline\">Archived</button>\n              </div>\n                            <table class=\"f-table\">\n                                <thead>\n                                        <tr><th style=\"width:48px\">#</th><th>Name</th><th>Department</th><th>Position</th><th>Status</th><th>Action</th></tr>\n                                </thead>\n                                <tbody id=\"f-body\"><tr><td colspan=\"6\" class=\"f-small\">Loading\u2026</td></tr></tbody>\n                            </table>\n            </div>\n            <div id=\"f-modal\" class=\"f-modal-overlay\">\n              <div class=\"f-modal\">\n                <h3 id=\"fm-title\">Add Faculty</h3>\n                <div class=\"f-modal-grid\">\n                  <div class=\"f-modal-field\">\n                    <label class=\"f-modal-label\">Faculty ID</label>\n                    <input id=\"fm-faculty_id\" class=\"f-modal-input\" placeholder=\"optional\" />\n                  </div>\n                  <div class=\"f-modal-field\">\n                    <label class=\"f-modal-label\">Date of Birth</label>\n                    <input id=\"fm-dob\" type=\"date\" class=\"f-modal-input\" />\n                  </div>\n                  <div class=\"f-modal-field\">\n                    <label class=\"f-modal-label\">First Name</label>\n                    <input id=\"fm-f_name\" class=\"f-modal-input\" />\n                  </div>\n                  <div class=\"f-modal-field\">\n                    <label class=\"f-modal-label\">Sex</label>\n                    <select id=\"fm-sex\" class=\"f-modal-input\">\n                      <option value=\"\">Select</option>\n                      <option>Male</option>\n                      <option>Female</option>\n                    </select>\n                  </div>\n                  <div class=\"f-modal-field\">\n                    <label class=\"f-modal-label\">Middle Name</label>\n                    <input id=\"fm-m_name\" class=\"f-modal-input\" />\n                  </div>\n                  <div class=\"f-modal-field\">\n                    <label class=\"f-modal-label\">Phone Number</label>\n                    <input id=\"fm-phone\" class=\"f-modal-input\" />\n                  </div>\n                  <div class=\"f-modal-field\">\n                    <label class=\"f-modal-label\">Last Name</label>\n                    <input id=\"fm-l_name\" class=\"f-modal-input\" />\n                  </div>\n                  <div class=\"f-modal-field\">\n                    <label class=\"f-modal-label\">Email Address</label>\n                    <input id=\"fm-email\" type=\"email\" class=\"f-modal-input\" />\n                  </div>\n                  <div class=\"f-modal-field\">\n                    <label class=\"f-modal-label\">Suffix</label>\n                    <input id=\"fm-suffix\" class=\"f-modal-input\" />\n                  </div>\n                  <div class=\"f-modal-field\">\n                    <label class=\"f-modal-label\">Address</label>\n                    <input id=\"fm-address\" class=\"f-modal-input\" />\n                  </div>\n                  <div class=\"f-modal-field\">\n                    <label class=\"f-modal-label\">Position</label>\n                    <input id=\"fm-position\" class=\"f-modal-input\" placeholder=\"e.g., Professor, Instructor\" />\n                  </div>\n                  <div class=\"f-modal-field\">\n                    <label class=\"f-modal-label\">Department</label>\n                    <select id=\"fm-department\" class=\"f-modal-input\"><option value=\"\">Loading\u2026</option></select>\n                  </div>\n                </div>\n                <div id=\"fm-error\" style=\"color:#b00020;font-size:12px;min-height:16px;margin-top:8px;text-align:center\"></div>\n                <div class=\"f-modal-buttons\">\n                  <button id=\"fm-cancel\" class=\"f-modal-btn f-modal-cancel\">Cancel</button>\n                  <button id=\"fm-save\" class=\"f-modal-btn f-modal-save\">Add</button>\n                </div>\n              </div>\n            </div>\n        </div>\n    ";
+  rootEl.innerHTML = "\n        <style>\n            .f-wrap{padding:18px;color:var(--ink);font-family:Inter,Segoe UI,Arial,Helvetica,sans-serif}\n            .f-topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}\n            .f-title{margin:0;font-size:20px;font-weight:800;letter-spacing:.2px}\n            .f-actions{display:flex;gap:8px;align-items:center}\n            .f-input{padding:8px 12px;border:1px solid var(--border);border-radius:10px;background:var(--surface);color:var(--ink);font-size:14px}\n            .f-btn{padding:8px 14px;background:var(--primary);color:#0b1020;border:none;border-radius:10px;cursor:pointer;font-size:14px;font-weight:700}\n            .f-btn:hover{filter:brightness(1.05)}\n            .f-btn-outline{background:transparent;border:1px solid var(--border);color:var(--ink)}\n            .f-btn-outline:hover{background:rgba(148,163,184,.08)}\n            .f-card{background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.02));border:1px solid var(--border);border-radius:14px;box-shadow:var(--shadow);overflow:hidden}\n            .f-tablebar{display:flex;justify-content:flex-end;gap:8px;padding:10px 12px;background:rgba(255,255,255,.02);border-bottom:1px solid var(--border)}\n            .f-table{width:100%;border-collapse:collapse;background:transparent}\n            .f-table th{background:transparent;padding:12px;text-align:left;font-weight:700;border-bottom:1px solid var(--border);color:var(--muted);font-size:12px;letter-spacing:.3px;text-transform:uppercase}\n            .f-table td{padding:12px;border-bottom:1px solid var(--border)}\n            .f-table tr:hover{background:rgba(255,255,255,.02)}\n            .f-pill{padding:4px 8px;border-radius:12px;background:#1f2937;border:1px solid #283241;font-size:12px;color:#cbd5e1}\n            .f-small{font-size:12px}\n            .f-modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);display:none;align-items:center;justify-content:center;z-index:2000}\n            .f-modal{width:960px;max-width:96vw;background:#f9fafb;color:#0f172a;border-radius:12px;padding:28px;box-shadow:0 24px 72px rgba(0,0,0,.55)}\n            .f-modal h3{margin:0 0 18px;font-size:22px;font-weight:700;color:#0b1340}\n            .f-modal-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px 24px;align-items:start}\n            .f-modal-field{margin-bottom:12px}\n            .f-modal-label{display:block;font-size:13.5px;margin-bottom:6px;font-weight:600;color:#0b1340}\n            .f-modal-input{width:100%;padding:10px 12px;border:1px solid #cbd5e1;border-radius:6px;background:#fff;color:#0f172a;font-size:14px}\n            .f-modal-buttons{display:flex;gap:12px;justify-content:flex-end;margin-top:22px}\n            .f-modal-btn{padding:10px 20px;border:none;border-radius:4px;cursor:pointer;font-size:14px;font-weight:500}\n            .f-modal-cancel{background:#64748b;color:#fff}\n            .f-modal-save{background:#2563eb;color:#fff}\n        </style>\n        <div class=\"f-wrap\">\n            <div class=\"f-topbar\">\n                <h2 class=\"f-title\">Faculty</h2>\n                <div class=\"f-actions\">\n                    <input id=\"f-q\" class=\"f-input\" placeholder=\"Search name or email\" style=\"width:200px\" />\n                    <button id=\"f-search\" class=\"f-btn\">Search</button>\n                    <button id=\"f-add\" class=\"f-btn\">Add Faculty</button>\n                    <button id=\"f-archived\" class=\"f-btn f-btn-outline\">Archived</button>\n                </div>\n            </div>\n            <div id=\"f-error\" class=\"f-small\" style=\"color:#ffb3b3;min-height:16px;margin-bottom:12px\"></div>\n            <div class=\"f-card\">\n              <div class=\"f-tablebar\">\n                <select id=\"f-filter-department\" class=\"f-input\" style=\"width:200px\">\n                  <option value=\"\">All Departments</option>\n                </select>\n                <button id=\"f-archived\" class=\"f-btn f-btn-outline\">Archived</button>\n              </div>\n                            <table class=\"f-table\">\n                                <thead>\n                                        <tr><th style=\"width:48px\">#</th><th>Name</th><th>Department</th><th>Position</th><th>Status</th><th>Action</th></tr>\n                                </thead>\n                                <tbody id=\"f-body\"><tr><td colspan=\"6\" class=\"f-small\">Loading\u2026</td></tr></tbody>\n                            </table>\n            </div>\n            <div id=\"f-modal\" class=\"f-modal-overlay\">\n              <div class=\"f-modal\">\n                <h3 id=\"fm-title\">Add Faculty</h3>\n                <div class=\"f-modal-grid\">\n                  <div class=\"f-modal-field\">\n                    <label class=\"f-modal-label\">Faculty ID</label>\n                    <input id=\"fm-faculty_id\" class=\"f-modal-input\" placeholder=\"optional\" />\n                  </div>\n                  <div class=\"f-modal-field\">\n                    <label class=\"f-modal-label\">Date of Birth</label>\n                    <input id=\"fm-dob\" type=\"date\" class=\"f-modal-input\" />\n                  </div>\n                  <div class=\"f-modal-field\">\n                    <label class=\"f-modal-label\">First Name</label>\n                    <input id=\"fm-f_name\" class=\"f-modal-input\" />\n                  </div>\n                  <div class=\"f-modal-field\">\n                    <label class=\"f-modal-label\">Sex</label>\n                    <select id=\"fm-sex\" class=\"f-modal-input\">\n                      <option value=\"\">Select</option>\n                      <option>Male</option>\n                      <option>Female</option>\n                    </select>\n                  </div>\n                  <div class=\"f-modal-field\">\n                    <label class=\"f-modal-label\">Middle Name</label>\n                    <input id=\"fm-m_name\" class=\"f-modal-input\" />\n                  </div>\n                  <div class=\"f-modal-field\">\n                    <label class=\"f-modal-label\">Phone Number</label>\n                                        <input id=\"fm-phone\" class=\"f-modal-input\" maxlength=\"11\" inputmode=\"numeric\" placeholder=\"11 digits\" />\n                  </div>\n                  <div class=\"f-modal-field\">\n                    <label class=\"f-modal-label\">Last Name</label>\n                    <input id=\"fm-l_name\" class=\"f-modal-input\" />\n                  </div>\n                  <div class=\"f-modal-field\">\n                    <label class=\"f-modal-label\">Email Address</label>\n                    <input id=\"fm-email\" type=\"email\" class=\"f-modal-input\" />\n                  </div>\n                  <div class=\"f-modal-field\">\n                    <label class=\"f-modal-label\">Suffix</label>\n                    <input id=\"fm-suffix\" class=\"f-modal-input\" />\n                  </div>\n                  <div class=\"f-modal-field\">\n                    <label class=\"f-modal-label\">Address</label>\n                    <input id=\"fm-address\" class=\"f-modal-input\" />\n                  </div>\n                  <div class=\"f-modal-field\">\n                    <label class=\"f-modal-label\">Position</label>\n                    <input id=\"fm-position\" class=\"f-modal-input\" placeholder=\"e.g., Professor, Instructor\" />\n                  </div>\n                  <div class=\"f-modal-field\">\n                    <label class=\"f-modal-label\">Department</label>\n                    <select id=\"fm-department\" class=\"f-modal-input\"><option value=\"\">Loading\u2026</option></select>\n                  </div>\n                </div>\n                <div id=\"fm-error\" style=\"color:#b00020;font-size:12px;min-height:16px;margin-top:8px;text-align:center\"></div>\n                <div class=\"f-modal-buttons\">\n                  <button id=\"fm-cancel\" class=\"f-modal-btn f-modal-cancel\">Cancel</button>\n                  <button id=\"fm-save\" class=\"f-modal-btn f-modal-save\">Add</button>\n                </div>\n              </div>\n            </div>\n        </div>\n    ";
   var errorBox = rootEl.querySelector('#f-error');
   var qEl = rootEl.querySelector('#f-q');
   var archivedBtn = rootEl.querySelector('#f-archived');
@@ -578,6 +804,17 @@ function mountFaculty(rootEl) {
     return closeModal();
   });
   qs('#fm-save').addEventListener('click', saveModal);
+
+  // ensure phone input only accepts digits and max 11 characters
+  try {
+    var phoneEl = qs('#fm-phone');
+    if (phoneEl) {
+      phoneEl.addEventListener('input', function (e) {
+        var cleaned = phoneEl.value.replace(/\D/g, '').slice(0, 11);
+        if (phoneEl.value !== cleaned) phoneEl.value = cleaned;
+      });
+    }
+  } catch (e) {/* ignore if modal not present */}
   function openModal() {
     return _openModal.apply(this, arguments);
   }
@@ -938,7 +1175,7 @@ function mountFaculty(rootEl) {
         text: fac.position || ''
       }), h('td', {}, [h('span', {
         "class": 'f-pill f-small',
-        text: fac.deleted_at ? 'Archived' : 'Active'
+        text: fac.status && String(fac.status).toLowerCase() !== 'active' ? String(fac.status).charAt(0).toUpperCase() + String(fac.status).slice(1) : fac.deleted_at ? 'Archived' : 'Active'
       })])];
       // Actions
       var actions = [];
@@ -2447,6 +2684,25 @@ function mountSettings(rootEl) {
     loadCurrentTab();
   }
 
+  // Helper: make short acronym from a department/program name
+  function makeAcronym(txt) {
+    if (!txt) return '';
+    // keep 'program' so we produce NP for 'Nursing Program'
+    var stop = new Set(['department', 'of', 'the', 'and', '&', 'staff']);
+    var words = txt.split(/\s+/).filter(function (w) {
+      return w.trim().length > 0;
+    });
+    var meaningful = words.filter(function (w) {
+      return !stop.has(w.toLowerCase());
+    });
+    var source = meaningful.length ? meaningful : words;
+    var letters = source.map(function (w) {
+      return w[0] ? w[0].toUpperCase() : '';
+    }).join('');
+    if (letters.length > 3) letters = letters.slice(0, 3);
+    return letters;
+  }
+
   // Action buttons
   rootEl.querySelector('#st-add-course').addEventListener('click', function () {
     return openModal('course');
@@ -2862,8 +3118,10 @@ function mountSettings(rootEl) {
       return;
     }
     departments.forEach(function (dept) {
+      var _short = makeAcronym(dept.department_name || '');
+      var label = _short ? "".concat(dept.department_name, " (").concat(_short, ")") : dept.department_name || '';
       var tr = h('tr', {}, [h('td', {
-        text: dept.department_name || ''
+        text: label
       }), h('td', {}, [h('span', {
         "class": 'st-pill st-small',
         text: dept.deleted_at ? 'Archived' : 'Active'
@@ -3187,7 +3445,7 @@ function h(tag) {
 }
 function mountStudents(rootEl) {
   if (!rootEl) throw new Error('mountStudents: root element is required');
-  rootEl.innerHTML = "\n        <style>\n            .f-wrap{padding:18px;color:var(--ink);font-family:Inter,Segoe UI,Arial,Helvetica,sans-serif}\n            .f-topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}\n            .f-title{margin:0;font-size:20px;font-weight:800;letter-spacing:.2px}\n            .f-actions{display:flex;gap:8px;align-items:center}\n            .f-input{padding:8px 12px;border:1px solid var(--border);border-radius:10px;background:var(--surface);color:var(--ink);font-size:14px}\n            .f-btn{padding:8px 14px;background:var(--primary);color:#0b1020;border:none;border-radius:10px;cursor:pointer;font-size:14px;font-weight:700}\n            .f-btn:hover{filter:brightness(1.05)}\n            .f-btn-outline{background:transparent;border:1px solid var(--border);color:var(--ink)}\n            .f-btn-outline:hover{background:rgba(148,163,184,.08)}\n            .f-card{background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.02));border:1px solid var(--border);border-radius:14px;box-shadow:var(--shadow);overflow:hidden}\n            .f-tablebar{display:flex;justify-content:flex-end;gap:8px;padding:10px 12px;background:rgba(255,255,255,.02);border-bottom:1px solid var(--border)}\n            .f-table{width:100%;border-collapse:collapse;background:transparent}\n            .f-table th{background:transparent;padding:12px;text-align:left;font-weight:700;border-bottom:1px solid var(--border);color:var(--muted);font-size:12px;letter-spacing:.3px;text-transform:uppercase}\n            .f-table td{padding:12px;border-bottom:1px solid var(--border)}\n            .f-table tr:hover{background:rgba(255,255,255,.02)}\n            .f-pill{padding:4px 8px;border-radius:12px;background:#1f2937;border:1px solid #283241;font-size:12px;color:#cbd5e1}\n            .f-small{font-size:12px}\n            .f-modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);display:none;align-items:center;justify-content:center;z-index:2000}\n            .f-modal{width:960px;max-width:96vw;background:#f9fafb;color:#0f172a;border-radius:12px;padding:28px;box-shadow:0 24px 72px rgba(0,0,0,.55)}\n            .f-modal h3{margin:0 0 18px;font-size:22px;font-weight:700;color:#0b1340}\n            .f-modal-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px 24px;align-items:start}\n            .f-modal-field{margin-bottom:12px}\n            .f-modal-label{display:block;font-size:13.5px;margin-bottom:6px;font-weight:600;color:#0b1340}\n            .f-modal-input{width:100%;padding:10px 12px;border:1px solid #cbd5e1;border-radius:6px;background:#fff;color:#0f172a;font-size:14px}\n            .f-modal-buttons{display:flex;gap:12px;justify-content:flex-end;margin-top:22px}\n            .f-modal-btn{padding:10px 20px;border:none;border-radius:4px;cursor:pointer;font-size:14px;font-weight:500}\n            .f-modal-cancel{background:#64748b;color:#fff}\n            .f-modal-save{background:#2563eb;color:#fff}\n        </style>\n        <div class=\"f-wrap\">\n            <div class=\"f-topbar\">\n                <h2 class=\"f-title\">Students</h2>\n                <div class=\"f-actions\">\n                    <input id=\"s-q\" class=\"f-input\" placeholder=\"Search name or email\" style=\"width:200px\" />\n                    <button id=\"s-search\" class=\"f-btn\">Search</button>\n                    <button id=\"s-add\" class=\"f-btn\">Add Student</button>\n                </div>\n            </div>\n            <div id=\"s-error\" class=\"f-small\" style=\"color:#ffb3b3;min-height:16px;margin-bottom:12px\"></div>\n            <div class=\"f-card\">\n              <div class=\"f-tablebar\">\n                <select id=\"s-filter-department\" class=\"f-input\" style=\"width:200px\">\n                  <option value=\"\">All Departments</option>\n                </select>\n                <select id=\"s-filter-course\" class=\"f-input\" style=\"width:200px\">\n                  <option value=\"\">All Courses</option>\n                </select>\n                <button id=\"s-archived\" class=\"f-btn f-btn-outline\">Archived</button>\n              </div>\n                            <table class=\"f-table\">\n                                <thead>\n                                        <tr><th style=\"width:48px\">#</th><th>Name</th><th>Department</th><th>Course</th><th>Year</th><th>Status</th><th>Action</th></tr>\n                                </thead>\n                                <tbody id=\"s-body\"><tr><td colspan=\"7\" class=\"f-small\">Loading\u2026</td></tr></tbody>\n                            </table>\n            </div>\n            <div id=\"s-modal\" class=\"f-modal-overlay\">\n              <div class=\"f-modal\">\n                <h3 id=\"sm-title\">Add Student</h3>\n                <div class=\"f-modal-grid\">\n                  <div class=\"f-modal-field\"><label class=\"f-modal-label\">Student ID</label><input id=\"sm-student_id\" class=\"f-modal-input\" placeholder=\"optional\" /></div>\n                  <div class=\"f-modal-field\"><label class=\"f-modal-label\">Date of Birth</label><input id=\"sm-dob\" type=\"date\" class=\"f-modal-input\" /></div>\n                  <div class=\"f-modal-field\"><label class=\"f-modal-label\">First Name</label><input id=\"sm-f_name\" class=\"f-modal-input\" /></div>\n                  <div class=\"f-modal-field\"><label class=\"f-modal-label\">Sex</label><select id=\"sm-sex\" class=\"f-modal-input\"><option value=\"\">Select</option><option>Male</option><option>Female</option></select></div>\n                  <div class=\"f-modal-field\"><label class=\"f-modal-label\">Middle Name</label><input id=\"sm-m_name\" class=\"f-modal-input\" /></div>\n                  <div class=\"f-modal-field\"><label class=\"f-modal-label\">Phone Number</label><input id=\"sm-phone\" class=\"f-modal-input\" /></div>\n                  <div class=\"f-modal-field\"><label class=\"f-modal-label\">Last Name</label><input id=\"sm-l_name\" class=\"f-modal-input\" /></div>\n                  <div class=\"f-modal-field\"><label class=\"f-modal-label\">Email Address</label><input id=\"sm-email\" type=\"email\" class=\"f-modal-input\" /></div>\n                  <div class=\"f-modal-field\"><label class=\"f-modal-label\">Suffix</label><input id=\"sm-suffix\" class=\"f-modal-input\" /></div>\n                  <div class=\"f-modal-field\"><label class=\"f-modal-label\">Address</label><input id=\"sm-address\" class=\"f-modal-input\" /></div>\n                  <div class=\"f-modal-field\"><label class=\"f-modal-label\">Department</label><select id=\"sm-department\" class=\"f-modal-input\"><option value=\"\">Loading\u2026</option></select></div>\n                  <div class=\"f-modal-field\"><label class=\"f-modal-label\">Course</label><select id=\"sm-course\" class=\"f-modal-input\"><option value=\"\">Loading\u2026</option></select></div>\n                  <div class=\"f-modal-field\"><label class=\"f-modal-label\">Academic Year</label><select id=\"sm-ay\" class=\"f-modal-input\"><option value=\"\">Loading\u2026</option></select></div>\n                  <div class=\"f-modal-field\"><label class=\"f-modal-label\">Year Level</label><input id=\"sm-year\" class=\"f-modal-input\" placeholder=\"e.g., 1st, 2nd, 3rd\" /></div>\n                </div>\n                <div id=\"sm-error\" style=\"color:#b00020;font-size:12px;min-height:16px;margin-top:8px;text-align:center\"></div>\n                <div class=\"f-modal-buttons\">\n                  <button id=\"sm-cancel\" class=\"f-modal-btn f-modal-cancel\">Cancel</button>\n                  <button id=\"sm-save\" class=\"f-modal-btn f-modal-save\">Add</button>\n                </div>\n              </div>\n            </div>\n        </div>\n    ";
+  rootEl.innerHTML = "\n        <style>\n            .f-wrap{padding:18px;color:var(--ink);font-family:Inter,Segoe UI,Arial,Helvetica,sans-serif}\n            .f-topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}\n            .f-title{margin:0;font-size:20px;font-weight:800;letter-spacing:.2px}\n            .f-actions{display:flex;gap:8px;align-items:center}\n            .f-input{padding:8px 12px;border:1px solid var(--border);border-radius:10px;background:var(--surface);color:var(--ink);font-size:14px}\n            .f-btn{padding:8px 14px;background:var(--primary);color:#0b1020;border:none;border-radius:10px;cursor:pointer;font-size:14px;font-weight:700}\n            .f-btn:hover{filter:brightness(1.05)}\n            .f-btn-outline{background:transparent;border:1px solid var(--border);color:var(--ink)}\n            .f-btn-outline:hover{background:rgba(148,163,184,.08)}\n            .f-card{background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.02));border:1px solid var(--border);border-radius:14px;box-shadow:var(--shadow);overflow:hidden}\n            .f-tablebar{display:flex;justify-content:flex-end;gap:8px;padding:10px 12px;background:rgba(255,255,255,.02);border-bottom:1px solid var(--border)}\n            .f-table{width:100%;border-collapse:collapse;background:transparent}\n            .f-table th{background:transparent;padding:12px;text-align:left;font-weight:700;border-bottom:1px solid var(--border);color:var(--muted);font-size:12px;letter-spacing:.3px;text-transform:uppercase}\n            .f-table td{padding:12px;border-bottom:1px solid var(--border)}\n            .f-table tr:hover{background:rgba(255,255,255,.02)}\n            .f-pill{padding:4px 8px;border-radius:12px;background:#1f2937;border:1px solid #283241;font-size:12px;color:#cbd5e1}\n            .f-small{font-size:12px}\n            .f-modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);display:none;align-items:center;justify-content:center;z-index:2000}\n            .f-modal{width:960px;max-width:96vw;background:#f9fafb;color:#0f172a;border-radius:12px;padding:28px;box-shadow:0 24px 72px rgba(0,0,0,.55)}\n            .f-modal h3{margin:0 0 18px;font-size:22px;font-weight:700;color:#0b1340}\n            .f-modal-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px 24px;align-items:start}\n            .f-modal-field{margin-bottom:12px}\n            .f-modal-label{display:block;font-size:13.5px;margin-bottom:6px;font-weight:600;color:#0b1340}\n            .f-modal-input{width:100%;padding:10px 12px;border:1px solid #cbd5e1;border-radius:6px;background:#fff;color:#0f172a;font-size:14px}\n            .f-modal-buttons{display:flex;gap:12px;justify-content:flex-end;margin-top:22px}\n            .f-modal-btn{padding:10px 20px;border:none;border-radius:4px;cursor:pointer;font-size:14px;font-weight:500}\n            .f-modal-cancel{background:#64748b;color:#fff}\n            .f-modal-save{background:#2563eb;color:#fff}\n        </style>\n        <div class=\"f-wrap\">\n            <div class=\"f-topbar\">\n                <h2 class=\"f-title\">Students</h2>\n                <div class=\"f-actions\">\n                    <input id=\"s-q\" class=\"f-input\" placeholder=\"Search name or email\" style=\"width:200px\" />\n                    <button id=\"s-search\" class=\"f-btn\">Search</button>\n                    <button id=\"s-add\" class=\"f-btn\">Add Student</button>\n                </div>\n            </div>\n            <div id=\"s-error\" class=\"f-small\" style=\"color:#ffb3b3;min-height:16px;margin-bottom:12px\"></div>\n            <div class=\"f-card\">\n              <div class=\"f-tablebar\">\n                <select id=\"s-filter-department\" class=\"f-input\" style=\"width:200px\">\n                  <option value=\"\">All Departments</option>\n                </select>\n                <select id=\"s-filter-course\" class=\"f-input\" style=\"width:200px\">\n                  <option value=\"\">All Courses</option>\n                </select>\n                <button id=\"s-archived\" class=\"f-btn f-btn-outline\">Archived</button>\n              </div>\n                            <table class=\"f-table\">\n                                <thead>\n                                        <tr><th style=\"width:48px\">#</th><th>Name</th><th>Department</th><th>Course</th><th>Year</th><th>Status</th><th>Action</th></tr>\n                                </thead>\n                                <tbody id=\"s-body\"><tr><td colspan=\"7\" class=\"f-small\">Loading\u2026</td></tr></tbody>\n                            </table>\n            </div>\n            <div id=\"s-modal\" class=\"f-modal-overlay\">\n              <div class=\"f-modal\">\n                <h3 id=\"sm-title\">Add Student</h3>\n                <div class=\"f-modal-grid\">\n                  <div class=\"f-modal-field\"><label class=\"f-modal-label\">Student ID</label><input id=\"sm-student_id\" class=\"f-modal-input\" placeholder=\"optional\" /></div>\n                  <div class=\"f-modal-field\"><label class=\"f-modal-label\">Date of Birth</label><input id=\"sm-dob\" type=\"date\" class=\"f-modal-input\" /></div>\n                  <div class=\"f-modal-field\"><label class=\"f-modal-label\">First Name</label><input id=\"sm-f_name\" class=\"f-modal-input\" /></div>\n                  <div class=\"f-modal-field\"><label class=\"f-modal-label\">Sex</label><select id=\"sm-sex\" class=\"f-modal-input\"><option value=\"\">Select</option><option>Male</option><option>Female</option></select></div>\n                  <div class=\"f-modal-field\"><label class=\"f-modal-label\">Middle Name</label><input id=\"sm-m_name\" class=\"f-modal-input\" /></div>\n                  <div class=\"f-modal-field\"><label class=\"f-modal-label\">Phone Number</label><input id=\"sm-phone\" class=\"f-modal-input\" maxlength=\"11\" inputmode=\"numeric\" placeholder=\"11 digits\" /></div>\n                  <div class=\"f-modal-field\"><label class=\"f-modal-label\">Last Name</label><input id=\"sm-l_name\" class=\"f-modal-input\" /></div>\n                  <div class=\"f-modal-field\"><label class=\"f-modal-label\">Email Address</label><input id=\"sm-email\" type=\"email\" class=\"f-modal-input\" /></div>\n                  <div class=\"f-modal-field\"><label class=\"f-modal-label\">Suffix</label><input id=\"sm-suffix\" class=\"f-modal-input\" /></div>\n                  <div class=\"f-modal-field\"><label class=\"f-modal-label\">Address</label><input id=\"sm-address\" class=\"f-modal-input\" /></div>\n                  <div class=\"f-modal-field\"><label class=\"f-modal-label\">Department</label><select id=\"sm-department\" class=\"f-modal-input\"><option value=\"\">Loading\u2026</option></select></div>\n                  <div class=\"f-modal-field\"><label class=\"f-modal-label\">Course</label><select id=\"sm-course\" class=\"f-modal-input\"><option value=\"\">Loading\u2026</option></select></div>\n                  <div class=\"f-modal-field\"><label class=\"f-modal-label\">Academic Year</label><select id=\"sm-ay\" class=\"f-modal-input\"><option value=\"\">Loading\u2026</option></select></div>\n                  <div class=\"f-modal-field\"><label class=\"f-modal-label\">Year Level</label><input id=\"sm-year\" class=\"f-modal-input\" placeholder=\"e.g., 1st, 2nd, 3rd\" /></div>\n                </div>\n                <div id=\"sm-error\" style=\"color:#b00020;font-size:12px;min-height:16px;margin-top:8px;text-align:center\"></div>\n                <div class=\"f-modal-buttons\">\n                  <button id=\"sm-cancel\" class=\"f-modal-btn f-modal-cancel\">Cancel</button>\n                  <button id=\"sm-save\" class=\"f-modal-btn f-modal-save\">Add</button>\n                </div>\n              </div>\n            </div>\n        </div>\n    ";
   var errorBox = rootEl.querySelector('#s-error');
   var qEl = rootEl.querySelector('#s-q');
   var archivedBtn = rootEl.querySelector('#s-archived');
@@ -3233,6 +3491,28 @@ function mountStudents(rootEl) {
     return closeModal();
   });
   qs('#sm-save').addEventListener('click', saveModal);
+
+  // ensure phone input only accepts digits and max 11 characters
+  try {
+    var phoneEl = qs('#sm-phone');
+    if (phoneEl) {
+      phoneEl.addEventListener('input', function (e) {
+        var cleaned = phoneEl.value.replace(/\D/g, '').slice(0, 11);
+        if (phoneEl.value !== cleaned) phoneEl.value = cleaned;
+      });
+    }
+  } catch (e) {/* ignore if modal not present */}
+
+  // ensure phone input only accepts digits and max 11 characters
+  try {
+    var _phoneEl = qs('#sm-phone');
+    if (_phoneEl) {
+      _phoneEl.addEventListener('input', function (e) {
+        var cleaned = _phoneEl.value.replace(/\D/g, '').slice(0, 11);
+        if (_phoneEl.value !== cleaned) _phoneEl.value = cleaned;
+      });
+    }
+  } catch (e) {/* ignore if modal not present */}
   var currentRows = [];
   function getNextStudentId() {
     return _getNextStudentId.apply(this, arguments);
@@ -3308,6 +3588,10 @@ function mountStudents(rootEl) {
             qs('#sm-email').value = init.email_address || '';
             qs('#sm-address').value = init.address || '';
             qs('#sm-department').value = init.department_id != null ? String(init.department_id) : '';
+            // ensure course list matches department before setting the selected course
+            try {
+              qs('#sm-department').dispatchEvent(new Event('change'));
+            } catch (e) {}
             qs('#sm-course').value = init.course_id != null ? String(init.course_id) : '';
             qs('#sm-ay').value = init.academic_year_id != null ? String(init.academic_year_id) : '';
             qs('#sm-year').value = init.year_level || '';
@@ -3455,7 +3739,7 @@ function mountStudents(rootEl) {
   }
   function _ensureOptions() {
     _ensureOptions = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee6() {
-      var departments, courses, years, fill, _t5, _t6, _t7;
+      var departments, courses, years, fill, modalDept, modalCourse, repopulateModalCourse, _t5, _t6, _t7;
       return _regenerator().w(function (_context6) {
         while (1) switch (_context6.p = _context6.n) {
           case 0:
@@ -3518,6 +3802,27 @@ function mountStudents(rootEl) {
               }).join('');
             }
             repopulateCourseFilter();
+
+            // Hook modal department -> course dependency so the Course select only shows
+            // courses that belong to the selected department in the Add/Edit modal.
+            try {
+              modalDept = qs('#sm-department');
+              modalCourse = qs('#sm-course');
+              repopulateModalCourse = function repopulateModalCourse() {
+                var sel = modalDept.value ? Number(modalDept.value) : null;
+                var list = sel ? coursesCache.filter(function (c) {
+                  return Number(c.department_id) === sel;
+                }) : coursesCache;
+                modalCourse.innerHTML = '<option value="">Select</option>' + list.map(function (c) {
+                  return "<option value=\"".concat(c.course_id, "\">").concat(c.course_name, "</option>");
+                }).join('');
+              };
+              modalDept.addEventListener('change', repopulateModalCourse);
+              // initialize modal course options according to current department value
+              repopulateModalCourse();
+            } catch (e) {
+              // ignore if modal elements not present
+            }
             optionsLoaded = true;
           case 12:
             return _context6.a(2);
@@ -3630,7 +3935,7 @@ function mountStudents(rootEl) {
         text: ((_stu$academic_year = stu.academic_year) === null || _stu$academic_year === void 0 ? void 0 : _stu$academic_year.school_year) || ''
       }), h('td', {}, [h('span', {
         "class": 'f-pill f-small',
-        text: stu.archived_at ? 'Archived' : 'Active'
+        text: stu.status && String(stu.status).toLowerCase() !== 'active' ? String(stu.status).charAt(0).toUpperCase() + String(stu.status).slice(1) : stu.archived_at ? 'Archived' : 'Active'
       })])];
       var actions = [];
       if (!showingArchived) {

@@ -127,7 +127,7 @@ export function mountFaculty(rootEl) {
                   </div>
                   <div class="f-modal-field">
                     <label class="f-modal-label">Phone Number</label>
-                    <input id="fm-phone" class="f-modal-input" />
+                                        <input id="fm-phone" class="f-modal-input" maxlength="11" inputmode="numeric" placeholder="11 digits" />
                   </div>
                   <div class="f-modal-field">
                     <label class="f-modal-label">Last Name</label>
@@ -191,6 +191,17 @@ export function mountFaculty(rootEl) {
     const qs = (id) => modal.querySelector(id);
     qs('#fm-cancel').addEventListener('click', ()=> closeModal());
     qs('#fm-save').addEventListener('click', saveModal);
+
+    // ensure phone input only accepts digits and max 11 characters
+    try {
+        const phoneEl = qs('#fm-phone');
+        if (phoneEl) {
+            phoneEl.addEventListener('input', (e) => {
+                const cleaned = phoneEl.value.replace(/\D/g, '').slice(0, 11);
+                if (phoneEl.value !== cleaned) phoneEl.value = cleaned;
+            });
+        }
+    } catch (e) { /* ignore if modal not present */ }
 
     async function openModal(init = null) {
         errorBox.textContent = '';
@@ -338,7 +349,7 @@ export function mountFaculty(rootEl) {
                 h('td',{text:`${fac.f_name || ''} ${fac.l_name || ''}`.trim()}),
                 h('td',{text: fac.department?.department_name || fac.department_name || fac.department_id || ''}),
                 h('td',{text: fac.position || ''}),
-                h('td',{},[h('span',{class:'f-pill f-small',text: fac.deleted_at ? 'Archived' : 'Active'})])
+                h('td',{},[h('span',{class:'f-pill f-small',text: (fac.status && String(fac.status).toLowerCase() !== 'active') ? (String(fac.status).charAt(0).toUpperCase() + String(fac.status).slice(1)) : (fac.deleted_at ? 'Archived' : 'Active') })])
             ];
             // Actions
             const actions = [];

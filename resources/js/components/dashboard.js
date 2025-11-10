@@ -124,7 +124,7 @@ export function mountDashboard(rootEl) {
             </div>
           </section>
           <section class="list">
-            <h4 style="margin:0 0 10px">Departments</h4>
+            <h4 style="margin:0 0 10px">Top Departments</h4>
             <div id="departments">Loading...</div>
           </section>
           <!-- duplicated charts section removed -->
@@ -182,6 +182,19 @@ export function mountDashboard(rootEl) {
       setCounters(curr);
     }
 
+    // Helper: make short acronym from a department/program name
+    function makeAcronym(txt) {
+      if (!txt) return '';
+      // Keep 'Program' so names like 'Nursing Program' become 'NP'
+      const stop = new Set(['department','of','the','and','&','staff']);
+      const words = txt.split(/\s+/).filter(w => w.trim().length > 0);
+      const meaningful = words.filter(w => !stop.has(w.toLowerCase()));
+      const source = meaningful.length ? meaningful : words;
+      let letters = source.map(w => w[0] ? w[0].toUpperCase() : '').join('');
+      if (letters.length > 3) letters = letters.slice(0,3);
+      return letters;
+    }
+
 
 
 
@@ -198,7 +211,14 @@ export function mountDashboard(rootEl) {
         if (rootEl.querySelector('#stat-courses')) rootEl.querySelector('#stat-courses').textContent = c;
         const dept = data.faculty_per_department || [];
         if (rootEl.querySelector('#departments')) {
-          const html = dept.map(d=>`<div style="padding:6px 0;border-top:1px solid #3a3a3a">${d.department_name || 'N/A'} — ${d.total}</div>`).join('') || 'No data';
+          // show only top 5 departments by total (descending)
+          const top = (Array.isArray(dept) ? dept.slice() : []).sort((a,b)=>Number(b.total||0)-Number(a.total||0)).slice(0,5);
+          const html = top.map(d=>{
+            const name = d.department_name || 'N/A';
+            const short = makeAcronym(name);
+            const label = short ? `${name} (${short})` : name;
+            return `<div style="padding:6px 0;border-top:1px solid #3a3a3a">${label} — ${d.total}</div>`;
+          }).join('') || 'No data';
           rootEl.querySelector('#departments').innerHTML = html;
         }
         try { window.localStorage.setItem('academix_stats', JSON.stringify({ students:s, faculty:f })); } catch(e) {}
@@ -232,7 +252,14 @@ export function mountDashboard(rootEl) {
         rootEl.querySelector('#stat-faculty').textContent = f;
         rootEl.querySelector('#stat-courses').textContent = c;
         const dept = data.faculty_per_department || [];
-        const html = dept.map(d=>`<div style="padding:6px 0;border-top:1px solid #3a3a3a">${d.department_name || 'N/A'} — ${d.total}</div>`).join('') || 'No data';
+        // show only top 5 departments by total (descending)
+        const top = (Array.isArray(dept) ? dept.slice() : []).sort((a,b)=>Number(b.total||0)-Number(a.total||0)).slice(0,5);
+        const html = top.map(d=>{
+          const name = d.department_name || 'N/A';
+          const short = makeAcronym(name);
+          const label = short ? `${name} (${short})` : name;
+          return `<div style="padding:6px 0;border-top:1px solid #3a3a3a">${label} — ${d.total}</div>`;
+        }).join('') || 'No data';
         rootEl.querySelector('#departments').innerHTML = html;
         try { window.localStorage.setItem('academix_stats', JSON.stringify({ students:s, faculty:f })); } catch(e) {}
         try { drawCharts(data); } catch(e) {}
@@ -265,37 +292,220 @@ export function mountDashboard(rootEl) {
           ctx.strokeRect(padding + labelWidth, y, chartW, barH);
           if (val > 0) {
             const hue = (i * 137.50776405003785) % 360;
-            ctx.fillStyle = `hsl(${hue}deg 70% 50%)`;
+            // Darken bars and apply 70% opacity so they appear less washed-out on dark background
+            // Use hsla with explicit commas for broader canvas compatibility
+            const barSat = 66;
+            const barLight = 40;
+            ctx.fillStyle = `hsla(${hue}, ${barSat}%, ${barLight}%, 0.7)`;
             const w = Math.round((val / maxVal) * chartW);
             ctx.fillRect(padding + labelWidth, y, w, barH);
           }
         });
       }
 
-      // Faculty per department - pie
-      const fdata = data.faculty_per_department || [];
+      // Faculty per department - pie (filter out departments with zero count, use different palette,
+      // label only sufficiently large slices inside, render small legend for the rest)
+      const fdata = (data.faculty_per_department || []).filter(d => Number(d.total || 0) > 0);
       const fc = document.getElementById('faculty-chart');
       if (fc && fc.getContext) {
         const ctx = fc.getContext('2d');
         fc.width = fc.clientWidth * devicePixelRatio;
         fc.height = fc.clientHeight * devicePixelRatio;
         ctx.clearRect(0,0,fc.width, fc.height);
-        const cx = fc.width/2;
-        const cy = fc.height/2;
-        const radius = Math.min(fc.width, fc.height) * 0.35;
+  const cx = fc.width/2;
+  const cy = fc.height/2;
+  // Increase radius so the pie fills the available circle area more fully
+  const radius = Math.min(fc.width, fc.height) * 0.48;
         const total = fdata.reduce((s,x)=>s + Number(x.total||0), 0) || 1;
-        let angle = -Math.PI/2;
-        fdata.forEach((d,i)=>{
-          const slice = (Number(d.total||0) / total) * Math.PI*2;
-          const hue = (i * 137.5) % 360;
-          ctx.beginPath();
-          ctx.moveTo(cx, cy);
-          ctx.fillStyle = `hsl(${hue}deg 68% 52%)`;
-          ctx.arc(cx, cy, radius, angle, angle + slice);
-          ctx.closePath();
-          ctx.fill();
-          angle += slice;
-        });
+        if (fdata.length === 0) {
+          // draw empty state
+          ctx.font = `${12 * devicePixelRatio}px Inter, sans-serif`;
+          ctx.fillStyle = '#94a3b8';
+          ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+          ctx.fillText('No faculty data', cx, cy);
+        } else {
+          let angle = -Math.PI/2;
+          const hueOffset = 80; // offset so pie colors don't match bar hues
+          const legend = [];
+          const MIN_LABEL_ANGLE = 0.28; // ~16 degrees — threshold to draw inside-label
+
+          fdata.forEach((d,i)=>{
+            const count = Number(d.total || 0);
+            const slice = (count / total) * Math.PI*2;
+            const hue = (hueOffset + i * 137.5) % 360;
+            const sat = 68;
+            const light = 52;
+
+            // draw slice with 70% opacity (hsla) so slices aren't too light on dark bg
+            ctx.beginPath();
+            ctx.moveTo(cx, cy);
+            ctx.fillStyle = `hsla(${hue}, ${sat}%, ${light}%, 0.7)`;
+            ctx.arc(cx, cy, radius, angle, angle + slice);
+            ctx.closePath();
+            ctx.fill();
+
+            // label handling: if slice big enough, draw inside; else add to legend
+            const mid = angle + slice/2;
+            if (slice >= MIN_LABEL_ANGLE) {
+              // position labels a bit closer to center so they remain inside larger slices
+              const lx = cx + Math.cos(mid) * radius * 0.5;
+              const ly = cy + Math.sin(mid) * radius * 0.5;
+
+              // Try to fit the department/program name inside the slice.
+              // Compute an approximate available width based on arc length at 60% radius.
+              const fullLabel = (d.department_name || '').toString();
+              // produce a short inside-circle label: prefer acronym for long names or when containing 'Program'
+              const makeAcronym = (txt) => {
+                if (!txt) return '';
+                // keep 'program' because we want acronyms like 'NP' (Nursing Program)
+                const stop = new Set(['department','of','the','and','&','staff']);
+                const words = txt.split(/\s+/).filter(w => w.trim().length > 0);
+                const meaningful = words.filter(w => !stop.has(w.toLowerCase()));
+                const source = meaningful.length ? meaningful : words;
+                let letters = source.map(w => w[0] ? w[0].toUpperCase() : '').join('');
+                // limit to 3 letters for compactness
+                if (letters.length > 3) letters = letters.slice(0,3);
+                return letters;
+              };
+              let label = fullLabel;
+              // If the name contains 'program' or is fairly long, use acronym for inside label
+              if (/program/i.test(fullLabel) || fullLabel.length > 14) {
+                const ac = makeAcronym(fullLabel);
+                if (ac) label = ac;
+              }
+              const approxArcLen = Math.max(10, slice * radius * 0.6);
+              const padding = 6 * devicePixelRatio;
+              const availableWidth = approxArcLen - padding;
+
+              // Helper: draw wrapped/fitted text centered at (lx,ly)
+              const drawFittedText = (text) => {
+                // Start with a comfortable font size and step down until it fits or hits min
+                let fontSize = 12 * devicePixelRatio;
+                const minFont = 8 * devicePixelRatio;
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                const textColor = (light < 65) ? '#ffffff' : '#0b1020';
+                ctx.fillStyle = textColor;
+
+                // Try single-line first
+                while (fontSize >= minFont) {
+                  ctx.font = `${fontSize}px Inter, sans-serif`;
+                  const w = ctx.measureText(text).width;
+                  if (w <= availableWidth) {
+                    ctx.fillText(text, lx, ly);
+                    return;
+                  }
+                  fontSize -= 1 * devicePixelRatio;
+                }
+
+                // If single-line didn't fit, try two-line wrap by splitting on spaces
+                const words = text.split(/\s+/);
+                if (words.length === 1) {
+                  // fallback: ellipsize to fit
+                  let ell = text;
+                  while (ctx.measureText(ell + '\u2026').width > availableWidth && ell.length > 3) {
+                    ell = ell.slice(0, -1);
+                  }
+                  ctx.fillText(ell + '\u2026', lx, ly);
+                  return;
+                }
+
+                // Attempt two lines
+                let line1 = words[0];
+                let line2 = words.slice(1).join(' ');
+                // balance by moving words from line2 to line1 if needed
+                for (let i = 1; i < words.length; i++) {
+                  const candidate = words.slice(0, i+1).join(' ');
+                  ctx.font = `${Math.max(minFont, fontSize)}px Inter, sans-serif`;
+                  if (ctx.measureText(candidate).width <= availableWidth) {
+                    line1 = candidate;
+                    line2 = words.slice(i+1).join(' ');
+                  } else {
+                    break;
+                  }
+                }
+
+                // reduce font until both lines fit
+                fontSize = Math.max(minFont, fontSize);
+                while (fontSize >= minFont) {
+                  ctx.font = `${fontSize}px Inter, sans-serif`;
+                  const w1 = ctx.measureText(line1).width;
+                  const w2 = ctx.measureText(line2).width;
+                  if (w1 <= availableWidth && w2 <= availableWidth) break;
+                  fontSize -= 1 * devicePixelRatio;
+                }
+
+                // If still too wide, ellipsize the second line
+                ctx.font = `${Math.max(minFont, fontSize)}px Inter, sans-serif`;
+                if (ctx.measureText(line2).width > availableWidth) {
+                  let ell2 = line2;
+                  while (ctx.measureText(ell2 + '\u2026').width > availableWidth && ell2.length > 3) {
+                    ell2 = ell2.slice(0, -1);
+                  }
+                  line2 = ell2 + '\u2026';
+                }
+
+                // draw two lines centered vertically
+                const lineHeight = (fontSize + 2) * 1.1;
+                ctx.textAlign = 'center';
+                ctx.fillText(line1, lx, ly - lineHeight/2);
+                ctx.fillText(line2, lx, ly + lineHeight/2);
+              };
+
+              try {
+                drawFittedText(label);
+              } catch (e) {
+                // fallback: short label
+                const short = label.length > 20 ? label.slice(0, 17) + '\u2026' : label;
+                ctx.font = `${10 * devicePixelRatio}px Inter, sans-serif`;
+                ctx.fillStyle = (light < 65) ? '#ffffff' : '#0b1020';
+                ctx.fillText(short, lx, ly);
+              }
+            } else {
+              // add legend entry
+              legend.push({ name: d.department_name || '', total: count, hue });
+            }
+
+            angle += slice;
+          });
+
+          // render legend for small slices. Prefer to the right if there's horizontal space,
+          // otherwise render below the pie.
+          if (legend.length > 0) {
+            const fontSize = Math.max(10 * devicePixelRatio, 10);
+            ctx.font = `${fontSize}px Inter, sans-serif`;
+            ctx.textAlign = 'left';
+            ctx.textBaseline = 'top';
+            const dotSize = 8 * devicePixelRatio;
+            const padding = 6 * devicePixelRatio;
+
+            const canPlaceRight = fc.width > fc.height * 1.15; // enough width to place legend to the right
+            if (canPlaceRight) {
+              const startX = cx + radius + (8 * devicePixelRatio);
+              let y = Math.max(8 * devicePixelRatio, cy - radius);
+              legend.forEach((lg) => {
+                ctx.fillStyle = `hsl(${lg.hue}deg 68% 52%)`;
+                ctx.fillRect(startX, y, dotSize, dotSize);
+                ctx.fillStyle = '#e6edf3';
+                const label = lg.name.length > 24 ? lg.name.slice(0, 21) + '\u2026' : lg.name;
+                ctx.fillText(`${label} (${lg.total})`, startX + dotSize + padding, y);
+                y += dotSize + padding;
+              });
+            } else {
+              const startY = cy + radius + (8 * devicePixelRatio);
+              const startX = Math.max(8 * devicePixelRatio, cx - radius);
+              let y = startY;
+              legend.forEach((lg) => {
+                ctx.fillStyle = `hsl(${lg.hue}deg 68% 52%)`;
+                ctx.fillRect(startX, y, dotSize, dotSize);
+                ctx.fillStyle = '#e6edf3';
+                const label = lg.name.length > 24 ? lg.name.slice(0, 21) + '\u2026' : lg.name;
+                ctx.fillText(`${label} (${lg.total})`, startX + dotSize + padding, y);
+                y += dotSize + padding;
+              });
+            }
+          }
+        }
       }
     }
 

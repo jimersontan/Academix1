@@ -48,10 +48,12 @@ class FacultyController extends Controller
             'position' => 'nullable|string',
             'department_id' => 'required|integer'
         ]);
-        // Generate and assign a stored display_id atomically where supported
-        $data['display_id'] = DB::transaction(function () {
+        // Compute next display id inside a transaction but only include it in the
+        // insert payload if the DB column actually exists. This prevents SQL errors
+        // when the migration hasn't been applied.
+        $nextDisplay = DB::transaction(function () {
             $base = 2510000;
-            // Only try reading display_id if the column exists (migration may not have run yet)
+            // If the column exists use it to compute next, otherwise fall back to PK logic
             if (Schema::hasColumn('faculty_profile', 'display_id')) {
                 $maxDisplay = DB::table('faculty_profile')->lockForUpdate()->max('display_id');
                 if ($maxDisplay && (int)$maxDisplay > 0) return (int)$maxDisplay + 1;
@@ -62,6 +64,10 @@ class FacultyController extends Controller
             if ($maxPk >= $base) return $maxPk + 1;
             return $base + $maxPk + 1;
         });
+
+        if (Schema::hasColumn('faculty_profile', 'display_id')) {
+            $data['display_id'] = $nextDisplay;
+        }
 
         $faculty = FacultyProfile::create($data);
         return response()->json($faculty, 201);

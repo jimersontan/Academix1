@@ -228,6 +228,19 @@ export function mountSettings(rootEl) {
         loadCurrentTab();
     }
 
+    // Helper: make short acronym from a department/program name
+    function makeAcronym(txt) {
+        if (!txt) return '';
+        // keep 'program' so we produce NP for 'Nursing Program'
+        const stop = new Set(['department','of','the','and','&','staff']);
+        const words = txt.split(/\s+/).filter(w => w.trim().length > 0);
+        const meaningful = words.filter(w => !stop.has(w.toLowerCase()));
+        const source = meaningful.length ? meaningful : words;
+        let letters = source.map(w => w[0] ? w[0].toUpperCase() : '').join('');
+        if (letters.length > 3) letters = letters.slice(0,3);
+        return letters;
+    }
+
     // Action buttons
     rootEl.querySelector('#st-add-course').addEventListener('click', () => openModal('course'));
     rootEl.querySelector('#st-add-department').addEventListener('click', () => openModal('department'));
@@ -459,8 +472,10 @@ export function mountSettings(rootEl) {
             return;
         }
         departments.forEach(dept => {
+            const short = makeAcronym(dept.department_name || '');
+            const label = short ? `${dept.department_name} (${short})` : (dept.department_name || '');
             const tr = h('tr', {}, [
-                h('td', { text: dept.department_name || '' }),
+                h('td', { text: label }),
                 h('td', {}, [h('span', { class: 'st-pill st-small', text: dept.deleted_at ? 'Archived' : 'Active' })]),
                 h('td', {}, [
                     h('button', { class: 'st-btn st-small', 'data-action': 'edit', 'data-id': detectId(dept) }, 'Edit'),
